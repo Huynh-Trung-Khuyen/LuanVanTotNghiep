@@ -21,10 +21,10 @@
                 <td><?php echo $row['price'] ?>.000vnđ/Kg</td>
                 <td><?php echo $row['content'] ?></td>
                 <td>
-                <a class="btn btn-primary btn-sm" href="../../admin/product/delete.php?id=<?php echo $row['product_id'] ?>">
+                <a class="btn btn-primary btn-sm" href="../../admin/product/edit.php?id=<?php echo $row['product_id'] ?>">
                     <i class="fas fa-edit"></i>
                 </a>
-                <a href="#" class="btn btn-danger btn-sm" href="../../admin/product/edit.php?id=<?php echo $row['product_id'] ?>">
+                <a href="#" class="btn btn-danger btn-sm" href="../../admin/product/delete.php?id=<?php echo $row['product_id'] ?>">
                     <i class="fas fa-trash"></i>
                 </a>
             </td>
