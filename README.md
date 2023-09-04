@@ -1,16 +1,11 @@
-# Project học phần Công nghệ Web (CT275)
+# Luận văn tốt nghiệp
 
-Học kỳ 2, Năm học 2022-2023
+Học kỳ 1, Năm học 2023-2024
 
 **MSSV 1** : B1910534
 
 **Họ tên SV 1**: Huỳnh Trung Khuyến
 
-**MSSV 2**:
 
-**Họ tên SV 2**:
-
-**Lớp học phần**: CT27502
-
-**Tên dự án**:Web bán rau sạch
+**Tên dự án**:
 
