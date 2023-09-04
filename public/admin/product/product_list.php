@@ -21,14 +21,12 @@
                 <td><?php echo $row['price'] ?>.000vnđ/Kg</td>
                 <td><?php echo $row['content'] ?></td>
                 <td>
-                <button type="button" class="btn btn-danger">
-                    <a class="text-light text-decoration-none" href="../../admin/product/delete.php?id=<?php echo $row['product_id'] ?>">
-                        Xóa
-                    </a>
-                    <button type="button" class="btn btn-success">
-                        <a class="text-light text-decoration-none" href="../../admin/product/edit.php?id=<?php echo $row['product_id'] ?>">
-                            Edit
-                        </a>
+                <a class="btn btn-primary btn-sm" href="../../admin/product/delete.php?id=<?php echo $row['product_id'] ?>">
+                    <i class="fas fa-edit"></i>
+                </a>
+                <a href="#" class="btn btn-danger btn-sm" href="../../admin/product/edit.php?id=<?php echo $row['product_id'] ?>">
+                    <i class="fas fa-trash"></i>
+                </a>
             </td>
             </tr>
         <?php endforeach ?>
