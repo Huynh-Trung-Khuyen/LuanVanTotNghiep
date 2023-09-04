@@ -16,7 +16,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $content = $_POST['content'];
     $price = $_POST['price'];
 
-    $query = $conn->prepare('UPDATE product SET product_name =:product_name, content=:content, price=:price WHERE product_id = :id ');
+    // Kiểm tra xem người dùng đã tải lên hình ảnh mới hay chưa
+    if (!empty($_FILES['hinhanh']['name'])) {
+        $image = $_FILES['hinhanh']['name'];
+        $image_tmp_name = $_FILES['hinhanh']['tmp_name'];
+        
+        // Di chuyển tệp tải lên và cập nhật cơ sở dữ liệu
+        move_uploaded_file($image_tmp_name, '../../uploads/' . $image);
+        $query = $conn->prepare('UPDATE product SET product_name=:product_name, content=:content, price=:price, image=:image WHERE product_id = :id');
+        $query->bindParam(':image', $image);
+    } else {
+        // Không tải lên hình ảnh mới, không cần cập nhật cột 'image' trong cơ sở dữ liệu
+        $query = $conn->prepare('UPDATE product SET product_name=:product_name, content=:content, price=:price WHERE product_id = :id');
+    }
+
+    // Thực hiện cập nhật cơ sở dữ liệu
     $query->bindParam(':id', $id);
     $query->bindParam(':product_name', $product_name);
     $query->bindParam(':content', $content);
@@ -85,19 +99,15 @@ include("./head.php");
                         </div>
                         <div class="form-group">
                             <label>Nội Dung</label>
-                            <input type="text" name="content" value="<?php echo $row['content'] ?>" class="form-control" placeholder="Giá Sản Phẩm">
+                            <input type="text" name="content" value="<?php echo $row['content'] ?>" class="form-control" placeholder="Nội Dung Sản Phẩm">
                         </div>
-                        <!-- <div class="form-group">
+                        <div class="form-group">
                             <label for="menu">Ảnh Sản Phẩm</label>
-                            <input type="file" class="form-control" id="upload">
-                            <div id="image_show">
-                                <a href="{{ $product->thumb }}" target="_blank">
-                                    <img src="{{ $product->thumb }}" width="100px">
-                                </a>
-                            </div>
-                            <input type="hidden" name="thumb" value="{{ $product->thumb }}" id="thumb">
-                        </div> -->
+                            <input type="file" name="hinhanh" value="" class="form-control">
+                            <img src="../../uploads/<?php echo $row['image'] ?>" alt="" width="100px;">
+                        </div>
                         <div class="card-footer">
+                            
                             <button type="submit" class="btn btn-primary">Cập Nhật Sản Phẩm</button>
                         </div>
                     </div>

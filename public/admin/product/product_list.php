@@ -18,7 +18,7 @@
                         <img src="../../uploads/<?php echo $row['image'] ?>" height="100px" width="100px">
                     </a>
                 </td>
-                <td><?php echo $row['price'] ?>.000 vnđ</td>
+                <td><?php echo $row['price'] ?>.000vnđ/Kg</td>
                 <td><?php echo $row['content'] ?></td>
                 <td>
                 <button type="button" class="btn btn-danger">
