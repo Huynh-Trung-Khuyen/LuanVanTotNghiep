@@ -7,47 +7,6 @@ $query->execute();
 $categories = $query->fetchAll(PDO::FETCH_ASSOC);
 
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $product_name = $_POST['product_name'];
-    $content = $_POST['content'];
-    $price = $_POST['price'];
-    $category_id = $_POST['category_id'];
-    $image_name = $_FILES['image']['name'];
-
-    if (empty($product_name) or empty($content) or empty($price)) {
-        $error = 'Không được để trống!';
-    }
-
-    if (!empty($image_name)) {
-
-        $tmp = $_FILES['image']['tmp_name']; //tránh upload ảnh trùng tên
-        $image_name = time() . $image_name;
-        $new_path = '../../uploads/' . $image_name;
-
-        if (!move_uploaded_file($tmp, $new_path)) {
-            $error = 'Upload ảnh thất bại!';
-        } else {
-            move_uploaded_file($tmp, $new_path);
-
-            $query = $conn->prepare('
-            INSERT INTO product
-            (product_name, content, price, image, category_id)
-            VALUES
-            (:product_name, :content, :price, :image, :category_id)
-            ');
-            $query->bindParam(':product_name', $product_name);
-            $query->bindParam(':content', $content);
-            $query->bindParam(':price', $price);
-            $query->bindParam(':image', $image_name);
-            $query->bindParam(':category_id', $category_id);
-            $query->execute();
-            $success = 'Thêm sản phẩm thành công!';
-        }
-    } else {
-        $error = 'Ảnh Không được để trống!';
-    }
-}
-
 require_once '../../../config.php';
 $query = $conn->prepare('SELECT * FROM product');
 $query->execute();
