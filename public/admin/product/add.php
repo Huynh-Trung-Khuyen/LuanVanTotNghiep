@@ -103,7 +103,7 @@ include("./head.php");
                         <label for="menu">Ảnh Sản Phẩm</label>
                         <input style="width: 500px;" type="file" name="image" required>
                     </div>
-                    <div class="col-md-6">
+ 
                         <div class="form-group">
                             <label>Danh Mục</label>
                             <select style="width: 500px;" name="category_id" id="category_id" class="form-control" required="required">
@@ -112,9 +112,8 @@ include("./head.php");
                                 <?php endforeach ?>
                             </select>
                         </div>
-                    </div>
-                    <div class="card-footer">
-                        <button type="submit" class="btn btn-primary">Cập Nhật Sản Phẩm</button>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">Thêm Sản Phẩm</button>
                     </div>
                 </div>
             </form>

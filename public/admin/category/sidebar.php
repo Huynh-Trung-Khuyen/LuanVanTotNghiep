@@ -41,7 +41,7 @@
                with font-awesome or any other icon font library -->
                 <li class="nav-item menu-open">
                     <a href="#" class="nav-link">
-                    <i class="nav-icon fas fa-bars"></i>
+                        <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>
                             Danh Mục
                             <i class="right fas fa-angle-left"></i>
@@ -49,13 +49,13 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="../category/add.php" class="nav-link">
+                            <a href="./add.php" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Thêm Danh Mục</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="../category/index_category.php" class="nav-link">
+                            <a href="./index_category.php" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Danh Sách Danh Mục</p>
                             </a>
@@ -64,7 +64,7 @@
                 </li>
                 <li class="nav-item menu-open">
                     <a href="#" class="nav-link">
-                    <i class="nav-icon fas fa-store-alt"></i>
+                        <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>
                             Sản Phẩm
                             <i class="right fas fa-angle-left"></i>

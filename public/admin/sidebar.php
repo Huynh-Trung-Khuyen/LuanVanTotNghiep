@@ -50,13 +50,13 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="./category/index_category.php" class="nav-link">
+                            <a href="./category/add.php" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Thêm Danh Mục</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="./index_category.php" class="nav-link">
+                            <a href="./category/index_category.php" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Danh Sách Danh Mục</p>
                             </a>

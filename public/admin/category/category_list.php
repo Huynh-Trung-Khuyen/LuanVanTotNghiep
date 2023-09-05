@@ -1,27 +1,27 @@
 <?php if (!empty($categories)) : ?>
-
-<h6>Liệt kê danh mục sản phẩm</h6>
-<table class="table table-bordered text-center">
-    <tr>
-        <th class="text-success text-decoration-none">ID</th>
-        <th class="text-success text-decoration-none">Tên danh mục</th>
-        <th style="width: 250px;" class="text-success text-decoration-none">Xóa</th>
-    </tr>
-
-    <?php foreach ($categories as $row) : ?>
+<table class="table">
+    <thead>
         <tr>
-            <td><?php echo $row['category_id']  ?></td>
-            <td><?php echo $row['category_name']  ?></td>
-            <td>
-                <button type="button" class="btn btn-danger">
-                    <a class="text-light text-decoration-none" href="../../admin/category/delete.php?id=<?php echo $row['category_id']?>">
-                        Xóa
-                    </a>
-                    <button type="button" class="btn btn-success">
-                    <a class="text-light text-decoration-none" href="../../admin/category/edit.php?id=<?php echo $row['category_id']?>">
-                        Edit
-                    </a>   
-            </td>
+            <th style="width: 100px">ID</th>
+            <th style="width: 200px">Tên Sản Phẩm</th>
+            <th style="width: 100px">&nbsp;</th>
         </tr>
-    <?php endforeach ?>
+    </thead>
+    <tbody>
+        <?php foreach ($categories as $row) : ?>
+            <tr>
+                <td><?php echo $row['category_id']  ?></td>
+                <td><?php echo $row['category_name']  ?></td>
+                <td>
+                    <a class="btn btn-primary btn-sm" href="../../admin/category/edit.php?id=<?php echo $row['category_id'] ?>">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                    <a  class="btn btn-danger btn-sm" href="../../admin/category/delete.php?id=<?php echo $row['category_id'] ?>">
+                        <i class="fas fa-trash"></i>
+                    </a>
+                </td>
+            </tr>
+        <?php endforeach ?>
+    </tbody>
+</table>
 <?php endif ?>
