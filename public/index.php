@@ -7,39 +7,64 @@ $query = $conn->prepare('SELECT * FROM category');
 $query->execute();
 $categories = $query->fetchAll(PDO::FETCH_ASSOC);
 
+$products = []; // Mảng danh sách tất cả sản phẩm
+$selectedProduct = null; // Khởi tạo biến cho sản phẩm cụ thể
 
+if (isset($_GET['id'])) {
+  $id = $_GET['id'];
+  $query = $conn->prepare('SELECT * FROM product WHERE product_id = :id LIMIT 1');
+  $query->bindParam(':id', $id);
+  $query->execute();
+  $selectedProduct = $query->fetch(PDO::FETCH_ASSOC); // Sản phẩm cụ thể
+}
+
+// Lấy danh sách tất cả sản phẩm (nếu cần)
 $query = $conn->prepare('SELECT * FROM product');
 $query->execute();
 $products = $query->fetchAll(PDO::FETCH_ASSOC);
-
-
-
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-  <title>Trang chủ</title>
+  <title>Vegefoods</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../css/css/open-iconic-bootstrap.min.css">
+  <link rel="stylesheet" href="../css/css/animate.css">
+
+  <link rel="stylesheet" href="../css/css/owl.carousel.min.css">
+  <link rel="stylesheet" href="../css/css/owl.theme.default.min.css">
+  <link rel="stylesheet" href="../css/css/magnific-popup.css">
+
+  <link rel="stylesheet" href="../css/css/aos.css">
+
+  <link rel="stylesheet" href="../css/css/ionicons.min.css">
+
+  <link rel="stylesheet" href="../css/css/bootstrap-datepicker.css">
+  <link rel="stylesheet" href="../css/css/jquery.timepicker.css">
+
+
+  <link rel="stylesheet" href="../css/css/flaticon.css">
+  <link rel="stylesheet" href="../css/css/icomoon.css">
+  <link rel="stylesheet" href="../css/css/style.css">
 </head>
 
-<body>
-  <div class="container">
-    <?php
-    include("../partials/navbar.php");
-    include("../partials/header.php");
-    include("../partials/main.php");
-    include("../partials/footer.php");
+<body class="goto-here">
 
-    ?>
-  </div>
+  <?php
+  include("../partials/navbar.php");
+  include("../partials/slider.php");
+  include("../partials/main.php");
+  include("../partials/footer.php");
+  ?>
+
 
 </body>
 
