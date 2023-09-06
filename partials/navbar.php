@@ -10,13 +10,16 @@
         </div>
         <div class="collapse navbar-collapse" id="ftco-nav">
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item active"><a href="index.html" class="nav-link">Home</a></li>
+                <li class="nav-item active"><a href="../public/index.php" class="nav-link">Trang Chủ</a></li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Shop</a>
+                    <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Danh Mục</a>
                     <div class="dropdown-menu" style="margin-top: -15px;" aria-labelledby="dropdown04">
-                        <a class="dropdown-item" href="shop.html">Shop</a>
+                        <?php foreach ($categories as $row) : ?>
+                            <a class="dropdown-item" href="#"><?php echo $row['category_name']  ?></a>
+                        <?php endforeach ?>
                     </div>
                 </li>
+
                 <?php
                 if (!isset($_SESSION['user'])) : ?>
 
