@@ -17,7 +17,7 @@
                     <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Danh Mục</a>
                     <div class="dropdown-menu" style="margin-top: 0px;" aria-labelledby="dropdown04">
                         <?php foreach ($categories as $row) : ?>
-                            <a class="dropdown-item" href="#"><?php echo $row['category_name']  ?></a>
+                            <a class="dropdown-item" href="category_menu.php?category_id=<?php echo $row['category_id']; ?>"><?php echo $row['category_name']  ?></a>
                         <?php endforeach ?>
                     </div>
                 </li>

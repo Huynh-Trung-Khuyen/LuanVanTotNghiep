@@ -22,12 +22,12 @@ $end = $start + $itemsPerPage;
     </div>
     <div class="row justify-content-center">
         <div class="col-md-10 mb-5 text-center">
-            <ul class="product-category">
-                <li><a href="#" class="active">All</a></li>
-                <?php foreach ($categories as $row) : ?>
-                    <li><a href="#"><?php echo $row['category_name']  ?></a></li>
-                <?php endforeach ?>
-            </ul>
+        <ul class="product-category">
+    <li><a href="../public/category_menu.php">All</a></li>
+    <?php foreach ($categories as $row) : ?>
+        <li><a href="category_menu.php?category_id=<?php echo $row['category_id']; ?>"><?php echo $row['category_name']; ?></a></li>
+    <?php endforeach; ?>
+</ul>
         </div>
     </div>
 
