@@ -1,14 +1,62 @@
 <?php
+ // Bắt đầu hoặc tiếp tục phiên
+if (isset($_GET['id']) && isset($_POST['add_to_cart'])) {
+    $product_id = $_GET['id']; 
+    $quantity_of_products = $_POST['quantity']; 
+
+
+    if (isset($_SESSION['user_id'])) {
+        $user_id = $_SESSION['user_id'];
+
+        // Kiểm tra xem sản phẩm đã tồn tại trong giỏ hàng chưa
+        $query = "SELECT * FROM cart WHERE product_id = :product_id AND user_id = :user_id";
+        $stmt = $conn->prepare($query);
+        $stmt->bindParam(':product_id', $product_id);
+        $stmt->bindParam(':user_id', $user_id);
+        $stmt->execute();
+        $existingCartItem = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($existingCartItem) {
+            // Nếu sản phẩm đã tồn tại trong giỏ hàng, cập nhật số lượng
+            $newQuantity = $existingCartItem['quantity_of_products'] + $quantity_of_products;
+            $updateQuery = "UPDATE cart SET quantity_of_products = :quantity WHERE cart_id = :cart_id";
+            $updateStmt = $conn->prepare($updateQuery);
+            $updateStmt->bindParam(':quantity', $newQuantity);
+            $updateStmt->bindParam(':cart_id', $existingCartItem['cart_id']);
+            $updateStmt->execute();
+        } else {
+            // Nếu sản phẩm chưa tồn tại trong giỏ hàng, thêm vào
+            $insertQuery = "INSERT INTO cart (user_id, product_id, quantity_of_products) VALUES (:user_id, :product_id, :quantity)";
+            $insertStmt = $conn->prepare($insertQuery);
+            $insertStmt->bindParam(':user_id', $user_id);
+            $insertStmt->bindParam(':product_id', $product_id);
+            $insertStmt->bindParam(':quantity', $quantity_of_products);
+            $insertStmt->execute();
+        }
+
+        // Hiển thị thông báo sản phẩm đã được thêm vào giỏ hàng
+        echo "Sản phẩm đã được thêm vào giỏ hàng.";
+    } else {
+        // Xử lý trường hợp 'user_id' không tồn tại trong phiên
+        echo "Vui lòng đăng nhập trước khi thêm sản phẩm vào giỏ hàng.";
+    }
+}
+?>
+
+
+
+<?php
 if (isset($_GET['id'])) {
     $product_id = $_GET['id'];
 }
 ?>
 <?php foreach ($products as $row) : ?>
+    <form method="POST">
     <section class="ftco-section">
         <div class="container">
             <div class="row">
                 <div class="col-lg-6 mb-5 ">
-                    <img src="../uploads/<?php echo $row['image'] ?>" class="img-fluid" alt="Colorlib Template">
+                    <img src="../public/uploads/<?php echo $row['image'] ?>" class="img-fluid" alt="Colorlib Template">
                 </div>
                 <div class="col-lg-6 product-details pl-md-5">
                     <h3><?php echo $row['product_name'] ?></h3>
@@ -33,13 +81,14 @@ if (isset($_GET['id'])) {
                         <div class="w-100"></div>
                         
                     </div>
-                    <p><a href="cart.html" class="btn btn-black py-3 px-5 ml-4">Add to Cart</a></p>
+      
+                    <button type="submit" class="btn  " name="add_to_cart">Add to Cart</button>
                 </div>
             </div>
         </div>
     </section>
+    </form>
 <?php endforeach ?>
-
 
 
 
@@ -64,3 +113,7 @@ if (isset($_GET['id'])) {
         });
     });
 </script>
+
+
+
+

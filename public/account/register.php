@@ -4,58 +4,63 @@ session_start();
 require_once '../../config.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-  $username = $_POST['username'];
-  $password = $_POST['password'];
-  $fullname = $_POST['fullname'];
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+    $fullname = $_POST['fullname'];
 
-  if (empty($username) or empty($password) or empty($fullname)) {
-    $error = 'Không được để trống!';
-  } else {
-    if (strlen($username) < 5 or strlen($username) > 50) {
-      $error = 'Tài khoản phải từ 4 đến 50 kí tự!';
-    }
-    if (strlen($password) < 5 or strlen($password) > 50) {
-      $error = 'Mật khẩu phải từ 4 đến 50 kí tự!';
-    }
-  }
-
-
-  if (is_numeric($fullname)) {
-    //tên không được có số
-    $error = 'Tên không hợp lệ!';
-  }
-  if (!isset($error)) {
-    $query = "SELECT username FROM user WHERE username = :username";
-    $stmt = $conn->prepare($query);
-    $stmt->bindValue(':username', $username);
-    $stmt->execute();
-    
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    if ($user) {
-      $error = 'Tài khoản đã tồn tại!';
+    if (empty($username) or empty($password) or empty($fullname)) {
+        $error = 'Không được để trống!';
     } else {
-      //mã hóa mật khẩu//
-      $password = password_hash($password, PASSWORD_DEFAULT);
-
-      $query = $conn->prepare(' 
-        INSERT INTO user (username, password, fullname)
-        VALUES (:username, :password, :fullname)
-      ');
-
-      $query->bindParam(':username', $username);
-      $query->bindParam(':password', $password);
-      $query->bindParam(':fullname', $fullname);
-
-      $query-> execute();
-
-      $_SESSION['user']['name'] = $fullname;
-      $_SESSION['user']['role'] = 2;
-
-      header('location: ../index.php');
+        if (strlen($username) < 5 or strlen($username) > 50) {
+            $error = 'Tài khoản phải từ 4 đến 50 kí tự!';
+        }
+        if (strlen($password) < 5 or strlen($password) > 50) {
+            $error = 'Mật khẩu phải từ 4 đến 50 kí tự!';
+        }
     }
-  }
+
+    if (is_numeric($fullname)) {
+        // Tên không được có số
+        $error = 'Tên không hợp lệ!';
+    }
+
+    if (!isset($error)) {
+        $query = "SELECT username FROM user WHERE username = :username";
+        $stmt = $conn->prepare($query);
+        $stmt->bindValue(':username', $username);
+        $stmt->execute();
+        
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($user) {
+            $error = 'Tài khoản đã tồn tại!';
+        } else {
+            // Mã hóa mật khẩu
+            $password = password_hash($password, PASSWORD_DEFAULT);
+
+            $query = $conn->prepare(' 
+                INSERT INTO user (username, password, fullname)
+                VALUES (:username, :password, :fullname)
+            ');
+
+            $query->bindParam(':username', $username);
+            $query->bindParam(':password', $password);
+            $query->bindParam(':fullname', $fullname);
+
+            $query->execute();
+
+            // Lấy user_id sau khi đăng ký thành công
+            $user_id = $conn->lastInsertId();
+
+            $_SESSION['user']['name'] = $fullname;
+            $_SESSION['user']['role'] = 2;
+            $_SESSION['user_id'] = $user_id; // Đặt user_id vào phiên
+
+            header('location: ../index.php');
+        }
+    }
 }
+
 
 ?>
 

@@ -2,7 +2,12 @@
 session_start();
 
 if (isset($_SESSION['user'])) {
-    header('location:../index.php');
+    if ($_SESSION['user']['role'] == 1) {
+        header('location: ../admin/index.php');
+    } else {
+        header('location: ../index.php');
+    }
+    exit(); // Đảm bảo không có mã nào thực thi sau khi đã chuyển hướng
 }
 
 require_once '../../config.php';
@@ -11,24 +16,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username = $_POST['username'];
     $password = $_POST['password'];
 
-
-    if (empty($username) or empty($password)) {
+    if (empty($username) || empty($password)) {
         $error = 'Không được để trống!';
     } else {
-        if (strlen($username) < 5 or strlen($username) > 50) {
+        if (strlen($username) < 5 || strlen($username) > 50) {
             $error = 'Tài khoản phải từ 4 đến 50 kí tự!';
         }
-        if (strlen($password) < 5 or strlen($password) > 50) {
+        if (strlen($password) < 5 || strlen($password) > 50) {
             $error = 'Mật khẩu phải từ 4 đến 50 kí tự!';
         }
     }
 
     if (!isset($error)) {
-
-        $query = $conn->prepare(' SELECT username, password, fullname, role
-            FROM user
-            WHERE username= :username
-        ');
+        $query = $conn->prepare('SELECT user_id, username, password, fullname, role FROM user WHERE username = :username');
         $query->bindValue(':username', $username);
         $query->execute();
         $user = $query->fetch(PDO::FETCH_ASSOC);
@@ -36,15 +36,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (!$user) {
             $error = 'Tài khoản không tồn tại!';
         } else {
-            //Kiểm tra mật khẩu//
             if (password_verify($password, $user['password'])) {
-                $_SESSION['user']['name'] = $user['fullname'];
-                $_SESSION['user']['role'] = $user['role'];
-                if ($_SESSION['user']['role'] == 1) {
+                $_SESSION['user'] = [
+                    'name' => $user['fullname'],
+                    'role' => $user['role']
+                ];
+
+                $_SESSION['user_id'] = $user['user_id']; // Đặt user_id vào phiên
+
+                if ($user['role'] == 1) {
                     header('location: ../admin/index.php');
                 } else {
                     header('location: ../index.php');
                 }
+                exit();
             } else {
                 $error = 'Mật khẩu không đúng!';
             }
@@ -53,6 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 ?>
+
 
 
 <!DOCTYPE html>
