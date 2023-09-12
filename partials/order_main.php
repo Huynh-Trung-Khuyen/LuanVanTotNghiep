@@ -1,7 +1,6 @@
 <?php
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Lấy dữ liệu từ biểu mẫu
+
     $order_name = $_POST['order_name'];
     $address = $_POST['address'];
     $city_address = $_POST['city_address'];
@@ -9,46 +8,57 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $phone = $_POST['phone'];
     $email_address = $_POST['email_address'];
 
-    // Tính tổng giỏ hàng
-    $query = "
-        SELECT SUM(p.price * c.quantity_of_products) as cart_total
-        FROM cart AS c
-        INNER JOIN product AS p ON c.product_id = p.product_id
-        WHERE c.user_id = :user_id
-    ";
-    $user_id = $_SESSION['user_id'];
-    $stmt = $conn->prepare($query);
-    $stmt->bindParam(':user_id', $user_id);
-    $stmt->execute();
-    $result = $stmt->fetch(PDO::FETCH_ASSOC);
-    $cart_total = $result['cart_total'];
 
-    // Tiến hành thêm dữ liệu vào bảng $order, bao gồm tổng giá tiền
-    $query = "INSERT INTO `order` (order_name, address, city_address, district_address, phone, email_address, cart_total) 
-              VALUES (:order_name, :address, :city_address, :district_address, :phone, :email_address, :cart_total)";
+    if (isset($_SESSION['user_id'])) {
+        $user_id = $_SESSION['user_id'];
 
-    $stmt = $conn->prepare($query);
-    $stmt->bindParam(':order_name', $order_name);
-    $stmt->bindParam(':address', $address);
-    $stmt->bindParam(':city_address', $city_address);
-    $stmt->bindParam(':district_address', $district_address);
-    $stmt->bindParam(':phone', $phone);
-    $stmt->bindParam(':email_address', $email_address);
-    $stmt->bindParam(':cart_total', $cart_total, PDO::PARAM_INT); // Đảm bảo giá trị được truyền vào dưới dạng số nguyên
 
-    if ($stmt->execute()) {
-        // Thêm hóa đơn thành công, giờ ta sẽ xóa đơn hàng từ bảng cart
-        $deleteQuery = "DELETE FROM cart WHERE user_id = :user_id";
-        $deleteStmt = $conn->prepare($deleteQuery);
-        $deleteStmt->bindParam(':user_id', $user_id);
-        $deleteStmt->execute();
+        $query = "
+            SELECT SUM(p.price * c.quantity_of_products) as cart_total
+            FROM cart AS c
+            INNER JOIN product AS p ON c.product_id = p.product_id
+            WHERE c.user_id = :user_id
+        ";
+        $stmt = $conn->prepare($query);
+        $stmt->bindParam(':user_id', $user_id);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        $cart_total = $result['cart_total'];
 
-        echo "Thêm hóa đơn và xóa đơn hàng thành công!";
+
+        $query = "INSERT INTO `order` (order_name, address, city_address, district_address, phone, email_address, cart_total, user_id) 
+                  VALUES (:order_name, :address, :city_address, :district_address, :phone, :email_address, :cart_total, :user_id)";
+
+        $stmt = $conn->prepare($query);
+        $stmt->bindParam(':order_name', $order_name);
+        $stmt->bindParam(':address', $address);
+        $stmt->bindParam(':city_address', $city_address);
+        $stmt->bindParam(':district_address', $district_address);
+        $stmt->bindParam(':phone', $phone);
+        $stmt->bindParam(':email_address', $email_address);
+        $stmt->bindParam(':cart_total', $cart_total, PDO::PARAM_INT);
+        $stmt->bindParam(':user_id', $user_id);
+
+        if ($stmt->execute()) {
+
+            $deleteQuery = "DELETE FROM cart WHERE user_id = :user_id";
+            $deleteStmt = $conn->prepare($deleteQuery);
+            $deleteStmt->bindParam(':user_id', $user_id);
+            $deleteStmt->execute();
+
+            echo "Đặt Hàng thành công!";
+        } else {
+            echo "Lỗi khi thêm hóa đơn: " . $stmt->errorInfo()[2];
+        }
     } else {
-        echo "Lỗi khi thêm hóa đơn: " . $stmt->errorInfo()[2];
+        echo "Người dùng chưa đăng nhập.";
     }
 }
+
 ?>
+
+
+
 <?php
 if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])) {
     $user_id = $_SESSION['user_id'];
@@ -64,13 +74,9 @@ if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])) {
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
     $cart_total = $result['cart_total'];
 } else {
-    $cart_total = 0; 
+    $cart_total = 0;
 }
 ?>
-
-
-<!-- Phần HTML không thay đổi -->
-
 
 
 <section class="ftco-section">
