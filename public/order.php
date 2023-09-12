@@ -54,7 +54,7 @@ if (!isset($_SESSION['user_id']) || empty($_SESSION['user_id'])) {
 <body class="goto-here">
   <?php
   include("../partials/navbar.php");
-  include("../partials/checkout_main.php");
+  include("../partials/order_main.php");
   include("../partials/footer.php");
   ?>
 </body>

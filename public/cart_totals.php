@@ -28,6 +28,6 @@ if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])) {
             </p>
             </p>
         </div>
-        <p><a href="../public/checkout.php" class="btn btn-primary py-3 px-4">Đặt Hàng Ngay</a></p>
+        <p><a href="../public/order.php" class="btn btn-primary py-3 px-4">Đặt Hàng Ngay</a></p>
     </div>
 </div>
