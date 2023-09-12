@@ -23,13 +23,11 @@
         <!-- Sidebar user panel (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="image">
-                <img src="../..//template/admin/dist/img/admin.png" class="img-circle elevation-2" alt="User Image">
+                <img src="../../template/admin/dist/img/admin.png" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
                 <a href="#" class="d-block">
-                    <?php
-                    echo $_SESSION['user']['name']
-                    ?>
+                    ADMIN
                 </a>
             </div>
         </div>
@@ -41,7 +39,7 @@
                with font-awesome or any other icon font library -->
                 <li class="nav-item menu-open">
                     <a href="#" class="nav-link">
-                    <i class="nav-icon fas fa-bars"></i>
+                        <i class="nav-icon fas fa-bars"></i>
                         <p>
                             Danh Mục
                             <i class="right fas fa-angle-left"></i>
@@ -64,7 +62,7 @@
                 </li>
                 <li class="nav-item menu-open">
                     <a href="#" class="nav-link">
-                    <i class="nav-icon fas fa-store-alt"></i>
+                        <i class="nav-icon fas fa-store-alt"></i>
                         <p>
                             Sản Phẩm
                             <i class="right fas fa-angle-left"></i>
@@ -83,6 +81,24 @@
                                 <p>Danh Sách Sản Phẩm</p>
                             </a>
                         </li>
+                    </ul>
+                </li>
+                <li class="nav-item menu-open">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                        <p>
+                            Đơn Hàng
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="../order/index_order.php" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Danh Sách Đơn Hàng</p>
+                            </a>
+                        </li>
+
                     </ul>
                 </li>
             </ul>

@@ -69,19 +69,6 @@ include("../admin/head.php");
             </div>
 
         </div>
-        <?php if (isset($error)) : ?>
-            <div style="width: 300px;" class="alert alert-danger alert-dismissible">
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                <strong>Error!</strong> <?php echo $error ?>
-            </div>
-        <?php endif ?>
-
-        <?php if (isset($success)) : ?>
-            <div style="width: 300px;" class="alert alert-success alert-dismissible">
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                <strong>Success!</strong> <?php echo $success ?>
-            </div>
-        <?php endif ?>
     </div>
     <!-- ./wrapper -->
 

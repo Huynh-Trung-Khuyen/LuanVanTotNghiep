@@ -7,7 +7,7 @@ if (isset($_SESSION['user'])) {
     } else {
         header('location: ../index.php');
     }
-    exit(); // Đảm bảo không có mã nào thực thi sau khi đã chuyển hướng
+    exit();
 }
 
 require_once '../../config.php';
@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     'role' => $user['role']
                 ];
 
-                $_SESSION['user_id'] = $user['user_id']; // Đặt user_id vào phiên
+                $_SESSION['user_id'] = $user['user_id']; 
 
                 if ($user['role'] == 1) {
                     header('location: ../admin/index.php');
