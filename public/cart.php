@@ -12,9 +12,10 @@ $query->execute();
 $products = $query->fetchAll(PDO::FETCH_ASSOC);
 
 
-
-
-
+if (!isset($_SESSION['user_id']) || empty($_SESSION['user_id'])) {
+  header('location:../public/account/login.php');
+  exit; 
+}
 
 ?>
 
@@ -54,7 +55,35 @@ $products = $query->fetchAll(PDO::FETCH_ASSOC);
 
   <?php
   include("../partials/navbar.php");
-  include("../partials/cart_main.php");
+
+
+  $query = "
+    SELECT c.cart_id, p.product_name, p.price, p.image, c.quantity_of_products
+    FROM cart AS c
+    INNER JOIN product AS p ON c.product_id = p.product_id
+    WHERE c.user_id = :user_id
+";
+
+
+  $user_id = $_SESSION['user_id'];
+
+  $stmt = $conn->prepare($query);
+  $stmt->bindParam(':user_id', $user_id);
+  $stmt->execute();
+
+  
+  while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+    $cart_id = $row['cart_id']; 
+    $product_name = $row['product_name'];
+    $price = $row['price'];
+    $image = $row['image'];
+    $quantity_of_products = $row['quantity_of_products'];
+
+    include("../partials/cart_main.php");
+  }
+
+
+
   include("../partials/footer.php");
   ?>
 

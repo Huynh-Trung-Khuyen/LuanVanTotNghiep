@@ -1,3 +1,22 @@
+<?php
+if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])) {
+
+    $user_id = $_SESSION['user_id'];
+    
+    $query = "SELECT COUNT(*) as cart_count FROM cart WHERE user_id = :user_id";
+    $stmt = $conn->prepare($query);
+    $stmt->bindParam(':user_id', $user_id);
+    $stmt->execute();
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    $cart_count = $result['cart_count'] - 1; 
+} else {
+    $cart_count = 0; 
+}
+?>
+
+
+
 <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
     <div class="container">
         <a class="navbar-brand" href="../public/index.php">Vegefoods</a>
@@ -5,9 +24,9 @@
             <span class="oi oi-menu"></span> Menu
         </button>
         <form method="GET" action="../public/search.php">
-        <div class="searchbar">
-            <input class="search_input" type="text" name="product_name" placeholder="Tìm Kiếm" style="width: 400px;">
-        </div>
+            <div class="searchbar">
+                <input class="search_input" type="text" name="product_name" placeholder="Tìm Kiếm" style="width: 400px;">
+            </div>
         </form>
 
         <div class="collapse navbar-collapse" id="ftco-nav">
@@ -43,7 +62,12 @@
                         </div>
                     </li>
                 <?php endif ?>
-                <li class="nav-item cta cta-colored"><a href="../public/cart.php" class="nav-link"><span class="icon-shopping_cart"></span>[0]</a></li>
+                <li class="nav-item cta cta-colored">
+                    <a href="../public/cart.php" class="nav-link">
+                        <span class="icon-shopping_cart"></span>[<?php echo $cart_count; ?>]
+                    </a>
+                </li>
+
             </ul>
         </div>
     </div>

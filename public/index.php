@@ -23,14 +23,14 @@ $query = $conn->prepare('SELECT * FROM product');
 $query->execute();
 $products = $query->fetchAll(PDO::FETCH_ASSOC);
 
-if (isset($_SESSION['user_id'])) {
-  // Đã có user_id trong phiên, bạn có thể sử dụng nó ở đây
-  $user_id = $_SESSION['user_id'];
-  echo "Bạn đã đăng nhập với user_id: $user_id";
-} else {
-  // User_id chưa tồn tại trong phiên
-  echo "Bạn chưa đăng nhập hoặc phiên đã hết hạn.";
-}
+// if (isset($_SESSION['user_id'])) {
+  
+//   $user_id = $_SESSION['user_id'];
+//   echo "Bạn đã đăng nhập với user_id: $user_id";
+// } else {
+  
+//   echo "Bạn chưa đăng nhập hoặc phiên đã hết hạn.";
+// }
 ?>
 
 <!DOCTYPE html>
