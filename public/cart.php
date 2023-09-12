@@ -52,16 +52,10 @@ if (!isset($_SESSION['user_id']) || empty($_SESSION['user_id'])) {
 </head>
 
 <body class="goto-here">
-
   <?php
   include("../partials/navbar.php");
-
   include("../partials/cart_main.php");
-
-
   include("../partials/footer.php");
   ?>
-
 </body>
-
 </html>

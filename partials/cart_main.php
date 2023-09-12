@@ -66,7 +66,7 @@
 			</div>
 		</div>
 		<?php
-		include("../public/checkout.php");
+		include("../public/cart_totals.php");
 		?>
 	</div>
 </section>
