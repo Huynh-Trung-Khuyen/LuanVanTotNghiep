@@ -9,14 +9,11 @@ if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])) {
     $stmt->execute();
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
     
-    $cart_count = $result['cart_count'] - 1; 
+    $cart_count = $result['cart_count']; 
 } else {
     $cart_count = 0; 
 }
 ?>
-
-
-
 <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
     <div class="container">
         <a class="navbar-brand" href="../public/index.php">Vegefoods</a>
