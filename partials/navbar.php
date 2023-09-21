@@ -28,7 +28,7 @@ if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])) {
 
         <div class="collapse navbar-collapse" id="ftco-nav">
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item active"><a href="../public/index.php" class="nav-link">Trang Chủ</a></li>
+                <li class="nav-item active"><a href="../public/bid.php" class="nav-link">Đấu Giá</a></li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Danh Mục</a>
                     <div class="dropdown-menu" style="margin-top: 0px;" aria-labelledby="dropdown04">

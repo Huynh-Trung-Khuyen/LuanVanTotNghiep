@@ -101,6 +101,30 @@
 
                     </ul>
                 </li>
+                <li class="nav-item menu-open">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-gavel"></i>
+                        <p>
+                            Đấu Giá
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="../bid/add.php" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Thêm Phiên Đấu Giá</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="../bid/index_bid.php" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Danh Sách Đấu Giá</p>
+                            </a>
+                        </li>
+
+                    </ul>
+                </li>
             </ul>
         </nav>
         <!-- /.sidebar-menu -->
