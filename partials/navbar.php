@@ -2,16 +2,16 @@
 if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])) {
 
     $user_id = $_SESSION['user_id'];
-    
+
     $query = "SELECT COUNT(*) as cart_count FROM cart WHERE user_id = :user_id";
     $stmt = $conn->prepare($query);
     $stmt->bindParam(':user_id', $user_id);
     $stmt->execute();
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
-    
-    $cart_count = $result['cart_count']; 
+
+    $cart_count = $result['cart_count'];
 } else {
-    $cart_count = 0; 
+    $cart_count = 0;
 }
 ?>
 <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
@@ -28,7 +28,16 @@ if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])) {
 
         <div class="collapse navbar-collapse" id="ftco-nav">
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item active"><a href="../public/bid.php" class="nav-link">Đấu Giá</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Đấu Giá
+                    </a>
+                    <div class="dropdown-menu" style="margin-top: 0px;" aria-labelledby="dropdown04">
+                        <a class="dropdown-item" href="../public/bid.php">Phiên Đấu Giá</a>
+                        <a class="dropdown-item" href="../public/add_bid.php">Thêm Đấu Giá</a>
+                    </div>
+                </li>
+               
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Danh Mục</a>
                     <div class="dropdown-menu" style="margin-top: 0px;" aria-labelledby="dropdown04">
