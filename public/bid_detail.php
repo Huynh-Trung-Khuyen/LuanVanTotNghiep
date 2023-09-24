@@ -70,7 +70,7 @@ $products = $query->fetchAll(PDO::FETCH_ASSOC);
   <?php
   include("../partials/navbar.php");
   include("../partials/bid_single.php");
-
+  include("../partials/footer.php");
   ?>
 
 

@@ -74,6 +74,7 @@ if (!isset($_SESSION['user_id']) || empty($_SESSION['user_id'])) {
   <?php
   include("../partials/navbar.php");
   include("../partials/bid_main.php");
+  include("../partials/footer.php");
   ?>
 
 
