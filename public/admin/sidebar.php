@@ -111,13 +111,13 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="../bid/add.php" class="nav-link">
+                            <a href="./bid/add.php" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Thêm Phiên Đấu Giá</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="../bid/index_bid.php" class="nav-link">
+                            <a href="./bid/index_bid.php" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Danh Sách Đấu Giá</p>
                             </a>
