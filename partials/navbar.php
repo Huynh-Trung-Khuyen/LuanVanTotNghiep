@@ -36,6 +36,7 @@ if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])) {
                         <a class="dropdown-item" href="../public/bid.php">Phiên Đấu Giá</a>
                         <a class="dropdown-item" href="../public/add_bid.php">Thêm Đấu Giá</a>
                         <a class="dropdown-item" href="../public/bid_totals.php">Đơn Hàng</a>
+                        <a class="dropdown-item" href="../public/bid_manage.php">Quản Lý Phiên</a>
                     </div>
                 </li>
                

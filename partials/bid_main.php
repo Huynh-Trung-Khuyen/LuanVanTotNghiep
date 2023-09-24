@@ -24,13 +24,12 @@ foreach ($expired_bids as $expired_bid) {
     }
 }
 
-// Cập nhật trường is_active thành 0 cho các phiên đấu giá đã kết thúc
 $sql = "UPDATE product_bid SET is_active = 0 WHERE real_end_time <= :current_time";
 $stmt = $conn->prepare($sql);
 $stmt->bindParam(':current_time', $current_time);
 $stmt->execute();
 
-// Câu truy vấn SQL để lấy danh sách sản phẩm đang được đấu giá
+
 $sql = "SELECT 
             pb.product_bid_id, 
             pb.product_bid_name, 
@@ -56,11 +55,12 @@ $sql = "SELECT
             )
         ) b1 ON pb.product_bid_id = b1.product_bid_id
         LEFT JOIN user u2 ON b1.user_id = u2.user_id
-        WHERE pb.real_end_time > NOW()"; // Sử dụng real_end_time thay vì end_time
+        WHERE pb.real_end_time > NOW() AND pb.is_active = 1"; // Sử dụng real_end_time thay vì end_time và kiểm tra is_active
 
 $stmt = $conn->prepare($sql);
 $stmt->execute();
 $productList = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 ?>
 
 
