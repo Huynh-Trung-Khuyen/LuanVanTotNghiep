@@ -1,11 +1,9 @@
 <?php
 session_start();
 
-
 require_once '../../../config.php';
 
-
-$sql = "SELECT * FROM product_bid WHERE end_time > NOW()";
+$sql = "SELECT * FROM product_bid";
 $stmt = $conn->prepare($sql);
 $stmt->execute();
 $product_bids = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -19,7 +17,6 @@ $product_bids = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <?php include("./sidebar.php"); ?>
         </aside>
         <div class="content-wrapper">
-
             <div class="content-header">
                 <div class="container-fluid">
                     <div class="row mb-2">
@@ -44,6 +41,7 @@ $product_bids = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                     <th>Giá Khởi Điểm</th>
                                                     <th>Giá Hiện Tại</th>
                                                     <th>Thời Gian Kết Thúc</th>
+                                                    <th>Trạng Thái</th>
                                                     <th>Xóa</th>
                                                 </tr>
                                             </thead>
@@ -56,12 +54,20 @@ $product_bids = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                         <td><?php echo $product['current_price']; ?></td>
                                                         <td><?php echo $product['end_time']; ?></td>
                                                         <td>
+                                                            <?php
+                                                            if ($product['is_active'] == 1) {
+                                                                echo 'Đang hoạt động';
+                                                            } else {
+                                                                echo 'Đã kết thúc';
+                                                            }
+                                                            ?>
+                                                        </td>
+                                                        <td>
                                                             <form action="delete.php" method="POST">
                                                                 <input type="hidden" name="product_bid_id" value="<?php echo $product['product_bid_id']; ?>">
-                                                                <button type="submit" class="btn btn-danger" onclick="return confirm('Bạn Muốn Xóa Phiên Đấu Giá Này?')">Xoá</button>
+                                                                <button type="submit" class="btn btn-danger" onclick="return confirm('Bạn Muốn Xóa Phiên Đấu Giá Này?')">Xóa</button>
                                                             </form>
                                                         </td>
-                                                        
                                                     </tr>
                                                 <?php endforeach; ?>
                                             </tbody>
@@ -79,5 +85,4 @@ $product_bids = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </div>
     <?php include("./footer.php"); ?>
 </body>
-
 </html>
