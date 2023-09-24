@@ -1,20 +1,19 @@
 <?php
-// Đảm bảo bạn đã có phiên đăng nhập ở đây, và có user_id của người dùng đã đăng nhập
-
-// Kiểm tra nếu có sự kiện POST từ form để cập nhật trạng thái is_active
 if (isset($_POST['update_is_active'])) {
     $product_bid_id = $_POST['product_bid_id'];
     
-    // Thực hiện cập nhật trạng thái is_active từ 1 thành 0 cho sản phẩm cụ thể
+
     $sql = "UPDATE product_bid SET is_active = 0 WHERE product_bid_id = :product_bid_id AND user_id = :user_id";
     $stmt = $conn->prepare($sql);
     $stmt->bindParam(':product_bid_id', $product_bid_id);
-    $stmt->bindParam(':user_id', $user_id); // user_id của người dùng đã đăng nhập
+    $stmt->bindParam(':user_id', $user_id); 
     $stmt->execute();
 }
 
-// Câu truy vấn SQL để lấy danh sách sản phẩm của người dùng đã đăng nhập
-$sql = "SELECT * FROM product_bid WHERE user_id = :user_id";
+$sql = "SELECT pb.*, u.username AS winner_username
+        FROM product_bid pb
+        LEFT JOIN user u ON pb.winner_id = u.user_id
+        WHERE pb.user_id = :user_id";
 $stmt = $conn->prepare($sql);
 $stmt->bindParam(':user_id', $user_id); 
 $stmt->execute();
@@ -34,6 +33,11 @@ $productList = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <strong>Giá hiện tại: </strong>$<?php echo $product['current_price']; ?><br>
                         <strong>Thời gian kết thúc: </strong><?php echo $product['real_end_time']; ?><br>
 
+                        <?php if ($product['winner_username']) : ?>
+                            <strong>Người chiến thắng: </strong><?php echo $product['winner_username']; ?><br>
+                        <?php else : ?>
+                            <strong>Chưa có người chiến thắng.</strong><br>
+                        <?php endif; ?>
 
                         <form method="post">
                             <input type="hidden" name="product_bid_id" value="<?php echo $product['product_bid_id']; ?>">
