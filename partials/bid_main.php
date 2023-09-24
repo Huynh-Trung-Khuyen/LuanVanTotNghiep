@@ -15,7 +15,7 @@ foreach ($expired_bids as $expired_bid) {
     $last_bid = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if ($last_bid['last_bid_price'] > $expired_bid['current_price']) {
-        $sql = "UPDATE product_bid SET current_price = :last_bid_price, user_id = :user_id WHERE product_bid_id = :product_bid_id";
+        $sql = "UPDATE product_bid SET current_price = :last_bid_price, user_id = :user_id, winner_id = :user_id WHERE product_bid_id = :product_bid_id";
         $stmt = $conn->prepare($sql);
         $stmt->bindParam(':last_bid_price', $last_bid['last_bid_price']);
         $stmt->bindParam(':user_id', $last_bid['user_id']);
@@ -23,6 +23,12 @@ foreach ($expired_bids as $expired_bid) {
         $stmt->execute();
     }
 }
+
+// Cập nhật trường is_active thành 0 cho các phiên đấu giá đã kết thúc
+$sql = "UPDATE product_bid SET is_active = 0 WHERE real_end_time <= :current_time";
+$stmt = $conn->prepare($sql);
+$stmt->bindParam(':current_time', $current_time);
+$stmt->execute();
 
 // Câu truy vấn SQL để lấy danh sách sản phẩm đang được đấu giá
 $sql = "SELECT 
@@ -56,8 +62,6 @@ $stmt = $conn->prepare($sql);
 $stmt->execute();
 $productList = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
-
-
 
 
 <section class="ftco-section">

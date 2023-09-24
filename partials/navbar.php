@@ -35,6 +35,7 @@ if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])) {
                     <div class="dropdown-menu" style="margin-top: 0px;" aria-labelledby="dropdown04">
                         <a class="dropdown-item" href="../public/bid.php">Phiên Đấu Giá</a>
                         <a class="dropdown-item" href="../public/add_bid.php">Thêm Đấu Giá</a>
+                        <a class="dropdown-item" href="../public/bid_totals.php">Đơn Hàng</a>
                     </div>
                 </li>
                
@@ -74,7 +75,6 @@ if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])) {
                         <span class="icon-shopping_cart"></span>[<?php echo $cart_count; ?>]
                     </a>
                 </li>
-
             </ul>
         </div>
     </div>
