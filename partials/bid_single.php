@@ -1,7 +1,7 @@
 <?php
 if (isset($_GET['product_bid_id'])) {
     $product_bid_id = $_GET['product_bid_id'];
-    $sql = "SELECT pb.*, u.username AS creator_username, w.username AS last_bidder_username
+    $sql = "SELECT pb.*, u.fullname AS creator_fullname, w.fullname AS winner_fullname
             FROM product_bid pb
             LEFT JOIN user u ON pb.user_id = u.user_id
             LEFT JOIN user w ON pb.winner_id = w.user_id
@@ -19,13 +19,11 @@ if (isset($_GET['product_bid_id'])) {
         $bid_price = $_POST['bid_price'];
         $user_id = $_SESSION['user_id'];
 
-
         $sql = "UPDATE product_bid SET winner_id = :user_id WHERE product_bid_id = :product_bid_id";
         $stmt = $conn->prepare($sql);
         $stmt->bindParam(':user_id', $user_id);
         $stmt->bindParam(':product_bid_id', $product_bid_id);
         if ($stmt->execute()) {
-            echo "Đặt giá thành công.";
         } else {
             $error_message = "Đã có lỗi xảy ra khi cập nhật winner_id.";
         }
@@ -43,7 +41,6 @@ if (isset($_GET['product_bid_id'])) {
                 $stmt->bindParam(':bid_price', $bid_price);
                 $stmt->bindParam(':product_bid_id', $product_bid_id);
                 $stmt->execute();
-               
             } else {
                 $error_message = "Đã có lỗi xảy ra khi thêm lượt đặt giá mới.";
             }
@@ -62,16 +59,11 @@ if (isset($_GET['product_bid_id'])) {
 </head>
 
 <body>
-    <h1>Đấu giá sản phẩm: <?php echo $product['product_bid_name']; ?></h1>
-
-    <p><strong>Người tạo phiên đấu giá:</strong> <?php echo $product['creator_username']; ?></p>
-    <p><strong>Giá khởi điểm:</strong> $<?php echo $product['start_price']; ?></p>
-    <p><strong>Thời gian kết thúc:</strong> <?php echo $product['real_end_time']; ?></p>
     <?php
-    
     if (isset($_GET['product_bid_id'])) {
         $product_bid_id = $_GET['product_bid_id'];
-        $sql = "SELECT pb.*, u.username AS creator_username, w.username AS winner_username
+
+        $sql = "SELECT pb.*, u.fullname AS creator_fullname, w.fullname AS winner_fullname
                 FROM product_bid pb
                 LEFT JOIN user u ON pb.user_id = u.user_id
                 LEFT JOIN user w ON pb.winner_id = w.user_id
@@ -80,7 +72,7 @@ if (isset($_GET['product_bid_id'])) {
         $stmt->bindParam(':product_bid_id', $product_bid_id);
         $stmt->execute();
         $product_bid = $stmt->fetch(PDO::FETCH_ASSOC);
-    
+
         if (!$product_bid) {
             echo "Sản phẩm không tồn tại";
         }
@@ -91,11 +83,12 @@ if (isset($_GET['product_bid_id'])) {
         $stmt->bindParam(':product_bid_id', $product_bid_id);
         $stmt->execute();
         $latestBid = $stmt->fetch(PDO::FETCH_ASSOC);
-    
 
-        echo "Giá hiện tại: $" . $product_bid['current_price'] . "<br>";
-        echo "Người ra giá gần đây: " . $product_bid['winner_username'] . "<br>";
-        echo "Giá mới nhất: $" . $latestBid['last_bid_price'] . " vào thời gian " . $latestBid['last_bid_time'] . "<br>";
+        echo "Tên sản phẩm: " . $product_bid['product_bid_name'] . "<br>";
+        echo "Người tạo phiên đấu giá: " . $product_bid['creator_fullname'] . "<br>";
+        echo "Giá khởi điểm:" . number_format($product_bid['start_price'], 0, '.', ',') . ".000.000vnđ" . "<br>";
+        echo "Giá hiện tại: " . number_format($product_bid['current_price'], 0, '.', ',') . ".000.000vnđ" . "<br>";
+        echo "Người ra giá gần đây: " . $product_bid['winner_fullname'] . "<br>";
     } else {
         echo "Vui lòng cung cấp product_bid_id trong URL.";
     }
@@ -110,6 +103,6 @@ if (isset($_GET['product_bid_id'])) {
         <input type="text" name="bid_price" id="bid_price" required>
         <input type="submit" value="Đặt giá">
     </form>
-
     <p><a href="../public/bid_detail.php">Quay lại danh sách sản phẩm</a></p>
+
 </body>
