@@ -31,32 +31,32 @@ $stmt->execute();
 
 
 $sql = "SELECT 
-            pb.product_bid_id, 
-            pb.product_bid_name, 
-            pb.product_bid_description, 
-            pb.start_price, 
-            pb.current_price, 
-            pb.real_end_time,  -- Sử dụng real_end_time thay vì end_time
-            u1.username AS seller_username, 
-            b1.bid_price AS last_bid_price, 
-            u2.username AS last_bidder_username 
-        FROM product_bid pb
-        LEFT JOIN user u1 ON pb.user_id = u1.user_id
-        LEFT JOIN (
-            SELECT 
-                b.product_bid_id, 
-                b.bid_price, 
-                b.user_id 
-            FROM bid b
-            WHERE b.bid_id IN (
-                SELECT MAX(bid_id) 
-                FROM bid 
-                GROUP BY product_bid_id
-            )
-        ) b1 ON pb.product_bid_id = b1.product_bid_id
-        LEFT JOIN user u2 ON b1.user_id = u2.user_id
-        WHERE pb.real_end_time > NOW() AND pb.is_active = 1"; // Sử dụng real_end_time thay vì end_time và kiểm tra is_active
-
+    pb.product_bid_id, 
+    pb.product_bid_name, 
+    pb.product_bid_description, 
+    pb.start_price, 
+    pb.current_price, 
+    pb.real_end_time,
+    pb.product_bid_image,
+    u1.fullname AS seller_fullname,  -- Lấy fullname thay vì username
+    b1.bid_price AS last_bid_price, 
+    u2.fullname AS last_bidder_fullname  -- Lấy fullname thay vì username
+FROM product_bid pb
+LEFT JOIN user u1 ON pb.user_id = u1.user_id
+LEFT JOIN (
+    SELECT 
+        b.product_bid_id, 
+        b.bid_price, 
+        b.user_id 
+    FROM bid b
+    WHERE b.bid_id IN (
+        SELECT MAX(bid_id) 
+        FROM bid 
+        GROUP BY product_bid_id
+    )
+) b1 ON pb.product_bid_id = b1.product_bid_id
+LEFT JOIN user u2 ON b1.user_id = u2.user_id
+WHERE pb.real_end_time > NOW() AND pb.is_active = 1"; // Sử dụng real_end_time thay vì end_time và kiểm tra is_active
 $stmt = $conn->prepare($sql);
 $stmt->execute();
 $productList = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -64,26 +64,42 @@ $productList = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 
-<section class="ftco-section">
-    <h1>Danh sách sản phẩm đang được đấu giá</h1>
-    <?php if (!empty($productList)) : ?>
-        <ul>
-            <?php foreach ($productList as $product) : ?>
-                <li>
-                    <strong>Sản phẩm: </strong><?php echo $product['product_bid_name']; ?><br>
-                    <strong>Mô tả: </strong><?php echo $product['product_bid_description']; ?><br>
-                    <strong>Giá khởi điểm: </strong>$<?php echo $product['start_price']; ?><br>
-                    <strong>Giá hiện tại: </strong>$<?php echo $product['current_price']; ?><br>
-                    <strong>Thời gian kết thúc: </strong><?php echo $product['real_end_time']; ?><br>
-                    <strong>Người thêm đấu giá: </strong><?php echo $product['seller_username']; ?><br>
-                    <strong>Người ra giá cuối cùng: </strong><?php echo $product['last_bidder_username']; ?><br>
-                    <strong>Giá ra cuối cùng: </strong>$<?php echo $product['last_bid_price']; ?><br>
-                    <a href='../public/bid_detail.php?product_bid_id=<?php echo $product['product_bid_id']; ?>'>Đặt giá</a><br><br>
-                </li>
-            <?php endforeach; ?>
-        </ul>
-    <?php else : ?>
-        <p>Không có sản phẩm đang được đấu giá.</p>
-    <?php endif; ?>
+<div class="container">
+    <div class="row justify-content-center mb-3 pb-3">
+        <div class="col-md-12 heading-section text-center ftco-animate">
+            <span class="subheading">Cửa Hàng Nông Sản Sạch</span>
+            <h2 class="mb-4">Các Sản Phẩm Được Đấu Giá</h2>
+        </div>
+    </div>
+</div>
+<div class="row justify-content-center">
+    <div class="col-md-10 mb-5 text-center">
+    </div>
+</div>
 
-</section>
+<div class="container">
+    <div class="row">
+        <?php foreach ($productList as $product) : ?>
+            <div class="col-md-6 col-lg-3 ftco-animate">
+                <div class="product">
+                    <a href="../public/bid_detail.php?product_bid_id=<?php echo $product['product_bid_id']; ?>" class="img-prod">
+                        <img src="../public/uploads/<?php echo $product['product_bid_image'] ?>" class="img-fluid" alt="Ảnh">
+                    </a>
+                    <div class="text py-3 pb-4 px-3 text-center">
+                        <h3><a href="../public/bid_detail.php?product_bid_id=<?php echo $product['product_bid_id']; ?>"><?php echo $product['product_bid_name']; ?></a></h3>
+                        <h7>Người bán: <?php echo $product['seller_fullname']; ?></h7>
+                        <div class="d-flex justify-content-center align-items-center">
+                            <p class="price"><span>
+                                    Giá khởi điểm: <?php echo number_format($product['start_price'], 0, ',', '.') ?>.000vnđ
+                                    Giá hiện tại: <?php echo number_format($product['last_bid_price'], 0, ',', '.') ?>.000vnđ
+                                </span></p>
+
+                        </div>
+                        <h7>Thời Gian Kết Thúc:<br><?php echo $product['real_end_time']; ?></h7>
+                    </div>
+                </div>
+            </div>
+        <?php endforeach; ?>
+
+    </div>
+</div>

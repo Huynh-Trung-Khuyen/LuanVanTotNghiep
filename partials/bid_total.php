@@ -12,15 +12,9 @@ $stmt->execute();
 $wonProducts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Các sản phẩm đã chiến thắng</title>
-</head>
+
 <body>
-    <h1>Các sản phẩm bạn đã chiến thắng</h1>
+    <h1>Các sản phẩm đã được xác nhận thanh toán</h1>
     <?php if (!empty($wonProducts)) : ?>
         <ul>
             <?php foreach ($wonProducts as $product) : ?>
@@ -31,7 +25,7 @@ $wonProducts = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <?php endforeach; ?>
         </ul>
     <?php else : ?>
-        <p>Bạn chưa chiến thắng bất kỳ sản phẩm nào hoặc tất cả các sản phẩm bạn chiến thắng đều có is_active = 1.</p>
+        <p>Bạn chưa có bất kỳ sản phẩm.</p>
     <?php endif; ?>
 </body>
 </html>

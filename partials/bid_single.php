@@ -10,7 +10,7 @@ if (isset($_GET['product_bid_id'])) {
     $stmt->bindParam(':product_bid_id', $product_bid_id);
     $stmt->execute();
     $product = $stmt->fetch(PDO::FETCH_ASSOC);
-
+    
     if (!$product) {
         echo "Sản phẩm không tồn tại";
     }
@@ -63,11 +63,16 @@ if (isset($_GET['product_bid_id'])) {
     if (isset($_GET['product_bid_id'])) {
         $product_bid_id = $_GET['product_bid_id'];
 
-        $sql = "SELECT pb.*, CONCAT('../public/uploads/', pb.product_bid_image) AS product_image_path, u.fullname AS creator_fullname, w.fullname AS winner_fullname
-                FROM product_bid pb
-                LEFT JOIN user u ON pb.user_id = u.user_id
-                LEFT JOIN user w ON pb.winner_id = w.user_id
-                WHERE pb.product_bid_id = :product_bid_id";
+        $sql = "SELECT pb.*, 
+               CONCAT('../public/uploads/', pb.product_bid_image) AS product_image_path, 
+               u.fullname AS creator_fullname, 
+               w.fullname AS winner_fullname,
+               pb.real_end_time
+        FROM product_bid pb
+        LEFT JOIN user u ON pb.user_id = u.user_id
+        LEFT JOIN user w ON pb.winner_id = w.user_id
+        WHERE pb.product_bid_id = :product_bid_id";
+
         $stmt = $conn->prepare($sql);
         $stmt->bindParam(':product_bid_id', $product_bid_id);
         $stmt->execute();
@@ -85,9 +90,6 @@ if (isset($_GET['product_bid_id'])) {
         $latestBid = $stmt->fetch(PDO::FETCH_ASSOC);
 
         include("../partials/bid_single2.php");
-
-  
-       
     } else {
         echo "Vui lòng cung cấp product_bid_id trong URL.";
     }
