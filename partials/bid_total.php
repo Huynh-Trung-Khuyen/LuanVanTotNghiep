@@ -1,17 +1,8 @@
 <?php
-// Kiểm tra xem người dùng đã đăng nhập chưa
 
-if (!isset($_SESSION['user_id'])) {
-    header('Location: login.php'); // Chuyển hướng đến trang đăng nhập nếu chưa đăng nhập
-    exit;
-}
-
-// Kết nối CSDL (thay thế thông tin kết nối của bạn ở đây)
-
-// Lấy user_id của người dùng đang đăng nhập
 $user_id = $_SESSION['user_id'];
 
-// Truy vấn danh sách các sản phẩm mà người dùng đã chiến thắng có is_active = 0
+
 $sql = "SELECT pb.product_bid_id, pb.product_bid_name, pb.product_bid_description
         FROM product_bid pb
         WHERE pb.winner_id = :user_id AND pb.is_active = 0";

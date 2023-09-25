@@ -1,11 +1,4 @@
 <?php
-
-// Kiểm tra xem người dùng đã đăng nhập chưa
-if (!isset($_SESSION['user_id'])) {
-    header('Location: login.php'); // Chuyển hướng đến trang đăng nhập nếu chưa đăng nhập
-    exit;
-}
-
 if (isset($_GET['product_bid_id'])) {
     $product_bid_id = $_GET['product_bid_id'];
     $sql = "SELECT * FROM product_bid WHERE product_bid_id = :product_bid_id";
@@ -22,7 +15,7 @@ if (isset($_GET['product_bid_id'])) {
         $bid_price = $_POST['bid_price'];
         $user_id = $_SESSION['user_id'];
 
-        // Luôn cập nhật winner_id thành user_id của người ra giá cuối cùng
+    
         $sql = "UPDATE product_bid SET winner_id = :user_id WHERE product_bid_id = :product_bid_id";
         $stmt = $conn->prepare($sql);
         $stmt->bindParam(':user_id', $user_id);
@@ -41,7 +34,6 @@ if (isset($_GET['product_bid_id'])) {
             $stmt->bindParam(':bid_price', $bid_price);
 
             if ($stmt->execute()) {
-                // Cập nhật giá hiện tại trong bảng "product_bid"
                 $sql = "UPDATE product_bid SET current_price = :bid_price WHERE product_bid_id = :product_bid_id";
                 $stmt = $conn->prepare($sql);
                 $stmt->bindParam(':bid_price', $bid_price);
