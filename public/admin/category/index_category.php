@@ -36,13 +36,13 @@ $categories = $query->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <?php
-include("./head.php");
+include("../include/head.php");
 ?>
 
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
         <?php
-        include("./sidebar.php");
+        include("../include/sidebar.php");
         ?>
         </aside>
         <div class="content-wrapper">
@@ -77,7 +77,7 @@ include("./head.php");
     <!-- ./wrapper -->
 
     <?php
-    include("./footer.php");
+    include("../include/footer.php");
     ?>
 </body>
 

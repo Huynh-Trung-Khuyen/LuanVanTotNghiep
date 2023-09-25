@@ -23,10 +23,10 @@
         <!-- Sidebar user panel (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="image">
-                <img src="../template/admin/dist/img/admin.png" class="img-circle elevation-2" alt="User Image">
+                <img src="../../template/admin/dist/img/admin.png" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
-                <a href="#" class="d-block">
+                <a href="../main_page/index.php" class="d-block">
                     ADMIN
                 </a>
             </div>
@@ -47,13 +47,13 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="./category/add.php" class="nav-link">
+                            <a href="../category/add.php" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Thêm Danh Mục</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="./category/index_category.php" class="nav-link">
+                            <a href="../category/index_category.php" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Danh Sách Danh Mục</p>
                             </a>
@@ -70,13 +70,13 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="../admin/product/add.php" class="nav-link">
+                            <a href="../product/add.php" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Thêm Sản Phẩm</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="../admin/product/index_product.php" class="nav-link">
+                            <a href="../product/index_product.php" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Danh Sách Sản Phẩm</p>
                             </a>
@@ -93,7 +93,7 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="../admin/order/index_order.php" class="nav-link">
+                            <a href="../order/index_order.php" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Danh Sách Đơn Hàng</p>
                             </a>
@@ -111,13 +111,7 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="./bid/add.php" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Thêm Phiên Đấu Giá</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="./bid/index_bid.php" class="nav-link">
+                            <a href="../bid/index_bid.php" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Danh Sách Đấu Giá</p>
                             </a>

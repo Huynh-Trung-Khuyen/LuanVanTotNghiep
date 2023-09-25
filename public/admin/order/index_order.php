@@ -11,11 +11,11 @@ $orders = $query->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <!DOCTYPE html>
 <html lang="en">
-<?php include("./head.php"); ?>
+<?php include("../include/head.php"); ?>
 
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
-        <?php include("./sidebar.php"); ?>
+        <?php include("../include/sidebar.php"); ?>
         </aside>
         <div class="content-wrapper">
 
@@ -82,7 +82,7 @@ $orders = $query->fetchAll(PDO::FETCH_ASSOC);
             </section>
         </div>
     </div>
-    <?php include("./footer.php"); ?>
+    <?php include("../include/footer.php"); ?>
 </body>
 
 </html>

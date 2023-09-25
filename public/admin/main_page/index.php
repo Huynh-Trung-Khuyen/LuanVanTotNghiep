@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-require_once '../../config.php';
+require_once '../../../config.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $category_name = $_POST['category_name'];
@@ -41,13 +41,13 @@ $categories = $query->fetchAll(PDO::FETCH_ASSOC);
 <html lang="en">
 
 <?php
-include("../admin/head.php");
+include("../include/head.php");
 ?>
 
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
         <?php
-        include("../admin/sidebar.php");
+        include("../include/sidebar.php");
         ?>
         </aside>
         <div class="content-wrapper">
@@ -73,7 +73,7 @@ include("../admin/head.php");
     <!-- ./wrapper -->
 
     <?php
-    include("../admin/footer.php");
+    include("../include/footer.php");
     ?>
 </body>
 

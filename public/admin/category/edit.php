@@ -30,13 +30,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <html lang="en">
 
 <?php
-include("./head.php");
+include("../include/head.php");
 ?>
 
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
         <?php
-        include("./sidebar.php");
+        include("../include/sidebar.php");
         ?>
         </aside>
         <?php
@@ -92,7 +92,7 @@ include("./head.php");
     <!-- ./wrapper -->
 
     <?php
-    include("./footer.php");
+    include("../include/footer.php");
     ?>
 </body>
 
