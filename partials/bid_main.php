@@ -91,9 +91,12 @@ $productList = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <div class="d-flex justify-content-center align-items-center">
                             <p class="price"><span>
                                     Giá khởi điểm: <?php echo number_format($product['start_price'], 0, ',', '.') ?>.000vnđ
-                                    Giá hiện tại: <?php echo number_format($product['last_bid_price'], 0, ',', '.') ?>.000vnđ
+                                    <?php if ($product['last_bid_price'] > 0) : ?>
+                                        Giá hiện tại: <?php echo number_format($product['last_bid_price'], 0, ',', '.') ?>.000vnđ
+                                    <?php else : ?>
+                                        Chưa có người tham gia
+                                    <?php endif; ?>
                                 </span></p>
-
                         </div>
                         <h7>Thời Gian Kết Thúc:<br><?php echo $product['real_end_time']; ?></h7>
                     </div>
