@@ -1,10 +1,4 @@
 <?php
-// Kiểm tra xem người dùng đã đăng nhập chưa
-if (!isset($_SESSION['user_id'])) {
-    header('Location: login.php'); // Chuyển hướng đến trang đăng nhập nếu chưa đăng nhập
-    exit;
-}
-
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Lấy user_id của người dùng đã đăng nhập (đã xác thực)
     $user_id = $_SESSION['user_id'];
@@ -63,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 ?>
 
-<!-- Rest of your HTML form remains the same -->
+
 
 
 <!DOCTYPE html>
@@ -90,7 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <textarea id="product_bid_description" name="product_bid_description" required></textarea><br><br>
 
         <label for="start_price">Giá Khởi Điểm:</label>
-        <input type="number" id="start_price" name="start_price" required><br><br>
+        <input type="number" id="start_price" name="start_price" required>.000vnđ<br><br>
 
         <label for="end_time">Thời Gian Kết Thúc:</label>
         <input type="datetime-local" id="end_time" name="end_time" required><br><br>
