@@ -1,56 +1,83 @@
 <?php
 if (isset($_POST['update_is_active'])) {
     $product_bid_id = $_POST['product_bid_id'];
-    
+
 
     $sql = "UPDATE product_bid SET is_active = 0 WHERE product_bid_id = :product_bid_id AND user_id = :user_id";
     $stmt = $conn->prepare($sql);
     $stmt->bindParam(':product_bid_id', $product_bid_id);
-    $stmt->bindParam(':user_id', $user_id); 
+    $stmt->bindParam(':user_id', $user_id);
     $stmt->execute();
 }
 
-$sql = "SELECT pb.*, u.username AS winner_username
+$sql = "SELECT pb.*, u.fullname AS winner_fullname
         FROM product_bid pb
         LEFT JOIN user u ON pb.winner_id = u.user_id
         WHERE pb.user_id = :user_id";
 $stmt = $conn->prepare($sql);
-$stmt->bindParam(':user_id', $user_id); 
+$stmt->bindParam(':user_id', $user_id);
 $stmt->execute();
 $productList = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
-<section class="ftco-section">
-    <h1>Danh sách sản phẩm của bạn</h1>
-    <?php if (!empty($productList)) : ?>
-        <ul>
-            <?php foreach ($productList as $product) : ?>
-                <?php if ($product['is_active'] == 1) : ?>
-                    <li>
-                        <strong>Sản phẩm: </strong><?php echo $product['product_bid_name']; ?><br>
-                        <strong>Mô tả: </strong><?php echo $product['product_bid_description']; ?><br>
-                        <strong>Giá khởi điểm: </strong>$<?php echo $product['start_price']; ?><br>
-                        <strong>Giá hiện tại: </strong>$<?php echo $product['current_price']; ?><br>
-                        <strong>Thời gian kết thúc: </strong><?php echo $product['real_end_time']; ?><br>
+<section class="ftco-section ftco-cart">
+    <div class="container">
+        <div class="row">
+            <?php if (!empty($productList)) : ?>
+                <div class="col-md-12 ftco-animate">
+                    <div class="cart-list">
+                        <table class="table">
+                            <thead class="thead-primary">
+                                <tr class="text-center">
+                                    <th>Tên Phiên</th>
+                                    <th>Giá Khởi Điểm</th>
+                                    <th>Giá Hiện Tại</th>
+                                    <th>Người ra giá gần đây</th>
+                                    <th>Thời Gian Kết Thúc</th>
+                                    <th>Giao Hàng</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($productList as $product) : ?>
+                                    <?php if ($product['is_active'] == 1) : ?>
+                                        <tr class="text-center">
+                                            <td class="product_bid_name">
+                                                <h5><?php echo $product['product_bid_name']; ?></h5>
+                                            </td>
+                                            <td class="start_price">
+                                                <h5><?php echo number_format($product['start_price'], 0, ',', '.'); ?>.000vnđ</h5>
+                                            </td>
+                                            <td class="current_price">
+                                                <h5><?php echo number_format($product['current_price'], 0, ',', '.'); ?>.000vnđ</h5>
+                                            </td>
 
-                        <?php if ($product['winner_username']) : ?>
-                            <strong>Người chiến thắng: </strong><?php echo $product['winner_username']; ?><br>
-                        <?php else : ?>
-                            <strong>Chưa có người chiến thắng.</strong><br>
-                        <?php endif; ?>
+                                            <td class="winner_fullname">
+                                                <?php if ($product['winner_fullname']) : ?>
+                                                    <h5><?php echo $product['winner_fullname']; ?></h5>
+                                                <?php else : ?>
+                                                    <h5>Chưa có người ra giá.</h5>
+                                                <?php endif; ?>
+                                            </td>
+                                            <td class="real_end_time">
+                                                <h5><?php echo $product['real_end_time']; ?></h5>
+                                            </td>
+                                            <td class="cart_total">
+                                                <form method="post">
+                                                    <input type="hidden" name="product_bid_id" value="<?php echo $product['product_bid_id']; ?>">
+                                                    <input type="submit" name="update_is_active" value="Xác Nhận Giao Hàng">
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>
+                            </tbody>
 
-                        <form method="post">
-                            <input type="hidden" name="product_bid_id" value="<?php echo $product['product_bid_id']; ?>">
-                            <input type="submit" name="update_is_active" value="Chuyển trạng thái">
-                        </form>
-
-                        <br><br>
-                    </li>
-                <?php endif; ?>
-            <?php endforeach; ?>
-        </ul>
-    <?php else : ?>
-        <p>Bạn chưa thêm sản phẩm nào.</p>
-    <?php endif; ?>
-
+                        </table>
+                    </div>
+                </div>
+            <?php else : ?>
+                <p>Bạn chưa thêm sản phẩm nào.</p>
+            <?php endif; ?>
+        </div>
+    </div>
 </section>
