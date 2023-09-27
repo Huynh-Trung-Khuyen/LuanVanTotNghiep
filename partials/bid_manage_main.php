@@ -34,6 +34,7 @@ $productList = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     <th>Giá Hiện Tại</th>
                                     <th>Người ra giá gần đây</th>
                                     <th>Thời Gian Kết Thúc</th>
+                                    <th>Trạng Thái</th>
                                     <th>Giao Hàng</th>
                                 </tr>
                             </thead>
@@ -60,6 +61,16 @@ $productList = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                             </td>
                                             <td class="real_end_time">
                                                 <h5><?php echo $product['real_end_time']; ?></h5>
+                                            </td>
+                                            <td class="real_end_time">
+                                                <?php
+                                                $current_time = date('Y-m-d H:i:s');
+                                                if ($product['real_end_time'] > $current_time) : ?>
+                                                    <h5>Phiên chưa kết thúc</h5>
+                                                <?php else : ?>
+                                                    <h5>Phiên đã kết thúc</h5>
+                                                <?php endif; ?>
+
                                             </td>
                                             <td class="cart_total">
                                                 <form method="post">
