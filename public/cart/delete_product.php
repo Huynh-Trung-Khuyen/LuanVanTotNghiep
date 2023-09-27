@@ -5,7 +5,7 @@ if (isset($_POST['xoa_san_pham'])) {
     $cart_id_to_delete = $_POST['cart_id'];
 
     // Kết nối đến cơ sở dữ liệu và thực hiện xóa sản phẩm
-    require_once '../config.php'; // Thay thế 'config.php' bằng tệp cấu hình của bạn
+    require_once '../../config.php'; // Thay thế 'config.php' bằng tệp cấu hình của bạn
 
     $query = $conn->prepare('DELETE FROM cart WHERE cart_id = :cart_id');
     $query->bindParam(':cart_id', $cart_id_to_delete);
