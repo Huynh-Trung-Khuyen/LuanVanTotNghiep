@@ -35,11 +35,9 @@ if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])) {
                     <div class="dropdown-menu" style="margin-top: 0px;" aria-labelledby="dropdown04">
                         <a class="dropdown-item" href="../public/bid.php">Phiên Đấu Giá</a>
                         <a class="dropdown-item" href="../public/add_bid.php">Thêm Đấu Giá</a>
-                        <a class="dropdown-item" href="../public/bid_totals.php">Đơn Hàng</a>
-                        <a class="dropdown-item" href="../public/bid_manage.php">Quản Lý Phiên</a>
                     </div>
                 </li>
-               
+
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Danh Mục</a>
                     <div class="dropdown-menu" style="margin-top: 0px;" aria-labelledby="dropdown04">
@@ -57,20 +55,33 @@ if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])) {
 
                 <?php endif ?>
 
-                <?php
-                if (isset($_SESSION['user'])) : ?>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <?php
-                            echo $_SESSION['user']['name']
-                            ?>
-                        </a>
-                        <div class="dropdown-menu" style="margin-top: 0px;" aria-labelledby="dropdown04">
-                            <a class="dropdown-item" href="../public/checkout.php">Đơn Mua</a>
-                            <a class="dropdown-item" href="../public/account/logout.php">Đăng Xuất</a>
-                        </div>
-                    </li>
-                <?php endif ?>
+                <?php if (isset($_SESSION['user'])) : ?>
+                    <?php if ($_SESSION['user']['role'] == 2) : ?>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <?php echo $_SESSION['user']['name']; ?>
+                            </a>
+                            <div class="dropdown-menu" style="margin-top: 0px;" aria-labelledby="dropdown04">
+                                <a class="dropdown-item" href="../public/checkout.php">Đơn Mua</a>
+                                <a class="dropdown-item" href="../public/business_info.php">Thông Tin Doanh Nghiệp</a>
+                                <a class="dropdown-item" href="../public/bid_totals.php">Đơn Hàng Đấu Giá</a>
+                                <a class="dropdown-item" href="../public/bid_manage.php">Quản Lý Phiên</a>
+                                <a class="dropdown-item" href="../public/account/logout.php">Đăng Xuất</a>
+                            </div>
+                        </li>
+                    <?php else : ?>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <?php echo $_SESSION['user']['name']; ?>
+                            </a>
+                            <div class="dropdown-menu" style="margin-top: 0px;" aria-labelledby="dropdown04">
+                                <a class="dropdown-item" href="../public/checkout.php">Đơn Mua</a>
+                                <a class="dropdown-item" href="../public/account/logout.php">Đăng Xuất</a>
+                            </div>
+                        </li>
+                    <?php endif; ?>
+                <?php endif; ?>
+
                 <li class="nav-item cta cta-colored">
                     <a href="../public/cart.php" class="nav-link">
                         <span class="icon-shopping_cart"></span>[<?php echo $cart_count; ?>]
