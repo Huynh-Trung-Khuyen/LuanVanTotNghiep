@@ -56,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['user']['role'] = 2;
             $_SESSION['user_id'] = $user_id; // Đặt user_id vào phiên
 
-            header('location: ../index.php');
+            header('location: ../index/index.php');
         }
     }
 }

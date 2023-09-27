@@ -3,9 +3,9 @@ session_start();
 
 if (isset($_SESSION['user'])) {
     if ($_SESSION['user']['role'] == 1) {
-        header('location: ../index.php');
+        header('location: ../index/index.php');
     } else {
-        header('location: ../index.php');
+        header('location: ../index/index.php');
     }
     exit();
 }
@@ -45,9 +45,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $_SESSION['user_id'] = $user['user_id']; 
 
                 if ($user['role'] == 1) {
-                    header('location: ../index.php');
+                    header('location: ../index/index.php');
                 } else {
-                    header('location: ../index.php');
+                    header('location: ../index/index.php');
                 }
                 exit();
             } else {
