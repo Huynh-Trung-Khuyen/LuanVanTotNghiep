@@ -76,7 +76,7 @@ if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])) {
                             </a>
                             <div class="dropdown-menu" style="margin-top: 0px;" aria-labelledby="dropdown04">
                                 <a class="dropdown-item" href="../public/checkout.php">Đơn Mua</a>
-                                <a class="dropdown-item" href="../public/account/logout.php">Đăng Xuất</a>
+                                <a class="dropdown-item" href="../../public/account/logout.php">Đăng Xuất</a>
                             </div>
                         </li>
                     <?php endif; ?>

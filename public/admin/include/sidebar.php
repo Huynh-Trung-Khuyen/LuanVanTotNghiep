@@ -10,7 +10,7 @@
     <ul class="navbar-nav ml-auto">
         <!-- Navbar Search -->
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="../account/logout.php" class="nav-link">Logout</a>
+            <!-- <a href="../account/logout.php" class="nav-link">Logout</a> -->
         </li>
     </ul>
 </nav>
@@ -39,7 +39,7 @@
                with font-awesome or any other icon font library -->
                 <li class="nav-item menu-open">
                     <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                        <i class="nav-icon fas fa-list-ul"></i>
                         <p>
                             Danh Mục
                             <i class="right fas fa-angle-left"></i>
@@ -62,7 +62,7 @@
                 </li>
                 <li class="nav-item menu-open">
                     <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                        <i class="nav-icon fas fa-carrot"></i>
                         <p>
                             Sản Phẩm
                             <i class="right fas fa-angle-left"></i>
@@ -85,7 +85,7 @@
                 </li>
                 <li class="nav-item menu-open">
                     <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                        <i class="nav-icon fas fa-truck"></i>
                         <p>
                             Đơn Hàng
                             <i class="right fas fa-angle-left"></i>
@@ -114,6 +114,33 @@
                             <a href="../bid/index_bid.php" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Danh Sách Đấu Giá</p>
+                            </a>
+                        </li>
+
+                    </ul>
+                </li>
+                <li class="nav-item menu-open">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-user"></i>
+                        <p>
+                            Quản Lý Người Dùng
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="../user_business/index_user.php" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Người Dùng</p>
+                            </a>
+                        </li>
+
+                    </ul>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="../user_business/index_business.php" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Doanh Nghiệp</p>
                             </a>
                         </li>
 
