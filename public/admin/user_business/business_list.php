@@ -13,6 +13,7 @@
                                         <th>Tên Người Dùng</th>
                                         <th>Xóa Người Dùng</th>
                                         <th>Nạp Tiền</th>
+                                        <th>Thông tin</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -29,7 +30,7 @@
                                             <td><?php echo $user['username']; ?></td>
                                             <td><?php echo $user['fullname']; ?></td>
                                             <td>
-                                                <form method="post" action="user_delete.php">
+                                                <form method="post" action="business_delete.php">
                                                     <input type="hidden" name="user_id" value="<?php echo $user['user_id']; ?>">
                                                     <button type="submit" class="btn btn-danger" name="delete_user">Xóa Người Dùng</button>
                                                 </form>
@@ -38,24 +39,28 @@
                                                 <?php if ($businessInfo) : ?>
                                                     <a href="./business_money.php?user_id=<?php echo $user['user_id']; ?>" class="btn btn-primary">Nạp Tiền</a>
                                                 <?php else : ?>
-                                                    <p>Doanh Nghiệp cần cập nhật thông tin</p>
+                                                    <p>Doanh Nghiệp chưa <br> cập nhật thông tin</p>
+                                                <?php endif; ?>
+                                            </td>
+                                            <td colspan="4">
+                                                <?php if ($businessInfo) : ?>
+                                                    <?php if ($user['role'] == 2 && $businessInfo) : ?>
+
+
+                                                        <strong>Thông tin doanh nghiệp:</strong><br>
+                                                        Thành phố: <?php echo $businessInfo['city_address']; ?><br>
+                                                        Quận/Huyện: <?php echo $businessInfo['district_address']; ?><br>
+                                                        Địa chỉ: <?php echo $businessInfo['address']; ?><br>
+                                                        Số điện thoại: <?php echo $businessInfo['phone']; ?><br>
+                                                        Email: <?php echo $businessInfo['email_address']; ?><br>
+                                                        Tiền Trong Tài Khoản: <?php echo $businessInfo['money']; ?>.000vnđ<br>
+                                                    <?php endif; ?>
+                                                <?php else : ?>
+                                                    <p>Doanh Nghiệp chưa cập nhật thông tin</p>
                                                 <?php endif; ?>
                                             </td>
                                         </tr>
 
-                                        <?php if ($user['role'] == 2 && $businessInfo) : ?>
-                                            <tr>
-                                                <td colspan="4">
-                                                    <strong>Thông tin doanh nghiệp:</strong><br>
-                                                    Thành phố: <?php echo $businessInfo['city_address']; ?><br>
-                                                    Quận/Huyện: <?php echo $businessInfo['district_address']; ?><br>
-                                                    Địa chỉ: <?php echo $businessInfo['address']; ?><br>
-                                                    Số điện thoại: <?php echo $businessInfo['phone']; ?><br>
-                                                    Email: <?php echo $businessInfo['email_address']; ?><br>
-                                                    Tiền Trong Tài Khoản: <?php echo $businessInfo['money']; ?><br>
-                                                </td>
-                                            </tr>
-                                        <?php endif; ?>
                                     <?php endforeach; ?>
 
                                 </tbody>

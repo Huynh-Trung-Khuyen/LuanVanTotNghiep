@@ -101,7 +101,7 @@ include("../include/head.php");
                                     <?php endif; ?>
 
                                     <?php if (isset($businessInfo)) : ?>
-                                        <strong>Số tiền trong tài khoản:</strong> <?php echo $businessInfo['money']; ?><br>
+                                        <strong>Số tiền trong tài khoản:</strong> <?php echo $businessInfo['money']; ?>.000vnđ<br>
                                     <?php endif; ?>
                                 </div>
                             </div>
@@ -123,7 +123,7 @@ include("../include/head.php");
                                     <form method="post">
                                         <div class="form-group">
                                             <label for="amount">Số tiền cần nạp:</label>
-                                            <input type="text" class="form-control" id="amount" name="amount" placeholder="Nhập số tiền">
+                                            <input type="text" class="form-control" id="amount" name="amount" placeholder="Từ .000vnđ">
                                         </div>
                                         <button type="submit" class="btn btn-primary" name="nap_tien">Nạp Tiền</button>
                                     </form>
