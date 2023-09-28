@@ -98,27 +98,29 @@ if ($user && $user['role'] == 2) {
             exit;
         }
 
-        // Lấy user_id của người đang đăng nhập
+  
         $user_id = $_SESSION['user_id'];
 
-        // Thực hiện truy vấn SQL để lấy thông tin người dùng
+
         $sql = "SELECT 
-                b.business_id,
-                b.user_id,
-                u.fullname AS user_fullname,
-                b.city_address,
-                b.district_address,
-                b.address,
-                b.phone,
-                b.email_address
-            FROM
-                business AS b
-            JOIN
-                user AS u
-            ON
-                b.user_id = u.user_id
-            WHERE
-                u.user_id = :user_id";
+        b.business_id,
+        b.user_id,
+        u.fullname AS user_fullname,
+        b.city_address,
+        b.district_address,
+        b.address,
+        b.phone,
+        b.email_address,
+        b.money  
+    FROM
+        business AS b
+    JOIN
+        user AS u
+    ON
+        b.user_id = u.user_id
+    WHERE
+        u.user_id = :user_id";
+
 
         $stmt = $conn->prepare($sql);
         $stmt->bindParam(':user_id', $user_id);
@@ -126,14 +128,13 @@ if ($user && $user['role'] == 2) {
 
         // Lặp qua kết quả và hiển thị thông tin nếu có, ngược lại hiển thị nút để điền thông tin
         if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            echo "Business ID: " . $row['business_id'] . "<br>";
-            echo "User ID: " . $row['user_id'] . "<br>";
             echo "User Fullname: " . $row['user_fullname'] . "<br>";
             echo "City Address: " . $row['city_address'] . "<br>";
             echo "District Address: " . $row['district_address'] . "<br>";
             echo "Address: " . $row['address'] . "<br>";
             echo "Phone: " . $row['phone'] . "<br>";
-            echo "Email Address: " . $row['email_address'] . "<br><br>";
+            echo "Email Address: " . $row['email_address'] . "<br>";
+            echo "Money: " . $row['money'] .".000vnđ" . "<br><br>";
             echo "<a href='./edit_info_b.php'>Nhấn vào đây để sửa thông tin doanh nghiệp</a>";
         } else {
             echo "Bạn chưa có thông tin doanh nghiệp.<br>";
