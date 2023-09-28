@@ -7,7 +7,7 @@ $query = $conn->prepare('SELECT * FROM category');
 $query->execute();
 $categories = $query->fetchAll(PDO::FETCH_ASSOC);
 
-$products = []; 
+$products = [];
 $selectedProduct = null; // Khởi tạo biến cho sản phẩm cụ thể
 
 if (isset($_GET['id'])) {
@@ -24,15 +24,15 @@ $query->execute();
 $products = $query->fetchAll(PDO::FETCH_ASSOC);
 
 // if (isset($_SESSION['user_id'])) {
-  
+
 //   $user_id = $_SESSION['user_id'];
 //   echo "Bạn đã đăng nhập với user_id: $user_id";
 // } else {
-  
+
 //   echo "Bạn chưa đăng nhập hoặc phiên đã hết hạn.";
 // }
 if (!isset($_SESSION['user_id']) || empty($_SESSION['user_id'])) {
-  header('location:../../public/account/login.php');
+  header('location:../account/login.php');
   exit;
 }
 // Lấy thông tin người dùng từ CSDL

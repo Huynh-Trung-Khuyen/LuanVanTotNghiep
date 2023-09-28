@@ -13,7 +13,7 @@ $products = $query->fetchAll(PDO::FETCH_ASSOC);
 
 
 if (!isset($_SESSION['user_id']) || empty($_SESSION['user_id'])) {
-  header('location:../public/account/login.php');
+  header('location:../account/login.php');
   exit;
 }
 

@@ -5,7 +5,7 @@ require_once '../../config.php';
 
 // Kiểm tra xem người dùng đã đăng nhập hay chưa
 if (!isset($_SESSION['user_id']) || empty($_SESSION['user_id'])) {
-  header('location:../public/account/login.php');
+  header('location:../account/login.php');
   exit;
 }
 

@@ -32,7 +32,7 @@ $products = $query->fetchAll(PDO::FETCH_ASSOC);
 //   echo "Bạn chưa đăng nhập hoặc phiên đã hết hạn.";
 // }
 if (!isset($_SESSION['user_id']) || empty($_SESSION['user_id'])) {
-  header('location:../../public/account/login.php');
+  header('location:../account/login.php');
   exit;
 }
 // Lấy thông tin người dùng từ CSDL
