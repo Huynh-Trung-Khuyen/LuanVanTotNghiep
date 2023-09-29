@@ -1,17 +1,33 @@
 <?php
-if (isset($_GET['product_bid_id'])) {
-    $product_bid_id = $_GET['product_bid_id'];
-    $sql = "SELECT pb.*, CONCAT('../../public/uploads/', pb.product_bid_image) AS product_image_path, u.fullname AS creator_fullname, w.fullname AS winner_fullname
-            FROM product_bid pb
-            LEFT JOIN user u ON pb.user_id = u.user_id
-            LEFT JOIN user w ON pb.winner_id = w.user_id
-            WHERE pb.product_bid_id = :product_bid_id";
+function getProductBid($product_bid_id, $conn)
+{
+    $sql = "SELECT pb.*, 
+           CONCAT('../../public/uploads/', pb.product_bid_image) AS product_image_path, 
+           u.fullname AS creator_fullname, 
+           pb.real_end_time,
+           b.user_id AS recent_bidder_id,
+           u2.fullname AS recent_bidder_fullname
+    FROM product_bid pb
+    LEFT JOIN user u ON pb.user_id = u.user_id
+    LEFT JOIN bid b ON pb.product_bid_id = b.product_bid_id
+    LEFT JOIN user u2 ON b.user_id = u2.user_id
+    WHERE pb.product_bid_id = :product_bid_id
+    ORDER BY b.bid_time DESC LIMIT 1";
+
     $stmt = $conn->prepare($sql);
     $stmt->bindParam(':product_bid_id', $product_bid_id);
     $stmt->execute();
-    $product = $stmt->fetch(PDO::FETCH_ASSOC);
-    
-    if (!$product) {
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
+
+
+
+if (isset($_GET['product_bid_id'])) {
+    $product_bid_id = $_GET['product_bid_id'];
+    $product_bid = getProductBid($product_bid_id, $conn);
+
+    if (!$product_bid) {
         echo "Sản phẩm không tồn tại";
     }
 
@@ -28,7 +44,7 @@ if (isset($_GET['product_bid_id'])) {
             $error_message = "Đã có lỗi xảy ra khi cập nhật winner_id.";
         }
 
-        if ($bid_price > $product['current_price']) {
+        if ($bid_price > $product_bid['current_price']) {
             $sql = "INSERT INTO bid (product_bid_id, user_id, bid_price) VALUES (:product_bid_id, :user_id, :bid_price)";
             $stmt = $conn->prepare($sql);
             $stmt->bindParam(':product_bid_id', $product_bid_id);
@@ -59,42 +75,44 @@ if (isset($_GET['product_bid_id'])) {
 </head>
 
 <body>
-    <?php
-    if (isset($_GET['product_bid_id'])) {
-        $product_bid_id = $_GET['product_bid_id'];
+    <section class="ftco-section">
+        <div class="container">
+            <?php
+            if (isset($_GET['product_bid_id'])) {
+                $product_bid_id = $_GET['product_bid_id'];
+                $product_bid = getProductBid($product_bid_id, $conn);
 
-        $sql = "SELECT pb.*, 
-               CONCAT('../../public/uploads/', pb.product_bid_image) AS product_image_path, 
-               u.fullname AS creator_fullname, 
-               w.fullname AS winner_fullname,
-               pb.real_end_time
-        FROM product_bid pb
-        LEFT JOIN user u ON pb.user_id = u.user_id
-        LEFT JOIN user w ON pb.winner_id = w.user_id
-        WHERE pb.product_bid_id = :product_bid_id";
+                if (!$product_bid) {
+                    echo "Sản phẩm không tồn tại";
+                } else {
+            ?>
+                    <div class="row">
+                        <div class="col-lg-4 mb-5">
+                            <img src="<?php echo $product_bid['product_image_path'] ?>" class="img-fluid" alt="Colorlib Template">
+                        </div>
+                        <div class="col-lg-8 product-details pl-md-5">
+                            <h3>Tên sản phẩm: <?php echo $product_bid['product_bid_name'] ?></h3>
+                            <p class="price"><span>Người tạo phiên: <?php echo $product_bid['creator_fullname'] ?></span></p>
+                            <p class="price"><span>Thời gian kết thúc: <?php echo $product_bid['real_end_time']; ?></span></p>
+                            <p class="price"><span>Giá khởi điểm: <?php echo number_format($product_bid['start_price'], 0, '.', '.') ?>.000 vnđ</span></p>
+                            <p class="price"><span>Giá hiện tại: <?php echo number_format($product_bid['current_price'], 0, '.', '.') ?>.000 vnđ</span></p>
+                            <p class="price"><span>Người ra giá gần đây: <?php echo $product_bid['recent_bidder_fullname']?></span></p>
 
-        $stmt = $conn->prepare($sql);
-        $stmt->bindParam(':product_bid_id', $product_bid_id);
-        $stmt->execute();
-        $product_bid = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        if (!$product_bid) {
-            echo "Sản phẩm không tồn tại";
-        }
-        $sql = "SELECT MAX(b.bid_time) AS last_bid_time, MAX(b.bid_price) AS last_bid_price
-                FROM bid b
-                WHERE b.product_bid_id = :product_bid_id";
-        $stmt = $conn->prepare($sql);
-        $stmt->bindParam(':product_bid_id', $product_bid_id);
-        $stmt->execute();
-        $latestBid = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        include("../../partials/bid_partials/bid_single2.php");
-    } else {
-        echo "Vui lòng cung cấp product_bid_id trong URL.";
-    }
-    ?>
-
-
-
+                            <form method="POST">
+                                <label for="bid_price">Giá đặt mới: </label>
+                                <input type="text" name="bid_price" id="bid_price" required>
+                                <input type="submit" value="Đặt giá">
+                            </form>
+                            <p>Giá đã được mặc định từ .000vnđ</p>
+                        </div>
+                    </div>
+            <?php
+                }
+            } else {
+                echo "Vui lòng cung cấp product_bid_id trong URL.";
+            }
+            ?>
+        </div>
+    </section>
 </body>
+</html>
