@@ -1,19 +1,4 @@
-<?php
-if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])) {
 
-    $user_id = $_SESSION['user_id'];
-
-    $query = "SELECT COUNT(*) as cart_count FROM cart WHERE user_id = :user_id";
-    $stmt = $conn->prepare($query);
-    $stmt->bindParam(':user_id', $user_id);
-    $stmt->execute();
-    $result = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    $cart_count = $result['cart_count'];
-} else {
-    $cart_count = 0;
-}
-?>
 <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
     <div class="container">
         <a class="navbar-brand" href="../../public/index/index.php">Vegefoods</a>
@@ -82,11 +67,9 @@ if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])) {
                     <?php endif; ?>
                 <?php endif; ?>
 
-                <li class="nav-item cta cta-colored">
-                    <a href="../../public/cart/cart.php" class="nav-link">
-                        <span class="icon-shopping_cart"></span>[<?php echo $cart_count; ?>]
-                    </a>
-                </li>
+                <?php
+                include("../../partials/include/cart_cout.php"); ?>
+
             </ul>
         </div>
     </div>
