@@ -50,7 +50,8 @@
                                 <a class="dropdown-item" href="../../public/cart/checkout.php">Đơn Mua</a>
                                 <a class="dropdown-item" href="../../public/business/business_info.php">Thông Tin Doanh Nghiệp</a>
                                 <a class="dropdown-item" href="../../public/bid/bid_totals.php">Đơn Hàng Đấu Giá</a>
-                                <a class="dropdown-item" href="../../public/bid/bid_manage.php">Quản Lý Phiên</a>
+                                <a class="dropdown-item" href="../../public/bid/bid_manage.php">Xác Nhận Giao Hàng</a>
+                                <a class="dropdown-item" href="../../public/bid/bid_all.php">Tất cả Phiên Đấu Giá</a>
                                 <a class="dropdown-item" href="../../public/account/logout.php">Đăng Xuất</a>
                             </div>
                         </li>

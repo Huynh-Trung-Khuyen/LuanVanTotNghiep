@@ -1,8 +1,7 @@
 <?php
-$currentTimestamp = time();
-
 if (isset($_POST['update_is_active'])) {
     $product_bid_id = $_POST['product_bid_id'];
+
 
     $sql = "UPDATE product_bid SET is_active = 0 WHERE product_bid_id = :product_bid_id AND user_id = :user_id";
     $stmt = $conn->prepare($sql);
@@ -35,15 +34,11 @@ $productList = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     <th>Giá Hiện Tại</th>
                                     <th>Người ra giá gần đây</th>
                                     <th>Thời Gian Kết Thúc</th>
-                                    <th>Giao Hàng</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php foreach ($productList as $product) : ?>
-                                    <?php
-                                    $realEndTimeTimestamp = strtotime($product['real_end_time']);
-
-                                    if ($currentTimestamp > $realEndTimeTimestamp) : ?>
+                                    <?php if ($product['is_active'] == 1) : ?>
                                         <tr class="text-center">
                                             <td class="product_bid_name">
                                                 <h5><?php echo $product['product_bid_name']; ?></h5>
@@ -65,17 +60,13 @@ $productList = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                             <td class="real_end_time">
                                                 <h5><?php echo $product['real_end_time']; ?></h5>
                                             </td>
-
-                                            <td class="cart_total">
-                                                <form method="post">
-                                                    <input type="hidden" name="product_bid_id" value="<?php echo $product['product_bid_id']; ?>">
-                                                    <input type="submit" name="update_is_active" value="Xác Nhận Giao Hàng">
-                                                </form>
-                                            </td>
+                                        
+                                           
                                         </tr>
                                     <?php endif; ?>
                                 <?php endforeach; ?>
                             </tbody>
+
                         </table>
                     </div>
                 </div>
