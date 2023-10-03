@@ -3,7 +3,7 @@ if (isset($_POST['update_is_active'])) {
     $product_bid_id = $_POST['product_bid_id'];
 
 
-    $sql = "UPDATE product_bid SET is_active = 0 WHERE product_bid_id = :product_bid_id AND user_id = :user_id";
+    $sql = "UPDATE product_bid SET is_active = 2 WHERE product_bid_id = :product_bid_id AND user_id = :user_id";
     $stmt = $conn->prepare($sql);
     $stmt->bindParam(':product_bid_id', $product_bid_id);
     $stmt->bindParam(':user_id', $user_id);
@@ -14,6 +14,7 @@ $sql = "SELECT pb.*, u.fullname AS winner_fullname
         FROM product_bid pb
         LEFT JOIN user u ON pb.winner_id = u.user_id
         WHERE pb.user_id = :user_id";
+        
 $stmt = $conn->prepare($sql);
 $stmt->bindParam(':user_id', $user_id);
 $stmt->execute();
@@ -34,6 +35,7 @@ $productList = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     <th>Giá Hiện Tại</th>
                                     <th>Người ra giá gần đây</th>
                                     <th>Thời Gian Kết Thúc</th>
+                                    <th>&nbsp;</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -61,7 +63,12 @@ $productList = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                 <h5><?php echo $product['real_end_time']; ?></h5>
                                             </td>
                                         
-                                           
+                                            <td class="cart_total">
+                                                <form method="post">
+                                                    <input type="hidden" name="product_bid_id" value="<?php echo $product['product_bid_id']; ?>">
+                                                    <input type="submit" name="update_is_active" value="Xác Nhận Thông Tin Giao Hàng">
+                                                </form>
+                                            </td>
                                         </tr>
                                     <?php endif; ?>
                                 <?php endforeach; ?>

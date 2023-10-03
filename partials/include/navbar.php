@@ -1,4 +1,3 @@
-
 <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
     <div class="container">
         <a class="navbar-brand" href="../../public/index/index.php">Vegefoods</a>
@@ -20,6 +19,8 @@
                     <div class="dropdown-menu" style="margin-top: 0px;" aria-labelledby="dropdown04">
                         <a class="dropdown-item" href="../../public/bid/bid.php">Phiên Đấu Giá</a>
                         <a class="dropdown-item" href="../../public/bid/add_bid.php">Thêm Đấu Giá</a>
+                        <a class="dropdown-item" href="../../public/bid/bid_manage.php">Xác Nhận Giao Hàng</a>
+                        <a class="dropdown-item" href="../../public/bid/bid_all.php">Danh Sách Phiên Đấu Giá</a>
                     </div>
                 </li>
 
@@ -48,10 +49,8 @@
                             </a>
                             <div class="dropdown-menu" style="margin-top: 0px;" aria-labelledby="dropdown04">
                                 <a class="dropdown-item" href="../../public/cart/checkout.php">Đơn Mua</a>
+                                <a class="dropdown-item" href="../../public/bid/bid_totals.php">Đơn Mua Đấu Giá</a>
                                 <a class="dropdown-item" href="../../public/business/business_info.php">Thông Tin Doanh Nghiệp</a>
-                                <a class="dropdown-item" href="../../public/bid/bid_totals.php">Đơn Hàng Đấu Giá</a>
-                                <a class="dropdown-item" href="../../public/bid/bid_manage.php">Xác Nhận Giao Hàng</a>
-                                <a class="dropdown-item" href="../../public/bid/bid_all.php">Tất cả Phiên Đấu Giá</a>
                                 <a class="dropdown-item" href="../../public/account/logout.php">Đăng Xuất</a>
                             </div>
                         </li>

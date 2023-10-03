@@ -7,7 +7,7 @@ $sql = "SELECT
             pb.product_bid_description, 
             pb.current_price  -- Lấy giá cuối cùng
         FROM product_bid pb
-        WHERE pb.winner_id = :user_id AND pb.is_active = 0";
+        WHERE pb.winner_id = :user_id AND pb.is_active = 2";
 $stmt = $conn->prepare($sql);
 $stmt->bindParam(':user_id', $user_id);
 $stmt->execute();
