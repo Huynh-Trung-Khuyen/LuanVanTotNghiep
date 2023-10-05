@@ -11,7 +11,7 @@ $stmt->execute();
 $businessInfo = $stmt->fetch(PDO::FETCH_ASSOC);
 
 
-$sql = "SELECT * FROM user WHERE role = 2";
+$sql = "SELECT * FROM user WHERE role = 1";
 $stmt = $conn->prepare($sql);
 $stmt->execute();
 $users = $stmt->fetchAll(PDO::FETCH_ASSOC);

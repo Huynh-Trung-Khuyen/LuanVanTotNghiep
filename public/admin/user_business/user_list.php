@@ -28,7 +28,7 @@
                                                     <input type="hidden" name="user_id" value="<?php echo $user['user_id']; ?>">
                                                     <input type="hidden" name="current_role" value="<?php echo $user['role']; ?>">
                                                     <button type="submit" class="btn btn-success" name="change_role">
-                                                        <?php echo ($user['role'] == 1) ? "Tạo" : "Chuyển Role 1"; ?>
+                                                        <?php echo ($user['role'] == 2) ? "Tạo" : "Chuyển Role"; ?>
                                                     </button>
                                                 </form>
 

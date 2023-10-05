@@ -16,15 +16,13 @@ $query->bindParam(':user_id', $user_id);
 $query->execute();
 $user = $query->fetch(PDO::FETCH_ASSOC);
 
-// Kiểm tra quyền của người dùng
-if ($user && $user['role'] == 2) {
-  // Người dùng có role là 2 (doanh nghiệp), cho phép truy cập vào trang này
-} elseif ($user && $user['role'] == 1) {
-  // Người dùng có role là 1 (người dùng thông thường), hiển thị thông báo
+
+if ($user && $user['role'] == 1) {
+} elseif ($user && $user['role'] == 2) {
   echo "Chỉ có doanh nghiệp được tham gia đấu giá";
-  exit; // Dừng xử lý tiếp theo
+  exit;
 } else {
-  // Người dùng có role khác hoặc không tồn tại, có thể xử lý tùy theo yêu cầu
+
 }
 
 $query = $conn->prepare('SELECT * FROM category');

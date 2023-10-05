@@ -5,7 +5,7 @@ require_once '../../../config.php';
 
 if (isset($_POST['change_role'])) {
     $user_id = $_POST['user_id'];
-    $new_role = ($_POST['current_role'] == 1) ? 2 : 1;
+    $new_role = ($_POST['current_role'] == 2) ? 1 : 2;
 
     try {
         $sql = "UPDATE user SET role = :new_role WHERE user_id = :user_id";
@@ -23,7 +23,7 @@ if (isset($_POST['change_role'])) {
     }
 }
 
-$sql = "SELECT * FROM user WHERE role = 1";
+$sql = "SELECT * FROM user WHERE role = 2";
 $stmt = $conn->prepare($sql);
 $stmt->execute();
 $users = $stmt->fetchAll(PDO::FETCH_ASSOC);

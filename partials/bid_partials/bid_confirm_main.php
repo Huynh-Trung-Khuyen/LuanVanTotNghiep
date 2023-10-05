@@ -4,7 +4,7 @@ $currentTimestamp = time();
 if (isset($_POST['update_is_active'])) {
     $product_bid_id = $_POST['product_bid_id'];
 
-    $sql = "UPDATE product_bid SET is_active = 0 WHERE product_bid_id = :product_bid_id AND user_id = :user_id";
+    $sql = "UPDATE product_bid SET is_active = 2 WHERE product_bid_id = :product_bid_id AND user_id = :user_id";
     $stmt = $conn->prepare($sql);
     $stmt->bindParam(':product_bid_id', $product_bid_id);
     $stmt->bindParam(':user_id', $user_id);
@@ -17,7 +17,7 @@ $sql = "SELECT pb.*, u.fullname AS winner_fullname, u.user_id AS winner_user_id,
         LEFT JOIN business b ON u.user_id = b.user_id
         WHERE pb.user_id = :user_id
         AND pb.real_end_time < NOW()
-        AND pb.is_active = 2";
+        AND pb.is_active = 1";
 $stmt = $conn->prepare($sql);
 $stmt->bindParam(':user_id', $user_id);
 $stmt->execute();
@@ -70,10 +70,10 @@ $productList = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                 <li><strong>Email:</strong> <?php echo $product['email_address']; ?></li>
                                             </ul>
                                         </td>
-                                        <td>
-                                            <form action="delete_bid.php" method="POST">
+                                        <td class="cart_total">
+                                            <form method="post">
                                                 <input type="hidden" name="product_bid_id" value="<?php echo $product['product_bid_id']; ?>">
-                                                <button type="submit" class="btn " onclick="return confirm('Bạn Muốn Xóa Phiên Đấu Giá Này?')">Giao Hàng Thành Công</button>
+                                                <input type="submit" name="update_is_active" value="Xác Nhận Thông Tin Giao Hàng">
                                             </form>
                                         </td>
                                     </tr>

@@ -12,17 +12,25 @@
 
         <div class="collapse navbar-collapse" id="ftco-nav">
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Đấu Giá
-                    </a>
-                    <div class="dropdown-menu" style="margin-top: 0px;" aria-labelledby="dropdown04">
-                        <a class="dropdown-item" href="../../public/bid/bid.php">Phiên Đấu Giá</a>
-                        <a class="dropdown-item" href="../../public/bid/add_bid.php">Thêm Đấu Giá</a>
-                        <a class="dropdown-item" href="../../public/bid/bid_manage.php">Xác Nhận Giao Hàng</a>
-                        <a class="dropdown-item" href="../../public/bid/bid_all.php">Danh Sách Phiên Đấu Giá</a>
-                    </div>
-                </li>
+                <?php if (isset($_SESSION['user'])) : ?>
+                    <?php if ($_SESSION['user']['role'] == 1) : ?>
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Đấu Giá
+                            </a>
+                            <div class="dropdown-menu" style="margin-top: 0px;" aria-labelledby="dropdown04">
+                                <a class="dropdown-item" href="../../public/bid/bid.php">Phiên Đấu Giá</a>
+                                <a class="dropdown-item" href="../../public/bid/add_bid.php">Thêm Đấu Giá</a>
+                                <a class="dropdown-item" href="../../public/bid/bid_manage.php">Quản Lý Giao Hàng</a>
+                                <a class="dropdown-item" href="../../public/bid/bid_confirm.php">Xác Nhận Giao Hàng</a>
+                                <a class="dropdown-item" href="../../public/bid/bid_all.php">Danh Sách Phiên Đấu Giá</a>
+                            </div>
+                        </li>
+
+                    <?php endif; ?>
+                <?php endif; ?>
+
 
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Danh Mục</a>
@@ -42,7 +50,7 @@
                 <?php endif ?>
 
                 <?php if (isset($_SESSION['user'])) : ?>
-                    <?php if ($_SESSION['user']['role'] == 2) : ?>
+                    <?php if ($_SESSION['user']['role'] == 1) : ?>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <?php echo $_SESSION['user']['name']; ?>
@@ -60,7 +68,7 @@
                                 <?php echo $_SESSION['user']['name']; ?>
                             </a>
                             <div class="dropdown-menu" style="margin-top: 0px;" aria-labelledby="dropdown04">
-                                <a class="dropdown-item" href="../public/checkout.php">Đơn Mua</a>
+                                <a class="dropdown-item" href="../../public/cart/checkout.php">Đơn Mua</a>
                                 <a class="dropdown-item" href="../../public/account/logout.php">Đăng Xuất</a>
                             </div>
                         </li>
