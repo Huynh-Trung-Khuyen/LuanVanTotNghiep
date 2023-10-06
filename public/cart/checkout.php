@@ -33,7 +33,7 @@ if (!isset($_SESSION['user_id']) || empty($_SESSION['user_id'])) {
 
 
     <section class="ftco-section ftco-cart">
-        <div class="container">
+        <div class="">
             <div class="row">
                 <div class="col-md-12 ftco-animate">
                     <div class="cart-list">
@@ -47,6 +47,7 @@ if (!isset($_SESSION['user_id']) || empty($_SESSION['user_id'])) {
                                     <th>Số Điện Thoại</th>
                                     <th>Email</th>
                                     <th>Tổng Số Tiền</th>
+                                    <th>Sản Phẩm</th>
                                     <th>Trạng Thái</th>
                                 </tr>
                             </thead>

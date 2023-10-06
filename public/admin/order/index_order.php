@@ -1,14 +1,14 @@
 <?php
 session_start();
 
-
 require_once '../../../config.php';
 
-
+// Truy vấn để lấy thông tin từ bảng order
 $query = $conn->prepare('SELECT * FROM `order`');
 $query->execute();
 $orders = $query->fetchAll(PDO::FETCH_ASSOC);
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <?php include("../include/head.php"); ?>
@@ -40,6 +40,7 @@ $orders = $query->fetchAll(PDO::FETCH_ASSOC);
                                                 <tr>
                                                     <th>Mã Đơn Hàng</th>
                                                     <th>Tên Người Nhận</th>
+                                                    <th>Sản Phẩm và Số Lượng</th>
                                                     <th>Địa Chỉ</th>
                                                     <th>Thành Phố</th>
                                                     <th>Huyện</th>
@@ -54,17 +55,38 @@ $orders = $query->fetchAll(PDO::FETCH_ASSOC);
                                                     <tr>
                                                         <td><?php echo $order['order_id']; ?></td>
                                                         <td><?php echo $order['order_name']; ?></td>
+                                                        <td>
+                                                            <?php
+                                                            $query = "SELECT p.product_name, op.quantity_of_products
+                                                                      FROM ordered_products AS op
+                                                                      INNER JOIN product AS p ON op.product_id = p.product_id
+                                                                      WHERE op.order_id = :order_id";
+                                                            $stmt = $conn->prepare($query);
+                                                            $stmt->bindParam(':order_id', $order['order_id']);
+                                                            $stmt->execute();
+                                                            $products_info = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                                                            $product_info_strings = [];
+                                                            foreach ($products_info as $product_info) {
+                                                                $product_name = $product_info['product_name'];
+                                                                $quantity = $product_info['quantity_of_products'];
+                                                                $product_info_strings[] = "$quantity kg $product_name";
+                                                            }
+                                                            echo implode(', ', $product_info_strings);
+                                                            ?>
+                                                        </td>
                                                         <td><?php echo $order['address']; ?></td>
                                                         <td><?php echo $order['city_address']; ?></td>
                                                         <td><?php echo $order['district_address']; ?></td>
                                                         <td><?php echo $order['phone']; ?></td>
-                                                        <td><?php echo $order['district_address']; ?></td>
+                                                        <td><?php echo $order['email_address']; ?></td>
                                                         <td><?php echo $order['cart_total']; ?>.000 vnđ</td>
+
                                                         <td>
                                                             <form action="delete.php" method="POST">
                                                                 <input type="hidden" name="order_id" value="<?php echo $order['order_id']; ?>">
                                                                 <button type="submit" class="btn btn-success" onclick="return confirm('Giao Hàng Thành Công?')">Thành Công</button>
-                                                                <button type="submit" class="btn btn-danger" onclick="return confirm('Giao Hàng Không Thành Công?')">Thất Bại</button>
+
                                                             </form>
                                                         </td>
                                                     </tr>

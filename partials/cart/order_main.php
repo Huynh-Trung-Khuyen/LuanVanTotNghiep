@@ -1,6 +1,6 @@
 <?php
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $order_name = $_POST['order_name'];
     $address = $_POST['address'];
     $city_address = $_POST['city_address'];
@@ -8,27 +8,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $phone = $_POST['phone'];
     $email_address = $_POST['email_address'];
 
-
     if (isset($_SESSION['user_id'])) {
         $user_id = $_SESSION['user_id'];
 
-
+        // Truy vấn giỏ hàng của người dùng để lấy danh sách các sản phẩm và số lượng
         $query = "
-            SELECT SUM(p.price * c.quantity_of_products) as cart_total
+            SELECT c.product_id, c.quantity_of_products
             FROM cart AS c
-            INNER JOIN product AS p ON c.product_id = p.product_id
             WHERE c.user_id = :user_id
         ";
         $stmt = $conn->prepare($query);
         $stmt->bindParam(':user_id', $user_id);
         $stmt->execute();
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        $cart_total = $result['cart_total'];
+        $cart_contents = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+        // Bắt đầu một giao dịch để đảm bảo tính nhất quán trong cơ sở dữ liệu
+        $conn->beginTransaction();
 
+        // Tạo hóa đơn và tính tổng tiền
+        $cart_total = 0; // Thêm biến này
         $query = "INSERT INTO `order` (order_name, address, city_address, district_address, phone, email_address, cart_total, user_id) 
-                  VALUES (:order_name, :address, :city_address, :district_address, :phone, :email_address, :cart_total, :user_id)";
-
+                  VALUES (:order_name, :address, :city_address, :district_address, :phone, :email_address, 0, :user_id)";
         $stmt = $conn->prepare($query);
         $stmt->bindParam(':order_name', $order_name);
         $stmt->bindParam(':address', $address);
@@ -36,27 +36,64 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->bindParam(':district_address', $district_address);
         $stmt->bindParam(':phone', $phone);
         $stmt->bindParam(':email_address', $email_address);
-        $stmt->bindParam(':cart_total', $cart_total, PDO::PARAM_INT);
         $stmt->bindParam(':user_id', $user_id);
-
+        
         if ($stmt->execute()) {
+            $order_id = $conn->lastInsertId(); // Lấy order_id sau khi đã tạo hóa đơn
 
+            // Tính tổng tiền từ giỏ hàng và cập nhật hóa đơn
+            foreach ($cart_contents as $item) {
+                $product_id = $item['product_id'];
+                $quantity_of_products = $item['quantity_of_products'];
+
+                // Truy vấn giá sản phẩm
+                $product_query = "SELECT price FROM product WHERE product_id = :product_id";
+                $product_stmt = $conn->prepare($product_query);
+                $product_stmt->bindParam(':product_id', $product_id);
+                $product_stmt->execute();
+                $product_result = $product_stmt->fetch(PDO::FETCH_ASSOC);
+                $product_price = $product_result['price'];
+
+                // Tính tổng tiền cho từng sản phẩm
+                $item_total = $product_price * $quantity_of_products;
+                $cart_total += $item_total; // Cập nhật tổng tiền ở đây
+
+                // Thêm sản phẩm và số lượng vào bảng ordered_products
+                $insertOrderedProductsQuery = "INSERT INTO ordered_products (order_id, product_id, quantity_of_products) VALUES (:order_id, :product_id, :quantity_of_products)";
+                $insertOrderedProductsStmt = $conn->prepare($insertOrderedProductsQuery);
+                $insertOrderedProductsStmt->bindParam(':order_id', $order_id);
+                $insertOrderedProductsStmt->bindParam(':product_id', $product_id);
+                $insertOrderedProductsStmt->bindParam(':quantity_of_products', $quantity_of_products);
+                $insertOrderedProductsStmt->execute();
+            }
+
+            // Cập nhật tổng tiền trong hóa đơn
+            $updateOrderQuery = "UPDATE `order` SET cart_total = :cart_total WHERE order_id = :order_id";
+            $updateOrderStmt = $conn->prepare($updateOrderQuery);
+            $updateOrderStmt->bindParam(':cart_total', $cart_total, PDO::PARAM_INT);
+            $updateOrderStmt->bindParam(':order_id', $order_id);
+            $updateOrderStmt->execute();
+
+            // Xóa giỏ hàng sau khi đã tạo hóa đơn
             $deleteQuery = "DELETE FROM cart WHERE user_id = :user_id";
             $deleteStmt = $conn->prepare($deleteQuery);
             $deleteStmt->bindParam(':user_id', $user_id);
             $deleteStmt->execute();
 
+            // Commit giao dịch
+            $conn->commit();
+
             echo "Đặt Hàng thành công!";
         } else {
+            // Rollback giao dịch nếu có lỗi
+            $conn->rollback();
             echo "Lỗi khi thêm hóa đơn: " . $stmt->errorInfo()[2];
         }
     } else {
         echo "Người dùng chưa đăng nhập.";
     }
 }
-
 ?>
-
 
 
 <?php
@@ -77,7 +114,6 @@ if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])) {
     $cart_total = 0;
 }
 ?>
-
 
 <section class="ftco-section">
     <div class="container">
@@ -128,7 +164,6 @@ if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])) {
                         </div>
                         <div class="w-100"></div>
                     </div>
-
                 </div>
                 <div class="col-xl-5">
                     <div class="row mt-5 pt-3">
@@ -137,12 +172,12 @@ if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])) {
                             <hr>
                             <p class="d-flex total-price">
                                 <span>Tổng Số Tiền</span>
-                            <p class="total">
-                                <?php echo number_format($cart_total, 0, ',', '.'); ?>.000 vnđ
-                            </p>
-                            <div class="cart-detail p-3 p-md-4">
-                                <p><button type="submit" class="btn btn-primary py-3 px-4">Đặt Hàng</button></p>
-                            </div>
+                                <p class="total">
+                                    <?php echo number_format($cart_total, 0, ',', '.'); ?>.000 vnđ
+                                </p>
+                                <div class="cart-detail p-3 p-md-4">
+                                    <p><button type="submit" class="btn btn-primary py-3 px-4">Đặt Hàng</button></p>
+                                </div>
                             </p>
                         </div>
                         <div class="col-md-12">
