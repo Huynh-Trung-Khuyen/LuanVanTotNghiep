@@ -119,7 +119,7 @@ if (isset($_GET['product_bid_id'])) {
 
                 // Gọi hàm cập nhật thông tin khi trang được tải và sau mỗi khoảng thời gian nhất định (ví dụ: 5 giây)
                 updateProductDetails();
-                setInterval(updateProductDetails, 5000); // Cập nhật mỗi 5 giây
+                setInterval(updateProductDetails, 1000); // Cập nhật mỗi 1 giây
             });
         </script>
         </html>
