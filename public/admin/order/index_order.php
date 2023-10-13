@@ -87,13 +87,13 @@ $orders = $query->fetchAll(PDO::FETCH_ASSOC);
                                                         <td>
                                                             <form action="change_role1.php" method="POST">
                                                                 <input type="hidden" name="order_id" value="<?php echo $order['order_id']; ?>">
-                                                                <button type="submit" class="btn btn-success" onclick="return confirm('Thay đổi role thành 2?')">Thành Công</button>
+                                                                <button type="submit" class="btn btn-success" onclick="return confirm('Xác nhận giao hàng thành công')">Thành Công</button>
                                                             </form>
                                                         </td>
                                                         <td>
                                                             <form action="change_role2.php" method="POST">
                                                                 <input type="hidden" name="order_id" value="<?php echo $order['order_id']; ?>">
-                                                                <button type="submit" class="btn btn-warning" onclick="return confirm('Thay đổi role thành 2?')">Hủy</button>
+                                                                <button type="submit" class="btn btn-warning" onclick="return confirm('Xác nhận hủy đơn hàng?')">Hủy</button>
                                                             </form>
                                                         </td>
                                                         
