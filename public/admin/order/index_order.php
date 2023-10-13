@@ -113,7 +113,7 @@ $orders = $query->fetchAll(PDO::FETCH_ASSOC);
                             </div>
                         </div>
                     <?php else : ?>
-                        <p>Không có đơn hàng nào có role là 1.</p>
+                        <p>Không có đơn hàng nào</p>
                     <?php endif; ?>
                 </div>
             </section>
