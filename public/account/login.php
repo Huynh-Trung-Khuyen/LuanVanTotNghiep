@@ -44,8 +44,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 $_SESSION['user_id'] = $user['user_id']; 
 
-                if ($user['role'] == 1) {
-                    header('location: ../index/index.php');
+                if ($user['role'] == 0) {
+                    header('location: ../admin/main_page/index.php');
                 } else {
                     header('location: ../index/index.php');
                 }

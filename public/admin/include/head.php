@@ -24,3 +24,20 @@
     <!-- summernote -->
     <link rel="stylesheet" href="../../template/admin/plugins/summernote/summernote-bs4.min.css">
 </head>
+<?php
+
+if (!isset($_SESSION['user'])) {
+    header('location: ../../index/index.php');
+    exit();
+}
+if (isset($_SESSION['user'])) {
+
+    if ($_SESSION['user']['role'] == 0) {
+    } else {
+        header('location: ../../index/index.php');
+        exit();
+    }
+} else {
+}
+
+?>

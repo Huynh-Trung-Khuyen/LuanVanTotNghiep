@@ -10,7 +10,7 @@
     <ul class="navbar-nav ml-auto">
         <!-- Navbar Search -->
         <li class="nav-item d-none d-sm-inline-block">
-            <!-- <a href="../account/logout.php" class="nav-link">Logout</a> -->
+            <a href="../../account/logout.php" class="nav-link">Logout</a>
         </li>
     </ul>
 </nav>
