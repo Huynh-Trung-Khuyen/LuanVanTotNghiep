@@ -39,7 +39,7 @@
 		</td>
 
 		<td class="">
-			<h5>Đang Giao Hàng</h5>
+			<h5>Đã Hủy Đơn Hàng</h5>
 		</td>
 	</tr>
 </tbody>

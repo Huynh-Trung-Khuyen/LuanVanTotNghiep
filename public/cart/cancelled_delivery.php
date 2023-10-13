@@ -35,7 +35,7 @@ include("../../partials/include/head.php");
         <div class="container">
             <ul class="nav justify-content-center">
                 <li class="nav-item">
-                    <h1><a class="nav-link disabled" href="../../public/cart/checkout.php">Đang Giao Hàng</a></h1>
+                    <h1><a class="nav-link active" href="../../public/cart/checkout.php">Đang Giao Hàng</a></h1>
                 </li>
                 <li class="nav-item">
                     <h1>&emsp;</h1>
@@ -44,10 +44,13 @@ include("../../partials/include/head.php");
                     <h1><a class="nav-link" href="../../public/cart/delivered.php">Đã Giao Hàng</a></h1>
                 </li>
                 <li class="nav-item">
+                    <h1>
+                <li class="nav-item">
                     <h1>&emsp;</h1>
                 </li>
+                </li>
                 <li class="nav-item">
-                    <h1><a class="nav-link" href="../../public/cart/cancelled_delivery.php">Đã Hủy</a></h1>
+                    <h1><a class="nav-link disabled" href="../../public/cart/cancelled_delivery.php">Đã Hủy</a></h1>
                 </li>
 
             </ul>
@@ -74,10 +77,8 @@ include("../../partials/include/head.php");
                                 echo "Bạn chưa đăng nhập.";
                             } else {
                                 $user_id = $_SESSION['user_id'];
-
-                                // Truy vấn CSDL để lấy danh sách đơn hàng của người đăng nhập có role = 1
                                 $query = "SELECT * FROM `order` AS o
-                                WHERE o.role = 1 AND o.user_id = :user_id";
+                                WHERE o.role = 3 AND o.user_id = :user_id";
                                 $stmt = $conn->prepare($query);
                                 $stmt->bindParam(':user_id', $user_id);
                                 $stmt->execute();
@@ -86,11 +87,11 @@ include("../../partials/include/head.php");
                                 if (count($orders) > 0) {
 
                                     foreach ($orders as $order) {
-                                        include("../../partials/cart/checkout_main.php");
+                                        include("../../partials/cart/cancelled_delivery_main.php");
                                     }
                                     echo "</ul>";
                                 } else {
-                                    echo "Bạn chưa có đơn hàng nào";
+                                    echo "Bạn có đơn hàng nào bị hủy";
                                 }
                             } ?>
 
@@ -106,5 +107,4 @@ include("../../partials/include/head.php");
     include("../../partials/include/footer.php");
     ?>
 </body>
-
 </html>
