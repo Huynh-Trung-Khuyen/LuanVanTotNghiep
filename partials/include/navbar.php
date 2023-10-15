@@ -13,7 +13,7 @@
         <div class="collapse navbar-collapse" id="ftco-nav">
             <ul class="navbar-nav ml-auto">
                 <?php if (isset($_SESSION['user'])) : ?>
-                    <?php if ($_SESSION['user']['role'] == 1) : ?>
+                    <?php if ($_SESSION['user']['role'] == 1 || $_SESSION['user']['role'] == 0) : ?>
 
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -50,7 +50,7 @@
                 <?php endif ?>
 
                 <?php if (isset($_SESSION['user'])) : ?>
-                    <?php if ($_SESSION['user']['role'] == 1) : ?>
+                    <?php if ($_SESSION['user']['role'] == 1 || $_SESSION['user']['role'] == 0) : ?>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <?php echo $_SESSION['user']['name']; ?>
