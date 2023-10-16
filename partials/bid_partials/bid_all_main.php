@@ -38,6 +38,7 @@ $productList = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     <th>Giá Hiện Tại</th>
                                     <th>Người ra giá gần đây</th>
                                     <th>Thời Gian Kết Thúc</th>
+                                    <th>Xóa Phiên</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -64,8 +65,14 @@ $productList = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                             <td class="real_end_time">
                                                 <h5><?php echo $product['real_end_time']; ?></h5>
                                             </td>
-                                        
-                                           
+                                            <td>
+                                                <form action="delete_bid.php" method="POST">
+                                                    <input type="hidden" name="product_bid_id" value="<?php echo $product['product_bid_id']; ?>">
+                                                    <button type="submit" class="btn " onclick="return confirm('Bạn Muốn Xóa Phiên Đấu Giá Này?')">Xóa Phiên</button>
+                                                </form>
+                                            </td>
+
+
                                         </tr>
                                     <?php endif; ?>
                                 <?php endforeach; ?>
