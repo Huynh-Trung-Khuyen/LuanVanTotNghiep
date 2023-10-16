@@ -32,7 +32,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt->bindParam(':user_id', $user_id);
 
         if ($stmt->execute()) {
-            echo "Thông tin doanh nghiệp đã được cập nhật thành công!";
+            header('Location: ./index_business.php');
+            exit();
         } else {
             echo "Lỗi khi cập nhật thông tin doanh nghiệp.";
         }
@@ -48,12 +49,7 @@ $businessQuery->bindParam(':user_id', $user_id);
 $businessQuery->execute();
 $businessInfo = $businessQuery->fetch(PDO::FETCH_ASSOC);
 
-if ($stmt->execute()) {
-    header('Location: ./index_business.php');
-    exit();
-} else {
-    echo "Lỗi khi cập nhật thông tin doanh nghiệp.";
-}
+
 
 ?>
 
@@ -94,7 +90,7 @@ include("../include/head.php");
                 <label for="email_address">Email:</label>
                 <input type="email" name="email_address" value="<?php echo $businessInfo['email_address']; ?>" required><br>
 
-                <label for="tax_code">Mã số thuế (13 chữ số):</label>
+                <label for="tax_code">Mã số thuế:</label>
                 <input type="text" name="tax_code" value="<?php echo $businessInfo['tax_code']; ?>" maxlength="13" required><br>
 
                 <input type="submit" value="Cập Nhật Thông Tin">

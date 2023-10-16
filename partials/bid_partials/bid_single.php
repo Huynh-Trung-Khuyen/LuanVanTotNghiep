@@ -85,7 +85,7 @@ if (isset($_GET['product_bid_id'])) {
                 <div class="col-lg-8 product-details pl-md-5">
                     <h3>Tên sản phẩm: <?php echo $product_bid['product_bid_name'] ?></h3>
                     <p class="price"><span>Người tạo phiên: <?php echo $product_bid['creator_fullname'] ?></span></p>
-                    <p class="price"><span>Thời gian kết thúc: <?php echo $product_bid['real_end_time']; ?></span></p>
+                    <p class="price"><span>Thời gian kết thúc: <span id="countdown"></span></p>
                     <p class="price"><span>Giá khởi điểm: <?php echo number_format($product_bid['start_price'], 0, '.', '.') ?>.000 vnđ</span></p>
                     <p class="price"><span>Giá hiện tại: <span id="current_price"><?php echo number_format($product_bid['current_price'], 0, '.', '.') ?>.000 vnđ</span></p>
                     <p class="price"><span>Người ra giá gần đây: <span id="recent_bidder_fullname"><?php echo $product_bid['recent_bidder_fullname'] ?></span></p>
@@ -142,4 +142,31 @@ if (isset($_GET['product_bid_id'])) {
     redirectOnTimeout(endTime);
 </script>
 
+
+<script>
+    function startCountdown() {
+        const endTime = new Date("<?php echo $product_bid['real_end_time']; ?>").getTime();
+
+        function updateCountdown() {
+            const currentTime = new Date().getTime();
+            const remainingTime = endTime - currentTime;
+
+            if (remainingTime <= 0) {
+                document.getElementById("countdown").innerHTML = "Đã kết thúc";
+            } else {
+                const days = Math.floor(remainingTime / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((remainingTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
+
+                document.getElementById("countdown").innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s";
+            }
+        }
+
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+    }
+
+    startCountdown();
+</script>
 </html>
