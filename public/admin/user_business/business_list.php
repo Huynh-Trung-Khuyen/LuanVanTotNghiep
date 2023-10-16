@@ -39,18 +39,12 @@
                                             <td>
                                                 <?php if ($businessInfo) : ?>
                                                     <strong>Doanh Nghiệp đã thêm thông tin</strong><br>
+                                                    <a href="./edit_business.php?user_id=<?php echo $user['user_id']; ?>" class="btn btn-primary">Sửa Thông Tin Doanh Nghiệp</a>
                                                 <?php else : ?>
                                                     <a href="./add_business.php?user_id=<?php echo $user['user_id']; ?>" class="btn btn-success">Thêm thông tin</a>
                                                 <?php endif; ?>
                                             </td>
 
-                                            <!-- <td>
-                                                <?php if ($businessInfo) : ?>
-                                                    <a href="./business_money.php?user_id=<?php echo $user['user_id']; ?>" class="btn btn-primary">Nạp Tiền</a>
-                                                <?php else : ?>
-                                                    <p>Doanh Nghiệp chưa <br> cập nhật thông tin</p>
-                                                <?php endif; ?>
-                                            </td> -->
 
                                             <td colspan="4">
                                                 <?php if ($businessInfo) : ?>
@@ -61,7 +55,7 @@
                                                         Địa chỉ: <?php echo $businessInfo['address']; ?><br>
                                                         Số điện thoại: <?php echo $businessInfo['phone']; ?><br>
                                                         Email: <?php echo $businessInfo['email_address']; ?><br>
-                                                        
+                                                        Mã Số Thuế: <?php echo $businessInfo['tax_code']; ?><br>
                                                     <?php endif; ?>
                                                 <?php else : ?>
                                                     <p>Doanh Nghiệp chưa cập nhật thông tin</p>

@@ -83,7 +83,7 @@ if ($user && $user['role'] == 1) {
         b.address,
         b.phone,
         b.email_address,
-        b.money  
+        b.tax_code  
     FROM
         business AS b
     JOIN
@@ -98,7 +98,7 @@ if ($user && $user['role'] == 1) {
         $stmt->bindParam(':user_id', $user_id);
         $stmt->execute();
 
-        // Lặp qua kết quả và hiển thị thông tin nếu có, ngược lại hiển thị nút để điền thông tin
+
         if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             echo "User Fullname: " . $row['user_fullname'] . "<br>";
             echo "City Address: " . $row['city_address'] . "<br>";
@@ -106,7 +106,7 @@ if ($user && $user['role'] == 1) {
             echo "Address: " . $row['address'] . "<br>";
             echo "Phone: " . $row['phone'] . "<br>";
             echo "Email Address: " . $row['email_address'] . "<br>";
-            echo "Money: " . $row['money'] .".000vnđ" . "<br><br>";
+            echo "Mã Số Thuế " . $row['tax_code'] . "<br>";
             echo "<a href='./edit_info_b.php'>Nhấn vào đây để sửa thông tin doanh nghiệp</a>";
         } else {
             echo "Bạn chưa có thông tin doanh nghiệp.<br>";

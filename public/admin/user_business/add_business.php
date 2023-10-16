@@ -66,6 +66,8 @@ include("../include/head.php");
 
                 <label for="email_address">Email:</label>
                 <input type="text" name="email_address" id="email_address" required><br>
+                <label for="email_address">Mã Số Thuế</label>
+                <input type="text" name="tax_code" id="tax_code" maxlength="13" required><br>
                 <input type="submit" value="Lưu thông tin">
             </form>
         </div>

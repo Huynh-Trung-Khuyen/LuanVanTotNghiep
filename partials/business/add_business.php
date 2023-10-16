@@ -12,11 +12,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $address = $_POST['address'];
     $phone = $_POST['phone'];
     $email_address = $_POST['email_address'];
+    $tax_code = $_POST['tax_code'];
 
     try {
 
-        $sql = "INSERT INTO business (user_id, city_address, district_address, address, phone, email_address)
-                    VALUES (:user_id, :city_address, :district_address, :address, :phone, :email_address)";
+        $sql = "INSERT INTO business (user_id, city_address, district_address, address, phone, email_address, tax_code)
+                    VALUES (:user_id, :city_address, :district_address, :address, :phone, :email_address, :tax_code)";
 
         $stmt = $conn->prepare($sql);
         $stmt->bindParam(':user_id', $user_id);
@@ -25,6 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt->bindParam(':address', $address);
         $stmt->bindParam(':phone', $phone);
         $stmt->bindParam(':email_address', $email_address);
+        $stmt->bindParam(':tax_code', $tax_code); 
 
         if ($stmt->execute()) {
             echo "Thông tin doanh nghiệp đã được thêm thành công!";
@@ -42,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <input type="text" name="city_address" required><br>
 
     <label for="district_address">Địa chỉ quận/huyện:</label>
-    <input type="text" name="district_address" required><br>
+    <input type text="text" name="district_address" required><br>
 
     <label for="address">Địa chỉ chi tiết:</label>
     <input type="text" name="address" required><br>
@@ -52,6 +54,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     <label for="email_address">Email:</label>
     <input type="email" name="email_address" required><br>
+
+    <label for="tax_code">Mã số thuế:</label>
+    <input type="text" name="tax_code" maxlength="13" required><br>
 
     <input type="submit" value="Thêm Doanh Nghiệp">
 </form>

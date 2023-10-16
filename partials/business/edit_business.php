@@ -1,31 +1,28 @@
 <?php
 
-
-// Kiểm tra xem người dùng đã đăng nhập hay chưa
 if (!isset($_SESSION['user_id']) || empty($_SESSION['user_id'])) {
     header('location:../../public/account/login.php');
     exit;
 }
 
-// Lấy user_id của người đang đăng nhập
 $user_id = $_SESSION['user_id'];
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Lấy dữ liệu từ form
     $city_address = $_POST['city_address'];
     $district_address = $_POST['district_address'];
     $address = $_POST['address'];
     $phone = $_POST['phone'];
     $email_address = $_POST['email_address'];
+    $tax_code = $_POST['tax_code']; 
 
     try {
-        // Thực hiện truy vấn SQL để cập nhật thông tin doanh nghiệp trong CSDL
         $sql = "UPDATE business 
                     SET city_address = :city_address, 
                         district_address = :district_address, 
                         address = :address, 
                         phone = :phone, 
-                        email_address = :email_address
+                        email_address = :email_address,
+                        tax_code = :tax_code
                     WHERE user_id = :user_id";
 
         $stmt = $conn->prepare($sql);
@@ -34,6 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt->bindParam(':address', $address);
         $stmt->bindParam(':phone', $phone);
         $stmt->bindParam(':email_address', $email_address);
+        $stmt->bindParam(':tax_code', $tax_code); 
         $stmt->bindParam(':user_id', $user_id);
 
         if ($stmt->execute()) {
@@ -46,7 +44,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 
-// Truy vấn thông tin doanh nghiệp hiện tại của người đang đăng nhập
 $business_info = null;
 
 try {
@@ -55,7 +52,8 @@ try {
                     district_address,
                     address,
                     phone,
-                    email_address
+                    email_address,
+                    tax_code
                 FROM business
                 WHERE user_id = :user_id";
 
@@ -84,6 +82,9 @@ try {
 
         <label for="email_address">Email:</label>
         <input type="email" name="email_address" value="<?php echo $business_info['email_address']; ?>" required><br>
+
+        <label for="tax_code">Mã số thuế:</label>
+        <input type="text" name="tax_code" maxlength="13" value="<?php echo $business_info['tax_code']; ?>" required><br>
 
         <input type="submit" value="Cập Nhật Thông Tin">
     </form>
