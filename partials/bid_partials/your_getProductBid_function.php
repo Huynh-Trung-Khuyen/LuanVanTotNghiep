@@ -1,5 +1,5 @@
 <?php
-// Đây là tệp chứa hàm getProductBid()
+
 function getProductBid($product_bid_id, $conn)
 {
     $sql = "SELECT pb.*, 

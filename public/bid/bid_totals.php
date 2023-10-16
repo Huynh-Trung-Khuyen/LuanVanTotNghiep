@@ -43,11 +43,7 @@ $query->execute();
 $user = $query->fetch(PDO::FETCH_ASSOC);
 
 if ($user && $user['role'] == 1) {
-  if (isset($user['business_id']) && !empty($user['business_id'])) {
-} else {
-    echo "Bạn phải cập nhật thông tin doanh nghiệp.";
-    exit;
-}
+  
 } elseif ($user && $user['role'] == 2) {
   echo "Chỉ có doanh nghiệp được tham gia đấu giá";
   exit;

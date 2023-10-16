@@ -69,58 +69,77 @@ if (isset($_GET['product_bid_id'])) {
     exit;
 }
 ?>
-        <html>
-        <head>
-            <title>Đấu giá sản phẩm</title>
-        </head>
-        <body>
-            <section class="ftco-section">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-4 mb-5">
-                            <img src="<?php echo $product_bid['product_image_path'] ?>" class="img-fluid" alt="Colorlib Template">
-                        </div>
-                        <div class="col-lg-8 product-details pl-md-5">
-                            <h3>Tên sản phẩm: <?php echo $product_bid['product_bid_name'] ?></h3>
-                            <p class="price"><span>Người tạo phiên: <?php echo $product_bid['creator_fullname'] ?></span></p>
-                            <p class="price"><span>Thời gian kết thúc: <?php echo $product_bid['real_end_time']; ?></span></p>
-                            <p class="price"><span>Giá khởi điểm: <?php echo number_format($product_bid['start_price'], 0, '.', '.') ?>.000 vnđ</span></p>
-                            <p class="price"><span>Giá hiện tại: <span id="current_price"><?php echo number_format($product_bid['current_price'], 0, '.', '.') ?>.000 vnđ</span></p>
-                            <p class="price"><span>Người ra giá gần đây: <span id="recent_bidder_fullname"><?php echo $product_bid['recent_bidder_fullname']?></span></p>
+<html>
 
-                            <form method="POST">
-                                <label for="bid_price">Giá đặt mới: </label>
-                                <input type="text" name="bid_price" id="bid_price" required>
-                                <input type="submit" value="Đặt giá">
-                            </form>
-                            <p>Giá đã được mặc định từ .000vnđ</p>
-                        </div>
-                    </div>
+<head>
+    <title>Đấu giá sản phẩm</title>
+</head>
+
+<body>
+    <section class="ftco-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-5">
+                    <img src="<?php echo $product_bid['product_image_path'] ?>" class="img-fluid" alt="Colorlib Template">
                 </div>
-            </section>
-        </body>
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script>
-            $(document).ready(function() {
-                // Function to update product details
-                function updateProductDetails() {
-                    $.ajax({
-                        url: '../../partials/bid_partials/update_product_details.php', // Đảm bảo đường dẫn đúng
-                        type: 'POST',
-                        data: { product_bid_id: <?php echo $product_bid_id; ?> },
-                        success: function(data) {
-                            console.log(data); // In ra dữ liệu nhận được từ yêu cầu AJAX
-                            var details = JSON.parse(data);
-                            $("#current_price").text(details.current_price);
-                            $("#recent_bidder_fullname").text(details.recent_bidder_fullname);
-                        }
-                    });
+                <div class="col-lg-8 product-details pl-md-5">
+                    <h3>Tên sản phẩm: <?php echo $product_bid['product_bid_name'] ?></h3>
+                    <p class="price"><span>Người tạo phiên: <?php echo $product_bid['creator_fullname'] ?></span></p>
+                    <p class="price"><span>Thời gian kết thúc: <?php echo $product_bid['real_end_time']; ?></span></p>
+                    <p class="price"><span>Giá khởi điểm: <?php echo number_format($product_bid['start_price'], 0, '.', '.') ?>.000 vnđ</span></p>
+                    <p class="price"><span>Giá hiện tại: <span id="current_price"><?php echo number_format($product_bid['current_price'], 0, '.', '.') ?>.000 vnđ</span></p>
+                    <p class="price"><span>Người ra giá gần đây: <span id="recent_bidder_fullname"><?php echo $product_bid['recent_bidder_fullname'] ?></span></p>
+
+                    <form method="POST">
+                        <label for="bid_price">Giá đặt mới: </label>
+                        <input type="text" name="bid_price" id="bid_price" required>
+                        <input type="submit" value="Đặt giá">
+                    </form>
+                    <p>Giá đã được mặc định từ .000vnđ</p>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        function updateProductDetails() {
+            $.ajax({
+                url: '../../partials/bid_partials/update_product_details.php',
+                type: 'POST',
+                data: {
+                    product_bid_id: <?php echo $product_bid_id; ?>
+                },
+                success: function(data) {
+                    console.log(data);
+                    var details = JSON.parse(data);
+                    $("#current_price").text(details.current_price);
+                    $("#recent_bidder_fullname").text(details.recent_bidder_fullname);
                 }
-
-                // Gọi hàm cập nhật thông tin khi trang được tải và sau mỗi khoảng thời gian nhất định (ví dụ: 5 giây)
-                updateProductDetails();
-                setInterval(updateProductDetails, 1000); // Cập nhật mỗi 1 giây
             });
-        </script>
-        </html>
+        }
 
+        updateProductDetails();
+        setInterval(updateProductDetails, 1000);
+    });
+</script>
+
+<script>
+    function redirectOnTimeout(endTime) {
+        const currentTime = new Date().getTime();
+        const remainingTime = endTime - currentTime;
+
+        if (remainingTime <= 0) {
+            window.location.href = '../../public/bid/bid.php';
+        } else {
+            setTimeout(function() {
+                redirectOnTimeout(endTime);
+            }, 1000);
+        }
+    }
+    const endTime = new Date("<?php echo $product_bid['real_end_time']; ?>").getTime();
+    redirectOnTimeout(endTime);
+</script>
+
+</html>
