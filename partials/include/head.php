@@ -27,4 +27,6 @@
   <link rel="stylesheet" href="../../css/css/style.css">
   <link rel="stylesheet" href="../../css/base.css">
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://kit.fontawesome.com/52841b83f9.js" crossorigin="anonymous"></script>
+
 </head>

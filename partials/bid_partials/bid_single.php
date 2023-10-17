@@ -70,32 +70,78 @@ if (isset($_GET['product_bid_id'])) {
 }
 ?>
 <html>
+<style>
+    .quantity-adjust.btn {
+        background-color: #fff;
+        color: #000;
+        transition: background-color 0.3s, color 0.3s;
+    }
 
+    .quantity-adjust.btn:hover i {
+        color: #82ae46;
+    }
+</style>
 <head>
     <title>Đấu giá sản phẩm</title>
 </head>
 
 <body>
-    <section class="ftco-section">
+    <section class="ftco-section contact-section bg-light">
         <div class="container">
-            <div class="row">
-                <div class="col-lg-4 mb-5">
-                    <img src="<?php echo $product_bid['product_image_path'] ?>" class="img-fluid" alt="Colorlib Template">
-                </div>
-                <div class="col-lg-8 product-details pl-md-5">
-                    <h3>Tên sản phẩm: <?php echo $product_bid['product_bid_name'] ?></h3>
-                    <p class="price"><span>Người tạo phiên: <?php echo $product_bid['creator_fullname'] ?></span></p>
-                    <p class="price"><span>Thời gian kết thúc: <span id="countdown"></span></p>
-                    <p class="price"><span>Giá khởi điểm: <?php echo number_format($product_bid['start_price'], 0, '.', '.') ?>.000 vnđ</span></p>
-                    <p class="price"><span>Giá hiện tại: <span id="current_price"><?php echo number_format($product_bid['current_price'], 0, '.', '.') ?>.000 vnđ</span></p>
-                    <p class="price"><span>Người ra giá gần đây: <span id="recent_bidder_fullname"><?php echo $product_bid['recent_bidder_fullname'] ?></span></p>
+            <div class="row block-9">
+                <div class="col-md-6 order-md-last d-flex">
+                    <form method="POST" class="bg-white p-5 contact-form">
+                        <div class="form-group text-center">
+                            <h2><?php echo $product_bid['product_bid_name'] ?></h2>
+                        </div>
+                        <div class="form-group text-center">
+                            <h4 class="time"><span>Thời gian còn lại: <span id="countdown"></span></h4>
+                        </div>
+                        <div class="form-group ">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" style="width:130px; ">Giá Khởi Điểm:</span>
+                                </div>
+                                <div class="form-control" style="font-size: 25px; ">
+                                    <?php echo number_format($product_bid['start_price'], 0, '.', '.') ?>.000vnđ
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" style="width:130px; ">Giá Hiện Tại:</span>
+                                </div>
+                                <div class="form-control" id="current_price" style="font-size: 25px; ">
+                                    <?php echo number_format($product_bid['current_price'], 0, '.', '.') ?>.000vnđ
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="bid_price">Giá đặt mới:</label>
+                            <div class="input-group" style="width: 450px;">
+                                <span class="input-group-btn">
+                                    <button type="button" class="quantity-adjust btn btn-lg " data-type="minus" data-field="bid_price">
+                                        <i class="fa-solid fa-minus"></i>
+                                    </button>
+                                </span>
+                                <input type="text" name="bid_price" id="bid_price" class="form-control" style="font-size: 20px;" required value="<?php echo ($product_bid['current_price']) ?>">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" style="width:80px;">.000vnđ</span>
+                                </div>
+                                <span class="input-group-btn">
+                                    <button type="button" class="quantity-adjust btn btn-lg" data-type="plus" data-field="bid_price">
+                                        <i class="fa-solid fa-plus"></i>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
 
-                    <form method="POST">
-                        <label for="bid_price">Giá đặt mới: </label>
-                        <input type="text" name="bid_price" id="bid_price" required>
-                        <input type="submit" value="Đặt giá">
+                        <input type="submit" value="Đặt giá" class="btn btn-primary py-3 btn-block">
                     </form>
-                    <p>Giá đã được mặc định từ .000vnđ</p>
+                </div>
+                <div class="col-md-6  mb-5 d-flex">
+                    <img src="<?php echo $product_bid['product_image_path'] ?>" class="img-fluid" alt="Colorlib Template">
                 </div>
             </div>
         </div>
@@ -125,6 +171,7 @@ if (isset($_GET['product_bid_id'])) {
     });
 </script>
 
+<!-- Hết thời gian tự động chuyển về trang chủ -->
 <script>
     function redirectOnTimeout(endTime) {
         const currentTime = new Date().getTime();
@@ -143,6 +190,7 @@ if (isset($_GET['product_bid_id'])) {
 </script>
 
 
+<!-- Hiển thị thời gian dạng đếm ngược -->
 <script>
     function startCountdown() {
         const endTime = new Date("<?php echo $product_bid['real_end_time']; ?>").getTime();
@@ -169,4 +217,47 @@ if (isset($_GET['product_bid_id'])) {
 
     startCountdown();
 </script>
+
+
+<!-- Nút Tăng Giảm -->
+<script>
+    $(document).ready(function() {
+        $('.quantity-adjust').click(function() {
+            var fieldType = $(this).data('field');
+            var quantityField = $('#' + fieldType);
+            var currentValue = parseFloat(quantityField.val());
+
+            if (!isNaN(currentValue)) {
+                if ($(this).data('type') === 'plus') {
+                    quantityField.val(currentValue + 100);
+                } else if ($(this).data('type') === 'minus') {
+                    quantityField.val(Math.max(currentValue - 100, 0));
+                }
+            }
+        });
+    });
+</script>
+
+
+<!-- Giới hạn giá đặt -->
+<script>
+    $(document).ready(function() {
+
+        $("form").submit(function(event) {
+            event.preventDefault();
+            var bidPrice = parseFloat($("#bid_price").val());
+            var currentPrice = parseFloat(<?php echo $product_bid['current_price']; ?>);
+            if (bidPrice <= currentPrice + 99) {
+                alert("Giá đặt phải lớn hơn giá hiện tại ít nhất 100.000vnđ");
+            } else if (bidPrice >= currentPrice + 1100) {
+            alert("Giá đặt không được lớn hơn 1.000.000vnđ");
+        } else {
+            this.submit();
+        }
+        });
+    });
+</script>
+
+
+
 </html>
