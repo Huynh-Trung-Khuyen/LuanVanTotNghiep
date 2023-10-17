@@ -66,7 +66,7 @@ $productList = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                 <h5><?php echo $product['real_end_time']; ?></h5>
                                             </td>
                                             <td>
-                                                <form action="delete_bid.php" method="POST">
+                                                <form action="delete_bid3.php" method="POST">
                                                     <input type="hidden" name="product_bid_id" value="<?php echo $product['product_bid_id']; ?>">
                                                     <button type="submit" class="btn " onclick="return confirm('Bạn Muốn Xóa Phiên Đấu Giá Này?')">Xóa Phiên</button>
                                                 </form>

@@ -94,7 +94,7 @@ if (isset($_GET['product_bid_id'])) {
             <div class="row justify-content-center  pb-3">
                 <div class="col-md-12 heading-section text-center ftco-animate">
                     <span class="subheading">Cửa Hàng Nông Sản Sạch</span>
-                    <h2 class="mb-4">Phiên Đấu Giá<?php echo $product_bid['product_bid_name'] ?></h2>
+                    <h2 class="mb-4">Phiên Đấu Giá <?php echo $product_bid['product_bid_name'] ?></h2>
                 </div>
             </div>
         </div>

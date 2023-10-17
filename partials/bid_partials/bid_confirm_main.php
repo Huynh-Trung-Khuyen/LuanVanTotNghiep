@@ -71,11 +71,19 @@ $productList = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                             </ul>
                                         </td>
                                         <td class="cart_total">
-                                            <form method="post">
-                                                <input type="hidden" name="product_bid_id" value="<?php echo $product['product_bid_id']; ?>">
-                                                <input type="submit" name="update_is_active" value="Xác Nhận Thông Tin Giao Hàng">
-                                            </form>
+                                            <?php if ($product['winner_user_id'] == 0) : ?>
+                                                <form action="delete_bid2.php" method="POST">
+                                                    <input type="hidden" name="product_bid_id" value="<?php echo $product['product_bid_id']; ?>">
+                                                    <button type="submit" class="btn" onclick="return confirm('Bạn Muốn Xóa Phiên Đấu Giá Này?')">Xóa Phiên</button>
+                                                </form>
+                                            <?php else : ?>
+                                                <form method="post">
+                                                    <input type="hidden" name="product_bid_id" value="<?php echo $product['product_bid_id']; ?>">
+                                                    <input type="submit" name="update_is_active" value="Xác Nhận Thông Tin Giao Hàng">
+                                                </form>
+                                            <?php endif; ?>
                                         </td>
+
                                     </tr>
                                 <?php endforeach; ?>
                             </tbody>
