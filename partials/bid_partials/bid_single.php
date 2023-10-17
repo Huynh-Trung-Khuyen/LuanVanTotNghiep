@@ -5,6 +5,8 @@ function getProductBid($product_bid_id, $conn)
            CONCAT('../../public/uploads/', pb.product_bid_image) AS product_image_path, 
            u.fullname AS creator_fullname, 
            pb.real_end_time,
+           pb.product_bid_description,
+            pb.end_time,
            b.user_id AS recent_bidder_id,
            u2.fullname AS recent_bidder_fullname
     FROM product_bid pb
@@ -81,12 +83,21 @@ if (isset($_GET['product_bid_id'])) {
         color: #82ae46;
     }
 </style>
+
 <head>
     <title>Đấu giá sản phẩm</title>
 </head>
 
 <body>
-    <section class="ftco-section contact-section bg-light">
+    <section class="contact-section bg-light">
+        <div class="container">
+            <div class="row justify-content-center  pb-3">
+                <div class="col-md-12 heading-section text-center ftco-animate">
+                    <span class="subheading">Cửa Hàng Nông Sản Sạch</span>
+                    <h2 class="mb-4">Phiên Đấu Giá<?php echo $product_bid['product_bid_name'] ?></h2>
+                </div>
+            </div>
+        </div>
         <div class="container">
             <div class="row block-9">
                 <div class="col-md-6 order-md-last d-flex">
@@ -97,23 +108,34 @@ if (isset($_GET['product_bid_id'])) {
                         <div class="form-group text-center">
                             <h4 class="time"><span>Thời gian còn lại: <span id="countdown"></span></h4>
                         </div>
-                        <div class="form-group ">
+                        <div class="form-group">
                             <div class="input-group">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text" style="width:130px; ">Giá Khởi Điểm:</span>
+                                    <span class="input-group-text" style="width: 170px;">Giá Khởi Điểm:</span>
                                 </div>
-                                <div class="form-control" style="font-size: 25px; ">
+                                <div class="form-control" style="font-size: 25px; white-space: nowrap; overflow: hidden; text-overflow: clip;">
                                     <?php echo number_format($product_bid['start_price'], 0, '.', '.') ?>.000vnđ
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" style="width:170px; ">Giá Hiện Tại:</span>
+                                </div>
+                                <div class="form-control" id="current_price" style="font-size: 25px; ">
+                                    <?php echo number_format($product_bid['current_price'], 0, '.', '.') ?>.000vnđ
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="input-group">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text" style="width:130px; ">Giá Hiện Tại:</span>
+                                    <span class="input-group-text" style="width:170px; ">Người ra giá gần đây:</span>
                                 </div>
-                                <div class="form-control" id="current_price" style="font-size: 25px; ">
-                                    <?php echo number_format($product_bid['current_price'], 0, '.', '.') ?>.000vnđ
+                                <div class="form-control" id="recent_bidder_fullname" style="font-size: 25px; ">
+                                    <?php echo $product_bid['recent_bidder_fullname'] ?>
                                 </div>
                             </div>
                         </div>
@@ -140,13 +162,54 @@ if (isset($_GET['product_bid_id'])) {
                         <input type="submit" value="Đặt giá" class="btn btn-primary py-3 btn-block">
                     </form>
                 </div>
-                <div class="col-md-6  mb-5 d-flex">
-                    <img src="<?php echo $product_bid['product_image_path'] ?>" class="img-fluid" alt="Colorlib Template">
+
+                <!-- Ảnh SP -->
+                <div class="col-md-6 mb-6 d-flex">
+                    <img src="<?php echo $product_bid['product_image_path'] ?>" class="img-fluid" alt="Colorlib Template" style="width: auto; height: auto;">
+                </div>
+
+            </div>
+
+        </div>
+
+        <section class="ftco-section contact-section bg-light">
+            <div class="row justify-content-center mb-3 pb-3">
+                <div class="col-md-12 heading-section text-center ftco-animate">
+                    <h2 class="mb-4">Thông Tin Phiên Đấu Giá</h2>
                 </div>
             </div>
-        </div>
+            <div class="container">
+                <div class="row d-flex mb-5 contact-info">
+                    <div class="w-100"></div>
+                    <div class="col-md-3 d-flex">
+                        <div class="info bg-white p-4">
+                            <h5><span style="font-weight: bold;">Doanh Nghiệp Tạo Phiên:</span><br> <?php echo $product_bid['creator_fullname'] ?></h5>
+                        </div>
+                    </div>
+                    <div class="col-md-3 d-flex">
+                        <div class="info bg-white p-4">
+                            <h5><span style="font-weight: bold;">Thời Gian Kết Thúc:</span><br> <?php echo $product_bid['real_end_time'] ?></h5>
+                        </div>
+                    </div>
+                    <div class="col-md-3 d-flex">
+                        <div class="info bg-white p-4">
+                            <h5><span style="font-weight: bold;">Thời Gian Đặt Giá Gần Đây Nhất:</span><br> <?php echo $product_bid['end_time'] ?></h5>
+                        </div>
+                    </div>
+                    <div class="col-md-3 d-flex">
+                        <div class="info bg-white p-4">
+                            <h5><span style="font-weight: bold;">Thông Tin Phiên Đấu Giá:</span><br> <?php echo $product_bid['product_bid_description'] ?></h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </section>
     </section>
 </body>
+
+
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function() {
@@ -250,10 +313,10 @@ if (isset($_GET['product_bid_id'])) {
             if (bidPrice <= currentPrice + 99) {
                 alert("Giá đặt phải lớn hơn giá hiện tại ít nhất 100.000vnđ");
             } else if (bidPrice >= currentPrice + 1100) {
-            alert("Giá đặt không được lớn hơn 1.000.000vnđ");
-        } else {
-            this.submit();
-        }
+                alert("Giá đặt không được lớn hơn 1.000.000vnđ");
+            } else {
+                this.submit();
+            }
         });
     });
 </script>
