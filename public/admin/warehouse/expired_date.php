@@ -4,7 +4,7 @@ session_start();
 require_once '../../../config.php';
 
 
-$query = $conn->prepare('SELECT * FROM warehouse WHERE expired_date >= CURDATE()');
+$query = $conn->prepare('SELECT * FROM warehouse WHERE expired_date <= CURDATE()');
 $query->execute();
 $warehouses = $query->fetchAll(PDO::FETCH_ASSOC);
 ?>

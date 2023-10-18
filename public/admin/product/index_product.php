@@ -97,4 +97,7 @@ include("../include/head.php");
         </div>
     </div>
 </body>
+<?php
+    include("../include/footer.php");
+    ?>
 </html>

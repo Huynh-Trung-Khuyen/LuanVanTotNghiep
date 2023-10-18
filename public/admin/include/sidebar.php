@@ -62,7 +62,7 @@
                 </li>
                 <li class="nav-item menu-open">
                     <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-list-ul"></i>
+                        <i class="nav-icon fas fa-box"></i>
                         <p>
                             Danh Mục
                             <i class="right fas fa-angle-left"></i>
@@ -79,6 +79,12 @@
                             <a href="../warehouse/index_warehouse.php" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Danh Sách Hàng Hóa</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="../warehouse/expired_date.php" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Hàng Đã Hết Hạn</p>
                             </a>
                         </li>
                     </ul>
