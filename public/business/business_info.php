@@ -83,6 +83,7 @@ if ($user && $user['role'] == 1) {
         b.address,
         b.phone,
         b.email_address,
+        b.money,
         b.tax_code  
     FROM
         business AS b
@@ -107,6 +108,7 @@ if ($user && $user['role'] == 1) {
             echo "Phone: " . $row['phone'] . "<br>";
             echo "Email Address: " . $row['email_address'] . "<br>";
             echo "Mã Số Thuế " . $row['tax_code'] . "<br>";
+            echo "Tính Dụng: " . $row['money'] .".000vnđ"."<br>";
             echo "<a href='./edit_info_b.php'>Nhấn vào đây để sửa thông tin doanh nghiệp</a>";
         } else {
             echo "Bạn chưa có thông tin doanh nghiệp.<br>";
@@ -124,3 +126,6 @@ if ($user && $user['role'] == 1) {
 </body>
 
 </html>
+
+
+

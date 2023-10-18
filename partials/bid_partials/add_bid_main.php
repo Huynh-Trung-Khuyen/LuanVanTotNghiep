@@ -1,15 +1,15 @@
 <?php
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Lấy user_id của người dùng đã đăng nhập (đã xác thực)
+
     $user_id = $_SESSION['user_id'];
 
-    // Lấy thông tin sản phẩm đấu giá từ biểu mẫu
+
     $product_bid_name = $_POST['product_bid_name'];
     $product_bid_description = $_POST['product_bid_description'];
     $start_price = $_POST['start_price'];
     $end_time = $_POST['end_time'];
 
-    // Xử lý hình ảnh
+
     $image_name = '';
 
     if (!empty($_FILES['product_bid_image']['name'])) {
@@ -18,43 +18,63 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $image_path = '../../public/uploads/' . $image_name;
 
         if (move_uploaded_file($image_tmp, $image_path)) {
-            // Hình ảnh đã được tải lên thành công, tiếp tục thêm phiên đấu giá
+  
+            $conn->beginTransaction();
+
+            try {
+              
+                $check_money_query = $conn->prepare('SELECT money FROM business WHERE user_id = :user_id');
+                $check_money_query->bindParam(':user_id', $user_id);
+                $check_money_query->execute();
+                $money = $check_money_query->fetch(PDO::FETCH_COLUMN);
+
+                if ($money < 200) {
+                    $error = 'Số tiền không đủ, vui lòng nạp thêm tiền.';
+                } else {
+               
+                    $new_money = $money - 200;
+                    $update_money_query = $conn->prepare('UPDATE business SET money = :money WHERE user_id = :user_id');
+                    $update_money_query->bindParam(':money', $new_money);
+                    $update_money_query->bindParam(':user_id', $user_id);
+                    $update_money_query->execute();
+
+                    $end_time = date('Y-m-d H:i:s', strtotime($end_time)); 
+
+       
+                    $query = $conn->prepare('
+                        INSERT INTO product_bid
+                        (user_id, product_bid_name, product_bid_description, start_price, current_price, end_time, real_end_time, product_bid_image)
+                        VALUES
+                        (:user_id, :product_bid_name, :product_bid_description, :start_price, :start_price, :end_time, :real_end_time, :product_bid_image)
+                    ');
+
+                    $query->bindParam(':user_id', $user_id);
+                    $query->bindParam(':product_bid_name', $product_bid_name);
+                    $query->bindParam(':product_bid_description', $product_bid_description);
+                    $query->bindParam(':start_price', $start_price);
+                    $query->bindParam(':end_time', $end_time);
+                    $query->bindParam(':real_end_time', $end_time);
+                    $query->bindParam(':product_bid_image', $image_name);
+
+                    if ($query->execute()) {
+                        $conn->commit(); 
+                        $success = 'Thêm phiên đấu giá thành công!';
+                    } else {
+                        $conn->rollBack(); 
+                        $error = 'Thêm phiên đấu giá thất bại!';
+                    }
+                }
+            } catch (PDOException $e) {
+                $conn->rollBack(); 
+                $error = 'Có lỗi xảy ra: ' . $e->getMessage();
+            }
         } else {
-            // Lỗi khi tải lên hình ảnh
+
             $error = 'Lỗi khi tải lên hình ảnh.';
         }
     }
-
-    // Kiểm tra các trường thông tin sản phẩm đấu giá
-    if (empty($product_bid_name) || empty($product_bid_description) || empty($start_price) || empty($end_time)) {
-        $error = 'Không được để trống!';
-    } else {
-        // Tính toán real_end_time từ end_time và thời gian hiện tại
-        $end_time = date('Y-m-d H:i:s', strtotime($end_time)); // Chuyển đổi end_time sang định dạng datetime
-
-        // Thực hiện thêm phiên đấu giá vào cơ sở dữ liệu với user_id, end_time và tên hình ảnh
-        $query = $conn->prepare('
-            INSERT INTO product_bid
-            (user_id, product_bid_name, product_bid_description, start_price, current_price, end_time, real_end_time, product_bid_image)
-            VALUES
-            (:user_id, :product_bid_name, :product_bid_description, :start_price, :start_price, :end_time, :real_end_time, :product_bid_image)
-        ');
-
-        $query->bindParam(':user_id', $user_id);
-        $query->bindParam(':product_bid_name', $product_bid_name);
-        $query->bindParam(':product_bid_description', $product_bid_description);
-        $query->bindParam(':start_price', $start_price);
-        $query->bindParam(':end_time', $end_time);
-        $query->bindParam(':real_end_time', $end_time); // Đặt real_end_time ban đầu là end_time
-        $query->bindParam(':product_bid_image', $image_name);
-
-        if ($query->execute()) {
-            $success = 'Thêm phiên đấu giá thành công!';
-        } else {
-            $error = 'Thêm phiên đấu giá thất bại!';
-        }
-    }
 }
+
 ?>
 
 
