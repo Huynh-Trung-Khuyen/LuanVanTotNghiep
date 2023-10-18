@@ -62,6 +62,29 @@
                 </li>
                 <li class="nav-item menu-open">
                     <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-list-ul"></i>
+                        <p>
+                            Danh Mục
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="../warehouse/add.php" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Thêm Hàng Hóa</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="../warehouse/index_warehouse.php" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Danh Sách Hàng Hóa</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item menu-open">
+                    <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-carrot"></i>
                         <p>
                             Sản Phẩm

@@ -6,6 +6,9 @@ $query = $conn->prepare('SELECT * FROM category');
 $query->execute();
 $categories = $query->fetchAll(PDO::FETCH_ASSOC);
 
+$query = $conn->prepare('SELECT * FROM warehouse');
+$query->execute();
+$warehouses = $query->fetchAll(PDO::FETCH_ASSOC);
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $product_name = $_POST['product_name'];
@@ -13,38 +16,37 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $price = $_POST['price'];
     $category_id = $_POST['category_id'];
     $image_name = $_FILES['image']['name'];
+    $warehouse_id = $_POST['warehouse_id'];
 
-    if (empty($product_name) or empty($content) or empty($price)) {
+    if (empty($product_name) || empty($content) || empty($price)) {
         $error = 'Không được để trống!';
-    }
-
-    if (!empty($image_name)) {
-
-        $tmp = $_FILES['image']['tmp_name']; //tránh upload ảnh trùng tên
-        $image_name = time() . $image_name;
-        $new_path = '../../uploads/' . $image_name;
-
-        if (!move_uploaded_file($tmp, $new_path)) {
-            $error = 'Upload ảnh thất bại!';
-        } else {
-            move_uploaded_file($tmp, $new_path);
-
-            $query = $conn->prepare('
-            INSERT INTO product
-            (product_name, content, price, image, category_id)
-            VALUES
-            (:product_name, :content, :price, :image, :category_id)
-            ');
-            $query->bindParam(':product_name', $product_name);
-            $query->bindParam(':content', $content);
-            $query->bindParam(':price', $price);
-            $query->bindParam(':image', $image_name);
-            $query->bindParam(':category_id', $category_id);
-            $query->execute();
-            $success = 'Thêm sản phẩm thành công!';
-        }
     } else {
-        $error = 'Ảnh Không được để trống!';
+        if (!empty($image_name)) {
+            $tmp = $_FILES['image']['tmp_name'];
+            $image_name = time() . $image_name;
+            $new_path = '../../uploads/' . $image_name;
+
+            if (move_uploaded_file($tmp, $new_path)) {
+                $query = $conn->prepare('
+                    INSERT INTO product
+                    (product_name, content, price, image, category_id, warehouse_id)
+                    VALUES
+                    (:product_name, :content, :price, :image, :category_id, :warehouse_id)
+                ');
+                $query->bindParam(':product_name', $product_name);
+                $query->bindParam(':content', $content);
+                $query->bindParam(':price', $price);
+                $query->bindParam(':image', $image_name);
+                $query->bindParam(':category_id', $category_id);
+                $query->bindParam(':warehouse_id', $warehouse_id);
+                $query->execute();
+                $success = 'Thêm sản phẩm thành công!';
+            } else {
+                $error = 'Upload ảnh thất bại!';
+            }
+        } else {
+            $error = 'Ảnh không được để trống!';
+        }
     }
 }
 
@@ -53,6 +55,8 @@ $query = $conn->prepare('SELECT * FROM product');
 $query->execute();
 $products = $query->fetchAll(PDO::FETCH_ASSOC);
 ?>
+
+<!-- Các phần HTML giữ nguyên như trước -->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -89,7 +93,7 @@ include("../include/head.php");
                         </div>
 
                         <div class="col-md-6">
-                            <div class="form-group">
+                            <div class "form-group">
                                 <label>Giá</label>
                                 <input type="text" name="price" class="form-control" placeholder="Giá Sản Phẩm">
                             </div>
@@ -103,21 +107,29 @@ include("../include/head.php");
                         <label for="menu">Ảnh Sản Phẩm</label>
                         <input style="width: 500px;" type="file" name="image" required>
                     </div>
- 
-                        <div class="form-group">
-                            <label>Danh Mục</label>
-                            <select style="width: 500px;" name="category_id" id="category_id" class="form-control" required="required">
-                                <?php foreach ($categories as $row) : ?>
-                                    <option value="<?php echo $row['category_id'] ?>"> <?php echo $row['category_name'] ?></option>
-                                <?php endforeach ?>
-                            </select>
-                        </div>
+
+                    <div class="form-group">
+                        <label>Danh Mục</label>
+                        <select style="width: 500px;" name="category_id" id="category_id" class="form-control" required="required">
+                            <?php foreach ($categories as $row) : ?>
+                                <option value="<?php echo $row['category_id'] ?>"> <?php echo $row['category_name'] ?></option>
+                            <?php endforeach ?>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="warehouse_id">Nhà kho</label>
+                        <select style="width: 500px;" name="warehouse_id" id="warehouse_id" class="form-control" required="required">
+                            <?php foreach ($warehouses as $row) : ?>
+                                <option value="<?php echo $row['warehouse_id'] ?>"><?php echo $row['imported_product_name'] ?></option>
+                            <?php endforeach ?>
+                        </select>
+                    </div>
+
                     <div class="form-group">
                         <button type="submit" class="btn btn-primary">Thêm Sản Phẩm</button>
                     </div>
                 </div>
             </form>
-
         </div>
         <?php if (isset($error)) : ?>
             <div style="width: 300px;" class="alert alert-danger alert-dismissible">

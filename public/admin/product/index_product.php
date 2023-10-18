@@ -2,15 +2,22 @@
 session_start();
 
 require_once '../../../config.php';
-$query = $conn->prepare('SELECT * FROM category');
-$query->execute();
-$categories = $query->fetchAll(PDO::FETCH_ASSOC);
 
-
-require_once '../../../config.php';
-$query = $conn->prepare('SELECT * FROM product');
+$query = $conn->prepare('SELECT p.product_id, p.product_name, p.price, p.image, p.warehouse_id, p.category_id, w.imported_product_name, c.category_name, w.quantity
+                          FROM product p
+                          LEFT JOIN warehouse w ON p.warehouse_id = w.warehouse_id
+                          LEFT JOIN category c ON p.category_id = c.category_id');
 $query->execute();
 $products = $query->fetchAll(PDO::FETCH_ASSOC);
+
+$itemsPerPage = 10;
+$totalItems = count($products);
+$totalPages = ceil($totalItems / $itemsPerPage);
+$currentpage = isset($_GET['page']) ? $_GET['page'] : 1;
+$start = ($currentpage - 1) * $itemsPerPage;
+$end = $start + $itemsPerPage;
+
+$productsToDisplay = array_slice($products, $start, $itemsPerPage);
 ?>
 
 <!DOCTYPE html>
@@ -32,34 +39,62 @@ include("../include/head.php");
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1 class="m-0">Dashboard</h1>
-                        </div><!-- /.col -->
+                            <h1 class="m-0">Danh Sách Sản Phẩm</h1>
+                        </div>
                     </div>
                 </div>
             </div>
-            <?php
-    include("./product_list.php");
-    ?>
+            <div class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <table id="productTable" class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>ID Sản Phẩm</th>
+                                                <th>Tên Sản Phẩm</th>
+                                                <th>Giá</th>
+                                                <th>Ảnh</th>
+                                                <th>Tên Sản Phẩm Nhập Kho</th>
+                                                <th>Danh Mục</th>
+                                                <th>Số Lượng</th>
+                                                <th>Thao Tác</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php foreach ($productsToDisplay as $product) : ?>
+                                                <tr>
+                                                    <td><?php echo $product['product_id']; ?></td>
+                                                    <td><?php echo $product['product_name']; ?></td>
+                                                    <td><?php echo $product['price']; ?>.000vnđ/Kg</td>
+                                                    <td><a href="" target="_blank"><img src="../../uploads/<?php echo $product['image']; ?>" height="100px" width="100px"></a></td>
+                                                    <td><?php echo $product['imported_product_name']; ?></td>
+                                                    <td><?php echo $product['category_name']; ?></td>
+                                                    <td><?php echo $product['quantity']; ?></td>
+                                                    <td>
+                                                        <a href="../../admin/product/edit.php?id=<?php echo $product['product_id']; ?>"><i class="fas fa-edit"></i></a>
+                                                        <a href="../../admin/product/delete.php?id=<?php echo $product['product_id']; ?>"><i class="fas fa-trash"></i></a>
+                                                    </td>
+                                                </tr>
+                                            <?php endforeach; ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <ul class="pagination">
+                                <?php for ($page = 1; $page <= $totalPages; $page++) : ?>
+                                    <li class="page-item<?php echo ($page == $currentpage) ? ' active' : ''; ?>">
+                                        <a class="page-link" href="?page=<?php echo $page; ?>"><?php echo $page; ?></a>
+                                    </li>
+                                <?php endfor; ?>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <?php if (isset($error)) : ?>
-            <div style="width: 300px;" class="alert alert-danger alert-dismissible">
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                <strong>Error!</strong> <?php echo $error ?>
-            </div>
-        <?php endif ?>
-
-        <?php if (isset($success)) : ?>
-            <div style="width: 300px;" class="alert alert-success alert-dismissible">
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                <strong>Success!</strong> <?php echo $success ?>
-            </div>
-        <?php endif ?>
     </div>
-    <!-- ./wrapper -->
-
-    <?php
-    include("../include/footer.php");
-    ?>
 </body>
-
 </html>
