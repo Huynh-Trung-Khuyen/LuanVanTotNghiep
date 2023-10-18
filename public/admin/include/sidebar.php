@@ -37,7 +37,7 @@
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-                <li class="nav-item menu-open">
+                <li class="nav-item "><!-- menu-open -->
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-list-ul"></i>
                         <p>
@@ -60,11 +60,11 @@
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item menu-open">
+                <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-box"></i>
                         <p>
-                            Danh Mục
+                            Nhập Kho
                             <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
@@ -89,7 +89,7 @@
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item menu-open">
+                <li class="nav-item ">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-carrot"></i>
                         <p>
@@ -112,7 +112,8 @@
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item menu-open">
+ 
+                <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-truck"></i>
                         <p>
@@ -130,7 +131,7 @@
 
                     </ul>
                 </li>
-                <li class="nav-item menu-open">
+                <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-gavel"></i>
                         <p>
@@ -148,7 +149,7 @@
 
                     </ul>
                 </li>
-                <li class="nav-item menu-open">
+                <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-user"></i>
                         <p>
