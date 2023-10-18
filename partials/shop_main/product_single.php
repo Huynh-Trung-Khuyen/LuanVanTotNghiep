@@ -1,9 +1,8 @@
 <?php
- // Bắt đầu hoặc tiếp tục phiên
+// Bắt đầu hoặc tiếp tục phiên
 if (isset($_GET['id']) && isset($_POST['add_to_cart'])) {
     $product_id = $_GET['id']; 
     $quantity_of_products = $_POST['quantity']; 
-
 
     if (isset($_SESSION['user_id'])) {
         $user_id = $_SESSION['user_id'];
@@ -43,14 +42,18 @@ if (isset($_GET['id']) && isset($_POST['add_to_cart'])) {
 }
 ?>
 
-
-
 <?php
 if (isset($_GET['id'])) {
     $product_id = $_GET['id'];
 }
 ?>
 <?php foreach ($products as $row) : ?>
+    <?php
+    $query = $conn->prepare('SELECT w.quantity FROM warehouse w JOIN product p ON w.warehouse_id = p.warehouse_id WHERE p.product_id = :product_id');
+    $query->bindParam(':product_id', $row['product_id']);
+    $query->execute();
+    $product_quantity = $query->fetch(PDO::FETCH_ASSOC);
+    ?>
     <form method="POST">
     <section class="ftco-section">
         <div class="container">
@@ -60,9 +63,9 @@ if (isset($_GET['id'])) {
                 </div>
                 <div class="col-lg-6 product-details pl-md-5">
                     <h3><?php echo $row['product_name'] ?></h3>
-
                     <p class="price"><span></strong><?php echo $row['price'] ?>.000 vnđ/Kg</span></p>
                     <p><?php echo $row['content'] ?></p>
+                    <p>Số lượng hiện có: <?php echo $product_quantity['quantity'] ?></p>
                     <div class="row mt-4">
                         <div class="w-100"></div>
                         <div class="input-group col-md-6 d-flex mb-3">
@@ -71,7 +74,7 @@ if (isset($_GET['id'])) {
                                     <i class="ion-ios-remove"></i>
                                 </button>
                             </span>
-                            <input type="text" id="quantity" name="quantity" class="form-control input-number" value="1" min="1" max="100">
+                            <input type="text" id="quantity" name="quantity" class="form-control input-number" value="1" min="1" max="<?php echo $product_quantity['quantity']; ?>">
                             <span class="input-group-btn ml-2">
                                 <button type="button" class="quantity-right-plus btn" data-type="plus" data-field="">
                                     <i class="ion-ios-add"></i>
@@ -79,16 +82,15 @@ if (isset($_GET['id'])) {
                             </span>
                         </div>
                         <div class="w-100"></div>
-                        
                     </div>
-      
-                    <button type="submit" class="btn  " name="add_to_cart">Add to Cart</button>
+                    <button type="submit" class="btn" name="add_to_cart">Add to Cart</button>
                 </div>
             </div>
         </div>
     </section>
     </form>
 <?php endforeach ?>
+
 
 
 
