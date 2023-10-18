@@ -53,7 +53,6 @@ $productList = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                         <td class="current_price">
                                             <h5><?php echo number_format($product['current_price'], 0, ',', '.'); ?>.000vnđ</h5>
                                         </td>
-
                                         <td class="winner_fullname">
                                             <?php if ($product['winner_fullname']) : ?>
                                                 <h5><?php echo $product['winner_fullname']; ?></h5>

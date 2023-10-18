@@ -5,9 +5,9 @@ require_once '../../../config.php';
 
 if (isset($_GET['user_id'])) {
     $user_id = $_GET['user_id'];
-    // Bây giờ bạn có thể sử dụng biến $user_id trong mã HTML của trang này.
+
 } else {
-    // Xử lý khi không có tham số user_id trong URL, ví dụ: Hiển thị thông báo lỗi hoặc chuyển hướng người dùng.
+
     echo "Lỗi: Không tìm thấy user_id trong URL.";
     exit;
 }
@@ -23,25 +23,21 @@ $stmt = $conn->prepare($sql);
 $stmt->execute();
 $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// Khởi tạo biến lưu thông báo lỗi hoặc thành công
 $error = $success = '';
 
-// Xử lý khi form nạp tiền được gửi đi
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['amount'])) {
     $amount = $_POST['amount'];
 
 
     if (is_numeric($amount)) {
-        // Chuyển đổi $amount từ chuỗi thành số thực (float)
         $amount = floatval($amount);
 
-        // Chuyển đổi $businessInfo['money'] từ chuỗi thành số thực (float)
         $currentBalance = floatval($businessInfo['money']);
 
-        // Thực hiện phép cộng để nạp tiền
         $newBalance = $currentBalance + $amount;
 
-        // Cập nhật số tiền trong tài khoản
+
         $sql = "UPDATE business SET money = :money WHERE user_id = :user_id";
         $stmt = $conn->prepare($sql);
         $stmt->bindParam(':money', $newBalance);
@@ -60,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['amount'])) {
 
 ?>
 
-<!-- Phần HTML hiển thị thông tin người dùng và nạp tiền -->
+
 
 
 <?php

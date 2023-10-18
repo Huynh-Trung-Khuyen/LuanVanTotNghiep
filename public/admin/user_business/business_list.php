@@ -13,6 +13,7 @@
                                         <th>Tên Người Dùng</th>
                                         <th>Xóa Người Dùng</th>
                                         <th>Nhập thông tin</th>
+                                        <th>Nạp Tiền</th>
                                         <th>Thông tin</th>
                                     </tr>
                                 </thead>
@@ -38,14 +39,20 @@
 
                                             <td>
                                                 <?php if ($businessInfo) : ?>
-                                                    <strong>Doanh Nghiệp đã thêm thông tin</strong><br>
+                                                   
                                                     <a href="./edit_business.php?user_id=<?php echo $user['user_id']; ?>" class="btn btn-primary">Sửa Thông Tin Doanh Nghiệp</a>
                                                 <?php else : ?>
                                                     <a href="./add_business.php?user_id=<?php echo $user['user_id']; ?>" class="btn btn-success">Thêm thông tin</a>
                                                 <?php endif; ?>
                                             </td>
 
-
+                                            <td>
+                                                <?php if ($businessInfo) : ?>
+                                                    <a href="./business_money.php?user_id=<?php echo $user['user_id']; ?>" class="btn btn-primary">Nạp Tiền</a>
+                                                <?php else : ?>
+                                                    <p>Doanh Nghiệp chưa <br> cập nhật thông tin</p>
+                                                <?php endif; ?>
+                                            </td>
                                             <td colspan="4">
                                                 <?php if ($businessInfo) : ?>
                                                     <?php if ($user['role'] == 1 && $businessInfo) : ?>
@@ -56,13 +63,14 @@
                                                         Số điện thoại: <?php echo $businessInfo['phone']; ?><br>
                                                         Email: <?php echo $businessInfo['email_address']; ?><br>
                                                         Mã Số Thuế: <?php echo $businessInfo['tax_code']; ?><br>
+                                                        Tính Dụng: <?php echo number_format(floatval(str_replace(',', '', $businessInfo['money']))) . '.000vnđ'; ?><br>
                                                     <?php endif; ?>
                                                 <?php else : ?>
                                                     <p>Doanh Nghiệp chưa cập nhật thông tin</p>
                                                 <?php endif; ?>
                                             </td>
-                                        </tr>
 
+                                        </tr>
                                     <?php endforeach; ?>
 
                                 </tbody>
