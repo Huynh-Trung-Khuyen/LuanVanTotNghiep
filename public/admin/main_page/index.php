@@ -33,6 +33,20 @@ $query = $conn->prepare('SELECT * FROM category');
 $query->execute();
 $categories = $query->fetchAll(PDO::FETCH_ASSOC);
 
+
+$sql = "SELECT * FROM business WHERE user_id = :user_id";
+$stmt = $conn->prepare($sql);
+$stmt->bindParam(':user_id', $user_id);
+$stmt->execute();
+$businessInfo = $stmt->fetch(PDO::FETCH_ASSOC);
+
+
+$sql = "SELECT * FROM user WHERE role = 0";
+$stmt = $conn->prepare($sql);
+$stmt->execute();
+$users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+
 ?>
 
 
@@ -51,30 +65,39 @@ include("../include/head.php");
         ?>
         </aside>
         <div class="content-wrapper">
-            <!-- Content Header (Page header) -->
             <div class="content-header">
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1 class="m-0">Dashboard</h1>
-                        </div><!-- /.col -->
-                        <div class="col-sm-6">
-                            <ol class="breadcrumb float-sm-right">
-                                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item active">Dashboard v1</li>
-                            </ol>
+                            <h1 class="m-0">Trang Chủ</h1>
                         </div>
                     </div>
                 </div>
             </div>
+            <?php
+            include("../main_page/dash_board.php");
+            ?>
 
         </div>
+        <?php if (isset($error)) : ?>
+            <div style="width: 300px;" class="alert alert-danger alert-dismissible">
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                <strong>Error!</strong> <?php echo $error ?>
+            </div>
+        <?php endif ?>
+
+        <?php if (isset($success)) : ?>
+            <div style="width: 300px;" class="alert alert-success alert-dismissible">
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                <strong>Success!</strong> <?php echo $success ?>
+            </div>
+        <?php endif ?>
     </div>
     <!-- ./wrapper -->
-
     <?php
     include("../include/footer.php");
     ?>
 </body>
+
 
 </html>

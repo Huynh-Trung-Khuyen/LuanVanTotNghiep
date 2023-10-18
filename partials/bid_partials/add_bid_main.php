@@ -75,6 +75,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 
+
+$business_id = 1; // Sửa thành business_id mà bạn muốn cộng tiền
+$query = $conn->prepare('SELECT money FROM business WHERE business_id = :business_id');
+$query->bindParam(':business_id', $business_id);
+$query->execute();
+$money = $query->fetchColumn();
+
+// Bước 2: Cộng thêm 200 vào số tiền
+$new_money = $money + 200;
+
+// Bước 3: Cập nhật giá trị số tiền mới vào cơ sở dữ liệu
+$update_query = $conn->prepare('UPDATE business SET money = :new_money WHERE business_id = :business_id');
+$update_query->bindParam(':new_money', $new_money);
+$update_query->bindParam(':business_id', $business_id);
+$update_query->execute();
 ?>
 
 
