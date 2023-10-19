@@ -58,6 +58,7 @@
                             <div class="dropdown-menu" style="margin-top: 0px;" aria-labelledby="dropdown04">
                                 <a class="dropdown-item" href="../../public/cart/checkout.php">Đơn Mua</a>
                                 <a class="dropdown-item" href="../../public/bid/bid_totals.php">Đơn Mua Đấu Giá</a>
+                                <a class="dropdown-item" href="../../public/bid/bid_totals2.php">Phiên Đấu Giá Thành Công</a>
                                 <a class="dropdown-item" href="../../public/business/business_info.php">Thông Tin Doanh Nghiệp</a>
                                 <a class="dropdown-item" href="../../public/account/logout.php">Đăng Xuất</a>
                             </div>
