@@ -90,6 +90,46 @@ if (isset($_GET['product_bid_id'])) {
 
 <body>
     <section class="contact-section bg-light">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#winnerModal">
+            Hiển thị Thông Báo
+        </button>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#loserModal">
+            Hiển thị Thông Báo
+        </button>
+        <div class="modal fade" id="winnerModal" tabindex="-1" role="dialog" aria-labelledby="winnerModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="winnerModalLabel">Thông Báo Đến Người Chiến Thắng</h5>
+                    </div>
+                    <div class="modal-body">
+                        <p>Chúc mừng bạn đã giành chiến thắng trong phiên đấu giá!</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="loserModal" tabindex="-1" role="dialog" aria-labelledby="loserModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="loserModalLabel">Thông Báo Người Thua</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Rất tiếc, bạn đã thua phiên đấu giá.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="container">
             <div class="row justify-content-center  pb-3">
                 <div class="col-md-12 heading-section text-center ftco-animate">
@@ -234,22 +274,61 @@ if (isset($_GET['product_bid_id'])) {
     });
 </script>
 
-<!-- Hết thời gian tự động chuyển về trang chủ -->
+
+
+
 <script>
-    function redirectOnTimeout(endTime) {
+    let winnerId = <?php echo $product_bid['winner_id']; ?>;
+    let userId = <?php echo $_SESSION['user_id']; ?>;
+
+    console.log('Initial winnerId:', winnerId);
+    console.log('Initial userId:', userId);
+
+    function getWinnerId(productBidId) {
+        $.ajax({
+            type: 'GET',
+            url: '../../partials/bid_partials/get_winner.php',
+            data: {
+                product_bid_id: productBidId
+            },
+            dataType: 'json',
+            success: function(response) {
+                winnerId1 = response.winner_id;
+                userId = <?php echo $_SESSION['user_id']; ?>;
+                console.log('Updated winnerId:', winnerId1);
+                console.log('Updated userId:', userId);
+            },
+            error: function() {
+                console.log('Failed to retrieve winnerId.');
+            }
+        });
+    }
+
+    getWinnerId(<?php echo $product_bid_id; ?>);
+
+    setInterval(function() {
+        getWinnerId(<?php echo $product_bid_id; ?>);
+    }, 1000);
+
+    function redirectOnTimeout(endTime, winnerId, userId) {
         const currentTime = new Date().getTime();
         const remainingTime = endTime - currentTime;
 
         if (remainingTime <= 0) {
-            window.location.href = '../../public/bid/bid.php';
+            if (winnerId1 === userId) {
+                $('#winnerModal').modal('show');
+            } else {
+                $('#loserModal').modal('show');
+            }
         } else {
             setTimeout(function() {
-                redirectOnTimeout(endTime);
+                redirectOnTimeout(endTime, winnerId, userId);
             }, 1000);
         }
     }
+
     const endTime = new Date("<?php echo $product_bid['real_end_time']; ?>").getTime();
-    redirectOnTimeout(endTime);
+    redirectOnTimeout(endTime, winnerId, userId);
 </script>
 
 
