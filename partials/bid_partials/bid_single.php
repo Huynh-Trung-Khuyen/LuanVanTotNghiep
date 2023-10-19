@@ -90,13 +90,8 @@ if (isset($_GET['product_bid_id'])) {
 
 <body>
     <section class="contact-section bg-light">
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#winnerModal">
-            Hiển thị Thông Báo
-        </button>
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#loserModal">
-            Hiển thị Thông Báo
-        </button>
-        <div class="modal fade" id="winnerModal" tabindex="-1" role="dialog" aria-labelledby="winnerModalLabel" aria-hidden="true">
+
+        <div class="modal fade" id="winnerModal" tabindex="-1" role="dialog" aria-labelledby="winnerModalLabel" aria-hidden="true" data-backdrop="static">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -106,25 +101,26 @@ if (isset($_GET['product_bid_id'])) {
                         <p>Chúc mừng bạn đã giành chiến thắng trong phiên đấu giá!</p>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal"></button>
+                        <a href="../../public/bid/bid.php" class="btn btn-primary">Quay về trang đấu giá</a>
+                        <a href="../../public/bid/bid_totals2.php" class="btn btn-secondary">Xem các phiên đấu giá đã thắng</a>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="modal fade" id="loserModal" tabindex="-1" role="dialog" aria-labelledby="loserModalLabel" aria-hidden="true">
+        <div class="modal fade" id="loserModal" tabindex="-1" role="dialog" aria-labelledby="loserModalLabel" aria-hidden="true" data-backdrop="static">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="loserModalLabel">Thông Báo Người Thua</h5>
+                        <h5 class="modal-title" id="loserModalLabel">Tiếc quá</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <p>Rất tiếc, bạn đã thua phiên đấu giá.</p>
+                        <p>Rất tiếc, một doanh nghiệp khác đã dành chiến thắng</p>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                        <a href="../../public/bid/bid.php" class="btn btn-primary">Quay về trang đấu giá</a>
                     </div>
                 </div>
             </div>
@@ -181,7 +177,7 @@ if (isset($_GET['product_bid_id'])) {
                         </div>
                         <div class="form-group">
                             <label for="bid_price">Giá đặt mới:</label>
-                            <div class="input-group" style="width: 450px;">
+                            <div id="bidButton" class="input-group" style="width: 450px;">
                                 <span class="input-group-btn">
                                     <button type="button" class="quantity-adjust btn btn-lg " data-type="minus" data-field="bid_price">
                                         <i class="fa-solid fa-minus"></i>
@@ -199,7 +195,7 @@ if (isset($_GET['product_bid_id'])) {
                             </div>
                         </div>
 
-                        <input type="submit" value="Đặt giá" class="btn btn-primary py-3 btn-block">
+                        <input type="submit" id="bidButton" value="Đặt giá" class="btn btn-primary py-3 btn-block">
                     </form>
                 </div>
 
@@ -276,13 +272,13 @@ if (isset($_GET['product_bid_id'])) {
 
 
 
-
+<!-- Khi thời gian kết thúc sẽ so sánh ID của người thắng với ID của người đang đăng nhập -->
 <script>
     let winnerId = <?php echo $product_bid['winner_id']; ?>;
     let userId = <?php echo $_SESSION['user_id']; ?>;
 
-    console.log('Initial winnerId:', winnerId);
-    console.log('Initial userId:', userId);
+    // console.log('Initial winnerId:', winnerId);
+    // console.log('Initial userId:', userId);
 
     function getWinnerId(productBidId) {
         $.ajax({
@@ -313,8 +309,12 @@ if (isset($_GET['product_bid_id'])) {
     function redirectOnTimeout(endTime, winnerId, userId) {
         const currentTime = new Date().getTime();
         const remainingTime = endTime - currentTime;
-
+        const bidButton = document.getElementById("bidButton");
         if (remainingTime <= 0) {
+
+            if (bidButton) {
+                bidButton.style.display = "none";
+            }
             if (winnerId1 === userId) {
                 $('#winnerModal').modal('show');
             } else {
