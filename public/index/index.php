@@ -18,10 +18,40 @@ if (isset($_GET['id'])) {
   $selectedProduct = $query->fetch(PDO::FETCH_ASSOC); // Sản phẩm cụ thể
 }
 
-// Lấy danh sách tất cả sản phẩm (nếu cần)
+$query = $conn->prepare('SELECT * FROM warehouse');
+$query->execute();
+$warehouse = $query->fetchAll(PDO::FETCH_ASSOC);
+
+$query = $conn->prepare('SELECT * FROM supplier');
+$query->execute();
+$supplier = $query->fetchAll(PDO::FETCH_ASSOC);
+
 $query = $conn->prepare('SELECT * FROM product');
 $query->execute();
 $products = $query->fetchAll(PDO::FETCH_ASSOC);
+
+foreach ($products as $key => $productItem) {
+  $warehouseId = $productItem['warehouse_id'];
+  
+  $supplierName = '';
+  foreach ($warehouse as $warehouseItem) {
+      if ($warehouseItem['warehouse_id'] == $warehouseId) {
+          $supplierId = $warehouseItem['supplier_id'];
+          
+          foreach ($supplier as $supplierItem) {
+              if ($supplierItem['supplier_id'] == $supplierId) {
+                  $supplierName = $supplierItem['supplier_name'];
+                  break;
+              }
+          }
+          break;
+      }
+  }
+
+  $products[$key]['supplier_name'] = $supplierName;
+}
+
+
 
 // if (isset($_SESSION['user_id'])) {
   

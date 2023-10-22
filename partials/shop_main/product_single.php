@@ -48,32 +48,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo "Vui lòng đăng nhập trước khi thêm sản phẩm vào giỏ hàng.";
     }
 }
-?>
 
-<?php
+
 if (isset($_GET['id'])) {
     $product_id = $_GET['id'];
+    $query = $conn->prepare('
+        SELECT p.*, w.quantity, s.supplier_name
+        FROM product p
+        JOIN warehouse w ON p.warehouse_id = w.warehouse_id
+        JOIN supplier s ON w.supplier_id = s.supplier_id
+        WHERE p.product_id = :product_id
+    ');
+    $query->bindParam(':product_id', $product_id);
+    $query->execute();
+    $product = $query->fetch(PDO::FETCH_ASSOC);
 }
 ?>
-<?php foreach ($products as $row) : ?>
-    <?php
-    $query = $conn->prepare('SELECT w.quantity FROM warehouse w JOIN product p ON w.warehouse_id = p.warehouse_id WHERE p.product_id = :product_id');
-    $query->bindParam(':product_id', $row['product_id']);
-    $query->execute();
-    $product_quantity = $query->fetch(PDO::FETCH_ASSOC);
-    ?>
+
+<?php if (!empty($product)) : ?>
     <form method="POST">
     <section class="ftco-section">
         <div class="container">
             <div class="row">
-                <div class="col-lg-6 mb-5 ">
-                    <img src="../../public/uploads/<?php echo $row['image'] ?>" class="img-fluid" alt="Colorlib Template">
+                <div class="col-lg-6 mb-5">
+                    <img src="../../public/uploads/<?php echo $product['image'] ?>" class="img-fluid" alt="Colorlib Template">
                 </div>
                 <div class="col-lg-6 product-details pl-md-5">
-                    <h3><?php echo $row['product_name'] ?></h3>
-                    <p class="price"><span></strong><?php echo $row['price'] ?>.000 vnđ/Kg</span></p>
-                    <p><?php echo $row['content'] ?></p>
-                    <p>Số lượng hiện có: <?php echo $product_quantity['quantity'] ?>Kg</p>
+                    <h3><?php echo $product['product_name'] ?></h3>
+                    <p class="price"><span><?php echo $product['price'] ?>.000 vnđ/Kg</span></p>
+                    <p><?php echo $product['content'] ?></p>
+                    <p>Số lượng hiện có: <?php echo $product['quantity'] ?>Kg</p>
+                    <p>Nhà cung cấp: <?php echo $product['supplier_name'] ?></p>
                     <div class="row mt-4">
                         <div class="w-100"></div>
                         <div class="input-group col-md-6 d-flex mb-3">
@@ -82,7 +87,7 @@ if (isset($_GET['id'])) {
                                     <i class="ion-ios-remove"></i>
                                 </button>
                             </span>
-                            <input type="text" id="quantity" name="quantity" class="form-control input-number" value="1" min="1" max="<?php echo $product_quantity['quantity']; ?>">
+                            <input type="text" id="quantity" name="quantity" class="form-control input-number" value="1" min="1" max="<?php echo $product['quantity']; ?>">
                             <span class="input-group-btn ml-2">
                                 <button type="button" class="quantity-right-plus btn" data-type="plus" data-field="">
                                     <i class="ion-ios-add"></i>
@@ -97,33 +102,4 @@ if (isset($_GET['id'])) {
         </div>
     </section>
     </form>
-<?php endforeach ?>
-
-
-
-
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    $(document).ready(function () {
-        $('.quantity-left-minus').click(function () {
-            var quantityField = $(this).closest('.input-group').find('.input-number');
-            var currentValue = parseInt(quantityField.val());
-            if (!isNaN(currentValue) && currentValue > 1) {
-                quantityField.val(currentValue - 1);
-            }
-        });
-
-        $('.quantity-right-plus').click(function () {
-            var quantityField = $(this).closest('.input-group').find('.input-number');
-            var currentValue = parseInt(quantityField.val());
-            if (!isNaN(currentValue)) {
-                quantityField.val(currentValue + 1);
-            }
-        });
-    });
-</script>
-
-
-
-
+<?php endif ?>

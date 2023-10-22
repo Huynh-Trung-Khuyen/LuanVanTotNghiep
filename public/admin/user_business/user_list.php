@@ -11,7 +11,7 @@
                                         <th>Id</th>
                                         <th>Tên Đăng Nhập</th>
                                         <th>Tên Người Dùng</th>
-                                        <th>Tạo Doanh Nghiệp</th>
+                                       
                                         <th>Xóa Người Dùng</th>
                                     </tr>
                                 </thead>
@@ -23,16 +23,7 @@
                                             <td><?php echo $user['fullname']; ?></td>
                                             
 
-                                            <td>
-                                                <form method="post">
-                                                    <input type="hidden" name="user_id" value="<?php echo $user['user_id']; ?>">
-                                                    <input type="hidden" name="current_role" value="<?php echo $user['role']; ?>">
-                                                    <button type="submit" class="btn btn-success" name="change_role">
-                                                        <?php echo ($user['role'] == 2) ? "Tạo" : "Chuyển Role"; ?>
-                                                    </button>
-                                                </form>
-
-                                            </td>
+                                            
                                             <td>
                                                 <form method="post" action="user_delete.php">
                                                     <input type="hidden" name="user_id" value="<?php echo $user['user_id']; ?>">

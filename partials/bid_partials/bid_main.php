@@ -1,5 +1,4 @@
 <?php
-// Kiểm tra và cập nhật giá cuối cùng cho các phiên đấu giá đã kết thúc
 $current_time = date('Y-m-d H:i:s');
 $sql = "SELECT * FROM product_bid WHERE real_end_time <= :current_time";
 $stmt = $conn->prepare($sql);
@@ -37,7 +36,7 @@ $sql = "SELECT
     pb.current_price, 
     pb.real_end_time,
     pb.product_bid_image,
-    s.supplier_name,  -- Thêm thông tin nhà cung cấp
+    s.supplier_name,
     b1.bid_price AS last_bid_price, 
     u2.fullname AS last_bidder_fullname
 FROM product_bid pb
@@ -55,7 +54,7 @@ LEFT JOIN (
     )
 ) b1 ON pb.product_bid_id = b1.product_bid_id
 LEFT JOIN user u2 ON b1.user_id = u2.user_id
-LEFT JOIN supplier s ON pb.supplier_id = s.supplier_id  -- Tham gia bảng supplier
+LEFT JOIN supplier s ON pb.supplier_id = s.supplier_id 
 WHERE pb.real_end_time > NOW() AND pb.is_active = 1";
 $stmt = $conn->prepare($sql);
 $stmt->execute();

@@ -57,7 +57,7 @@
                 if (!isset($_SESSION['user'])) : ?>
 
                     <li class="nav-item"><a href="../../public/account/login.php" class="nav-link">Đăng Nhập</a></li>
-                    <li class="nav-item"><a href="#" data-toggle="modal" data-target="#winnerModal" class="nav-link">
+                    <li class="nav-item"><a href="#" data-toggle="modal" data-target="#registerModalLabel" class="nav-link">
                             Đăng Ký
                         </a>
                     </li>
@@ -101,11 +101,11 @@
 </nav>
 
 
-<div class="modal fade" id="winnerModal" tabindex="-1" role="dialog" aria-labelledby="winnerModalLabel" aria-hidden="true">
+<div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="registerModal" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="winnerModalLabel">Bạn Muốn Đăng Ký Loại Tài Khoản Nào?</h5>
+                <h5 class="modal-title" id="registerModal">Bạn Muốn Đăng Ký Loại Tài Khoản Nào?</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
