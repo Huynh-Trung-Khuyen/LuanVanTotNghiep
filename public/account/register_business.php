@@ -3,7 +3,7 @@ session_start();
  
 require_once '../../config.php';
 
-$defaultRole = 2; 
+$defaultRole = 1;
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username = $_POST['username'];
@@ -49,7 +49,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $query->bindParam(':password', $password);
             $query->bindParam(':fullname', $fullname);
             $query->bindParam(':role', $defaultRole);
-
             $query->execute();
 
             // Lấy user_id sau khi đăng ký thành công
@@ -96,8 +95,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 </div>
               <?php endif ?>
 
-              <h2 class="text-uppercase text-center mb-5">TẠO TÀI KHOẢN KHÁCH</h2>
-              <label for="username" class="sr-only">Tên Người Dùng</label>
+              <h2 class="text-uppercase text-center mb-5">TẠO TÀI KHOẢN DOANH NGHIỆP</h2>
+              <label for="username" class="sr-only">Tên Tài Khoản</label>
               <input type="text" id="username" class="form-control mb-4" placeholder="Nhập tên tài khoản của bạn" name="username" autofocus>
               <label for="inputPassword" class="sr-only">Mật khẩu</label>
               <input type="password" id="inputPassword" class="form-control mb-4" placeholder="Nhập mật khẩu của bạn" name="password" autofocus>
