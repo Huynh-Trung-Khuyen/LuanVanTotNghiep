@@ -1,14 +1,17 @@
 <?php
+
+
+$query = $conn->prepare('SELECT * FROM supplier');
+$query->execute();
+$suppliers = $query->fetchAll(PDO::FETCH_ASSOC);
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
     $user_id = $_SESSION['user_id'];
-
-
     $product_bid_name = $_POST['product_bid_name'];
     $product_bid_description = $_POST['product_bid_description'];
     $start_price = $_POST['start_price'];
     $end_time = $_POST['end_time'];
-
+    $supplier_id = $_POST['supplier_id'];
 
     $image_name = '';
 
@@ -18,11 +21,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $image_path = '../../public/uploads/' . $image_name;
 
         if (move_uploaded_file($image_tmp, $image_path)) {
-  
             $conn->beginTransaction();
 
             try {
-              
                 $check_money_query = $conn->prepare('SELECT money FROM business WHERE user_id = :user_id');
                 $check_money_query->bindParam(':user_id', $user_id);
                 $check_money_query->execute();
@@ -31,21 +32,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 if ($money < 200) {
                     $error = 'Số tiền không đủ, vui lòng nạp thêm tiền.';
                 } else {
-               
                     $new_money = $money - 200;
                     $update_money_query = $conn->prepare('UPDATE business SET money = :money WHERE user_id = :user_id');
                     $update_money_query->bindParam(':money', $new_money);
                     $update_money_query->bindParam(':user_id', $user_id);
                     $update_money_query->execute();
 
-                    $end_time = date('Y-m-d H:i:s', strtotime($end_time)); 
+                    $end_time = date('Y-m-d H:i:s', strtotime($end_time));
 
-       
                     $query = $conn->prepare('
                         INSERT INTO product_bid
-                        (user_id, product_bid_name, product_bid_description, start_price, current_price, end_time, real_end_time, product_bid_image)
+                        (user_id, product_bid_name, product_bid_description, start_price, current_price, end_time, real_end_time, product_bid_image, supplier_id)
                         VALUES
-                        (:user_id, :product_bid_name, :product_bid_description, :start_price, :start_price, :end_time, :real_end_time, :product_bid_image)
+                        (:user_id, :product_bid_name, :product_bid_description, :start_price, :start_price, :end_time, :real_end_time, :product_bid_image, :supplier_id)
                     ');
 
                     $query->bindParam(':user_id', $user_id);
@@ -55,54 +54,37 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $query->bindParam(':end_time', $end_time);
                     $query->bindParam(':real_end_time', $end_time);
                     $query->bindParam(':product_bid_image', $image_name);
+                    $query->bindParam(':supplier_id', $supplier_id);
 
                     if ($query->execute()) {
-                        $conn->commit(); 
+                        $conn->commit();
                         $success = 'Thêm phiên đấu giá thành công!';
                     } else {
-                        $conn->rollBack(); 
+                        $conn->rollBack();
                         $error = 'Thêm phiên đấu giá thất bại!';
                     }
                 }
             } catch (PDOException $e) {
-                $conn->rollBack(); 
+                $conn->rollBack();
                 $error = 'Có lỗi xảy ra: ' . $e->getMessage();
             }
         } else {
-
             $error = 'Lỗi khi tải lên hình ảnh.';
         }
     }
 }
-
-
-$business_id = 1; // Sửa thành business_id mà bạn muốn cộng tiền
-$query = $conn->prepare('SELECT money FROM business WHERE business_id = :business_id');
-$query->bindParam(':business_id', $business_id);
-$query->execute();
-$money = $query->fetchColumn();
-
-// Bước 2: Cộng thêm 200 vào số tiền
-$new_money = $money + 200;
-
-// Bước 3: Cập nhật giá trị số tiền mới vào cơ sở dữ liệu
-$update_query = $conn->prepare('UPDATE business SET money = :new_money WHERE business_id = :business_id');
-$update_query->bindParam(':new_money', $new_money);
-$update_query->bindParam(':business_id', $business_id);
-$update_query->execute();
 ?>
-
-
-
 
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Thêm Phiên Đấu Giá Mới</title>
 </head>
+
 <body>
     <h1>Thêm Phiên Đấu Giá Mới</h1>
-    
+
     <?php if (isset($error)) : ?>
         <p><?php echo $error; ?></p>
     <?php endif; ?>
@@ -124,6 +106,13 @@ $update_query->execute();
         <label for="end_time">Thời Gian Kết Thúc:</label>
         <input type="datetime-local" id="end_time" name="end_time" required><br><br>
 
+        <label for="supplier_id">Nhà Cung Cấp:</label>
+        <select name="supplier_id" id="supplier_id" required>
+            <?php foreach ($suppliers as $row) : ?>
+                <option value="<?php echo $row['supplier_id'] ?>"><?php echo $row['supplier_name'] ?></option>
+            <?php endforeach ?>
+        </select><br><br>
+
         <label for="product_bid_image">Hình Ảnh Sản Phẩm Đấu Giá:</label>
         <input type="file" id="product_bid_image" name="product_bid_image" accept="image/*" required><br><br>
 
@@ -132,4 +121,5 @@ $update_query->execute();
 
     <p><a href="../../public/bid/bid.php">Quay lại danh sách sản phẩm</a></p>
 </body>
+
 </html>

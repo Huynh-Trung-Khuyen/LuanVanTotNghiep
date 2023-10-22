@@ -29,7 +29,6 @@ $stmt = $conn->prepare($sql);
 $stmt->bindParam(':current_time', $current_time);
 $stmt->execute();
 
-
 $sql = "SELECT 
     pb.product_bid_id, 
     pb.product_bid_name, 
@@ -38,9 +37,9 @@ $sql = "SELECT
     pb.current_price, 
     pb.real_end_time,
     pb.product_bid_image,
-    u1.fullname AS seller_fullname,  -- Lấy fullname thay vì username
+    s.supplier_name,  -- Thêm thông tin nhà cung cấp
     b1.bid_price AS last_bid_price, 
-    u2.fullname AS last_bidder_fullname  -- Lấy fullname thay vì username
+    u2.fullname AS last_bidder_fullname
 FROM product_bid pb
 LEFT JOIN user u1 ON pb.user_id = u1.user_id
 LEFT JOIN (
@@ -56,12 +55,13 @@ LEFT JOIN (
     )
 ) b1 ON pb.product_bid_id = b1.product_bid_id
 LEFT JOIN user u2 ON b1.user_id = u2.user_id
-WHERE pb.real_end_time > NOW() AND pb.is_active = 1"; // Sử dụng real_end_time thay vì end_time và kiểm tra is_active
+LEFT JOIN supplier s ON pb.supplier_id = s.supplier_id  -- Tham gia bảng supplier
+WHERE pb.real_end_time > NOW() AND pb.is_active = 1";
 $stmt = $conn->prepare($sql);
 $stmt->execute();
 $productList = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
 ?>
+
 
 
 <div class="container">
@@ -87,10 +87,10 @@ $productList = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     </a>
                     <div class="text py-3 pb-4 px-3 text-center">
                         <h3><a href="../../public/bid/bid_detail.php?product_bid_id=<?php echo $product['product_bid_id']; ?>"><?php echo $product['product_bid_name']; ?></a></h3>
-                        <h7>Người bán: <?php echo $product['seller_fullname']; ?></h7>
+                        <h7>Nhà Cung Cấp:<br> <?php echo $product['supplier_name']; ?></h7>
                         <div class="d-flex justify-content-center align-items-center">
                             <p class="price"><span>
-                                    Giá khởi điểm: <?php echo number_format($product['start_price'], 0, ',', '.') ?>.000vnđ
+                                    Giá khởi điểm: <?php echo number_format($product['start_price'], 0, ',', '.') ?>.000vnđ<br>
                                     <?php if ($product['last_bid_price'] > 0) : ?>
                                         Giá hiện tại: <?php echo number_format($product['last_bid_price'], 0, ',', '.') ?>.000vnđ
                                     <?php else : ?>
