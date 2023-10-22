@@ -93,7 +93,7 @@ include("../include/head.php");
                         </div>
 
                         <div class="col-md-6">
-                            <div class "form-group">
+                            <div>
                                 <label>Giá</label>
                                 <input type="text" name="price" class="form-control" placeholder="Giá Sản Phẩm">
                             </div>

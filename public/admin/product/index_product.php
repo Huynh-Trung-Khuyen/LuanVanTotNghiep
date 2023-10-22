@@ -1,14 +1,19 @@
 <?php
 session_start();
-
 require_once '../../../config.php';
 
-$query = $conn->prepare('SELECT p.product_id, p.product_name, p.price, p.image, p.warehouse_id, p.category_id, w.imported_product_name, c.category_name, w.quantity
+// Lấy danh sách sản phẩm từ cơ sở dữ liệu
+$query = $conn->prepare('SELECT p.product_id, p.product_name, p.price, p.image, p.warehouse_id, p.category_id, w.imported_product_name, c.category_name, w.quantity, w.supplier_id
                           FROM product p
                           LEFT JOIN warehouse w ON p.warehouse_id = w.warehouse_id
                           LEFT JOIN category c ON p.category_id = c.category_id');
 $query->execute();
 $products = $query->fetchAll(PDO::FETCH_ASSOC);
+
+// Lấy danh sách nhà cung cấp từ cơ sở dữ liệu
+$query = $conn->prepare('SELECT * FROM supplier');
+$query->execute();
+$suppliers = $query->fetchAll(PDO::FETCH_ASSOC);
 
 $itemsPerPage = 10;
 $totalItems = count($products);
@@ -22,19 +27,13 @@ $productsToDisplay = array_slice($products, $start, $itemsPerPage);
 
 <!DOCTYPE html>
 <html lang="en">
-
-<?php
-include("../include/head.php");
-?>
+<?php include("../include/head.php"); ?>
 
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
-        <?php
-        include("../include/sidebar.php");
-        ?>
+        <?php include("../include/sidebar.php"); ?>
         </aside>
         <div class="content-wrapper">
-            <!-- Content Header (Page header) -->
             <div class="content-header">
                 <div class="container-fluid">
                     <div class="row mb-2">
@@ -60,6 +59,7 @@ include("../include/head.php");
                                                 <th>Tên Sản Phẩm Nhập Kho</th>
                                                 <th>Danh Mục</th>
                                                 <th>Số Lượng</th>
+                                                <th>Nhà Cung Cấp</th>
                                                 <th>Thao Tác</th>
                                             </tr>
                                         </thead>
@@ -73,6 +73,20 @@ include("../include/head.php");
                                                     <td><?php echo $product['imported_product_name']; ?></td>
                                                     <td><?php echo $product['category_name']; ?></td>
                                                     <td><?php echo $product['quantity']; ?></td>
+                                                    <td>
+                                                        <?php
+                                                        // Lấy tên nhà cung cấp từ danh sách nhà cung cấp
+                                                        $supplierId = $product['supplier_id'];
+                                                        $supplierName = '';
+                                                        foreach ($suppliers as $supplier) {
+                                                            if ($supplier['supplier_id'] == $supplierId) {
+                                                                $supplierName = $supplier['supplier_name'];
+                                                                break;
+                                                            }
+                                                        }
+                                                        echo $supplierName;
+                                                        ?>
+                                                    </td>
                                                     <td>
                                                         <a href="../../admin/product/edit.php?id=<?php echo $product['product_id']; ?>"><i class="fas fa-edit"></i></a>
                                                         <a href="../../admin/product/delete.php?id=<?php echo $product['product_id']; ?>"><i class="fas fa-trash"></i></a>
@@ -97,7 +111,5 @@ include("../include/head.php");
         </div>
     </div>
 </body>
-<?php
-    include("../include/footer.php");
-    ?>
+<?php include("../include/footer.php"); ?>
 </html>

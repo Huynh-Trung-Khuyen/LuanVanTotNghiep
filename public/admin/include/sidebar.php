@@ -41,21 +41,21 @@
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-list-ul"></i>
                         <p>
-                            Danh Mục
+                            Nhà Cung Cấp
                             <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="../category/add.php" class="nav-link">
+                            <a href="../supplier/add.php" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Thêm Danh Mục</p>
+                                <p>Thêm Nhà Cung Cấp</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="../category/index_category.php" class="nav-link">
+                            <a href="../supplier/index_supplier.php" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Danh Sách Danh Mục</p>
+                                <p>Danh Sách Nhà Cung Cấp</p>
                             </a>
                         </li>
                     </ul>
@@ -85,6 +85,29 @@
                             <a href="../warehouse/expired_date.php" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Hàng Đã Hết Hạn</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item "><!-- menu-open -->
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-list-ul"></i>
+                        <p>
+                            Danh Mục
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="../category/add.php" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Thêm Danh Mục</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="../category/index_category.php" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Danh Sách Danh Mục</p>
                             </a>
                         </li>
                     </ul>

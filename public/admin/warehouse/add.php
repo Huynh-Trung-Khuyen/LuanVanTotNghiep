@@ -3,25 +3,33 @@ session_start();
 
 require_once '../../../config.php';
 
+
+$query = $conn->prepare('SELECT * FROM supplier');
+$query->execute();
+$suppliers = $query->fetchAll(PDO::FETCH_ASSOC);
+
+//
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $imported_product_name = $_POST['imported_product_name'];
     $quantity = $_POST['quantity'];
     $input_day = $_POST['input_day'];
     $expired_date = $_POST['expired_date'];
+    $supplier_id = $_POST['supplier_id'];
 
-    if (empty($imported_product_name) || empty($quantity) || empty($input_day) || empty($expired_date)) {
+    if (empty($imported_product_name) || empty($quantity) || empty($input_day) || empty($expired_date) || empty($supplier_id)) {
         $error = 'Không được để trống!';
     } else {
         $query = $conn->prepare('
             INSERT INTO warehouse
-            (imported_product_name, quantity, input_day, expired_date)
+            (imported_product_name, quantity, input_day, expired_date, supplier_id)
             VALUES
-            (:imported_product_name, :quantity, :input_day, :expired_date)
+            (:imported_product_name, :quantity, :input_day, :expired_date, :supplier_id)
         ');
         $query->bindParam(':imported_product_name', $imported_product_name);
         $query->bindParam(':quantity', $quantity);
         $query->bindParam(':input_day', $input_day);
         $query->bindParam(':expired_date', $expired_date);
+        $query->bindParam(':supplier_id', $supplier_id);
         $query->execute();
         $success = 'Thêm sản phẩm vào kho thành công!';
     }
@@ -30,7 +38,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <!DOCTYPE html>
 <html lang="en">
-
 <?php
 include("../include/head.php");
 ?>
@@ -70,33 +77,26 @@ include("../include/head.php");
                         <input type="date" name="expired_date" class="form-control">
                     </div>
                     <div class="form-group">
+                        <label for="supplier_id">Nhà Cung Cấp</label>
+                        <select name="supplier_id" class="form-control">
+                            <?php foreach ($suppliers as $row) : ?>
+                                <option value="<?php echo $row['supplier_id'] ?>"><?php echo $row['supplier_name'] ?></option>
+                            <?php endforeach ?>
+                        </select>
+                    </div>
+                    <div class="form-group">
                         <button type="submit" class="btn btn-primary">Thêm Sản Phẩm Vào Kho</button>
                     </div>
                 </div>
             </form>
-
         </div>
-        <?php if (isset($error)) : ?>
-            <div style="width: 300px;" class="alert alert-danger alert-dismissible">
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                <strong>Lỗi!</strong> <?php echo $error ?>
-            </div>
-        <?php endif ?>
-
-        <?php if (isset($success)) : ?>
-            <div style="width: 300px;" class="alert alert-success alert-dismissible">
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                <strong>Thành Công!</strong> <?php echo $success ?>
-            </div>
-        <?php endif ?>
     </div>
     <!-- ./wrapper -->
-
     <?php
     include("../include/footer.php");
     ?>
 </body>
 <?php
-    include("../include/footer.php");
-    ?>
+include("../include/footer.php");
+?>
 </html>

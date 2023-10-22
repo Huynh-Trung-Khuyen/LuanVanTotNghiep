@@ -4,9 +4,16 @@ session_start();
 require_once '../../../config.php';
 
 
-$query = $conn->prepare('SELECT * FROM warehouse WHERE expired_date >= CURDATE()');
+$query = $conn->prepare('
+    SELECT w.warehouse_id, w.imported_product_name, w.quantity, w.input_day, w.expired_date, w.supplier_id, s.supplier_name
+    FROM warehouse w
+    LEFT JOIN supplier s ON w.supplier_id = s.supplier_id
+    WHERE w.expired_date >= CURDATE()
+');
 $query->execute();
 $warehouses = $query->fetchAll(PDO::FETCH_ASSOC);
+
+
 ?>
 
 <!DOCTYPE html>
@@ -47,6 +54,7 @@ include("../include/head.php");
                                                 <th>Số Lượng</th>
                                                 <th>Ngày Nhập Kho</th>
                                                 <th>Hạn Sử Dụng</th>
+                                                <th>Nhà Cung Cấp</th>
                                                 <th>Thao Tác</th>
                                             </tr>
                                         </thead>
@@ -58,6 +66,7 @@ include("../include/head.php");
                                                     <td><?php echo $warehouse['quantity']; ?></td>
                                                     <td><?php echo $warehouse['input_day']; ?></td>
                                                     <td><?php echo $warehouse['expired_date']; ?></td>
+                                                    <td><?php echo $warehouse['supplier_name']; ?></td>
                                                     <td>
                                                         <a href="edit.php?id=<?php echo $warehouse['warehouse_id']; ?>"><i class="fas fa-edit"></i></a>
                                                         <a href="delete.php?id=<?php echo $warehouse['warehouse_id']; ?>"><i class="fas fa-trash"></i></a>
@@ -90,6 +99,7 @@ include("../include/head.php");
     <?php endif ?>
 </body>
 <?php
-    include("../include/footer.php");
-    ?>
+include("../include/footer.php");
+?>
+
 </html>
