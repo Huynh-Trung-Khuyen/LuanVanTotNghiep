@@ -3,12 +3,12 @@ session_start();
 
 require_once '../../../config.php';
 
-
 $query = $conn->prepare('
-    SELECT w.warehouse_id, w.imported_product_name, w.quantity, w.input_day, w.expired_date, w.supplier_id, s.supplier_name
+    SELECT w.warehouse_id, w.imported_product_name, w.quantity, w.input_day, w.expired_date, w.seri_number, w.supplier_id, s.supplier_name
     FROM warehouse w
     LEFT JOIN supplier s ON w.supplier_id = s.supplier_id
     WHERE w.expired_date >= CURDATE()
+    ORDER BY w.seri_number
 ');
 $query->execute();
 $warehouses = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -49,6 +49,7 @@ include("../include/head.php");
                                     <table id="warehouseTable" class="table table-bordered table-striped">
                                         <thead>
                                             <tr>
+                                                <th>Số Seri</th>
                                                 <th>ID Kho</th>
                                                 <th>Tên Sản Phẩm Nhập Kho</th>
                                                 <th>Số Lượng</th>
@@ -61,6 +62,7 @@ include("../include/head.php");
                                         <tbody>
                                             <?php foreach ($warehouses as $warehouse) : ?>
                                                 <tr>
+                                                    <td><?php echo $warehouse['seri_number']; ?></td>
                                                     <td><?php echo $warehouse['warehouse_id']; ?></td>
                                                     <td><?php echo $warehouse['imported_product_name']; ?></td>
                                                     <td><?php echo $warehouse['quantity']; ?></td>

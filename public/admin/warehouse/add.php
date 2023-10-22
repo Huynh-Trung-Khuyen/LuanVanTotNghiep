@@ -8,32 +8,36 @@ $query = $conn->prepare('SELECT * FROM supplier');
 $query->execute();
 $suppliers = $query->fetchAll(PDO::FETCH_ASSOC);
 
-//
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $imported_product_name = $_POST['imported_product_name'];
     $quantity = $_POST['quantity'];
     $input_day = $_POST['input_day'];
     $expired_date = $_POST['expired_date'];
     $supplier_id = $_POST['supplier_id'];
+    $seri_number = $_POST['seri_number'];
 
-    if (empty($imported_product_name) || empty($quantity) || empty($input_day) || empty($expired_date) || empty($supplier_id)) {
+    if (empty($imported_product_name) || empty($quantity) || empty($input_day) || empty($expired_date) || empty($supplier_id) || empty($seri_number)) {
         $error = 'Không được để trống!';
     } else {
         $query = $conn->prepare('
             INSERT INTO warehouse
-            (imported_product_name, quantity, input_day, expired_date, supplier_id)
+            (imported_product_name, quantity, input_day, expired_date, supplier_id, seri_number)
             VALUES
-            (:imported_product_name, :quantity, :input_day, :expired_date, :supplier_id)
+            (:imported_product_name, :quantity, :input_day, :expired_date, :supplier_id, :seri_number)
         ');
         $query->bindParam(':imported_product_name', $imported_product_name);
         $query->bindParam(':quantity', $quantity);
         $query->bindParam(':input_day', $input_day);
         $query->bindParam(':expired_date', $expired_date);
         $query->bindParam(':supplier_id', $supplier_id);
+        $query->bindParam(':seri_number', $seri_number);
         $query->execute();
         $success = 'Thêm sản phẩm vào kho thành công!';
     }
 }
+
+
 ?>
 
 <!DOCTYPE html>
@@ -67,6 +71,10 @@ include("../include/head.php");
                     <div class="form-group">
                         <label for="quantity">Số Lượng</label>
                         <input type="text" name="quantity" class="form-control" placeholder="Số lượng sản phẩm">
+                    </div>
+                    <div class="form-group">
+                        <label for="seri_number"> Số Seri Xe Hàng</label>
+                        <input type="text" name="seri_number" class="form-control" placeholder="Nhập số seri xe hàng">
                     </div>
                     <div class="form-group">
                         <label for="input_day">Ngày Nhập Kho</label>

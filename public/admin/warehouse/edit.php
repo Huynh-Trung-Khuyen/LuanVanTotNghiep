@@ -15,10 +15,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $quantity = $_POST['quantity'];
     $input_day = $_POST['input_day'];
     $expired_date = $_POST['expired_date'];
+    $seri_number = $_POST['seri_number'];
 
     $query = $conn->prepare('
         UPDATE warehouse
-        SET imported_product_name = :imported_product_name, quantity = :quantity, input_day = :input_day, expired_date = :expired_date
+        SET imported_product_name = :imported_product_name, 
+            quantity = :quantity, 
+            input_day = :input_day, 
+            expired_date = :expired_date, 
+            seri_number = :seri_number
         WHERE warehouse_id = :id
     ');
     $query->bindParam(':id', $id);
@@ -26,6 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $query->bindParam(':quantity', $quantity);
     $query->bindParam(':input_day', $input_day);
     $query->bindParam(':expired_date', $expired_date);
+    $query->bindParam(':seri_number', $seri_number);
     $query->execute();
 
     header('location:./index_warehouse.php');
@@ -34,7 +40,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <!DOCTYPE html>
 <html lang="en">
-
 <?php
 include("../include/head.php");
 ?>
@@ -71,7 +76,6 @@ include("../include/head.php");
                                     <input type="text" name="imported_product_name" value="<?php echo $row['imported_product_name'] ?>" class="form-control" placeholder="Nhập tên sản phẩm nhập kho">
                                 </div>
                             </div>
-
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="quantity">Số Lượng</label>
@@ -86,6 +90,10 @@ include("../include/head.php");
                         <div class="form-group">
                             <label for="expired_date">Hạn Sử Dụng</label>
                             <input type="date" name="expired_date" value="<?php echo $row['expired_date'] ?>" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="seri_number">Seri Number</label>
+                            <input type="text" name="seri_number" value="<?php echo $row['seri_number'] ?>" class="form-control" placeholder="Nhập Seri Number">
                         </div>
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary">Cập Nhật Sản Phẩm</button>
