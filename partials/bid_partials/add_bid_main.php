@@ -58,10 +58,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                     if ($query->execute()) {
                         $conn->commit();
-                        $success = 'Thêm phiên đấu giá thành công!';
+                        $successMessage = 'Thêm phiên đấu giá thành công!';
                     } else {
                         $conn->rollBack();
-                        $error = 'Thêm phiên đấu giá thất bại!';
+                        $errorMessage = 'Thêm phiên đấu giá thất bại!';
                     }
                 }
             } catch (PDOException $e) {
@@ -83,43 +83,105 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </head>
 
 <body>
-    <h1>Thêm Phiên Đấu Giá Mới</h1>
+    <div class="container">
 
-    <?php if (isset($error)) : ?>
-        <p><?php echo $error; ?></p>
-    <?php endif; ?>
 
-    <?php if (isset($success)) : ?>
-        <p><?php echo $success; ?></p>
-    <?php endif; ?>
+        <h1>Thêm Phiên Đấu Giá Mới</h1>
 
-    <form action="" method="POST" enctype="multipart/form-data">
-        <label for="product_bid_name">Tên Sản Phẩm Đấu Giá:</label>
-        <input type="text" id="product_bid_name" name="product_bid_name" required><br><br>
+        <?php if (isset($error)) : ?>
+            <p><?php echo $error; ?></p>
+        <?php endif; ?>
 
-        <label for="product_bid_description">Mô Tả Sản Phẩm Đấu Giá:</label>
-        <textarea id="product_bid_description" name="product_bid_description" required></textarea><br><br>
+        <?php if (isset($success)) : ?>
+            <p><?php echo $success; ?></p>
+        <?php endif; ?>
 
-        <label for="start_price">Giá Khởi Điểm:</label>
-        <input type="number" id="start_price" name="start_price" required>.000vnđ<br><br>
+        <div class="card-body">
+            <form action="#" method="POST" enctype="multipart/form-data">
+                <label for="product_bid_name">Tên Sản Phẩm Đấu Giá:</label>
+                <input type="text" id="product_bid_name" name="product_bid_name" class="form-control" placeholder="Nhập tên sản phẩm đấu giá" required><br>
 
-        <label for="end_time">Thời Gian Kết Thúc:</label>
-        <input type="datetime-local" id="end_time" name="end_time" required><br><br>
+                <label for="product_bid_description">Mô Tả Sản Phẩm Đấu Giá:</label>
+                <textarea id="product_bid_description" name="product_bid_description" class="form-control" placeholder="Nhập mô tả sản phẩm đấu giá" required></textarea><br>
 
-        <label for="supplier_id">Nhà Cung Cấp:</label>
-        <select name="supplier_id" id="supplier_id" required>
-            <?php foreach ($suppliers as $row) : ?>
-                <option value="<?php echo $row['supplier_id'] ?>"><?php echo $row['supplier_name'] ?></option>
-            <?php endforeach ?>
-        </select><br><br>
+                <label for="start_price">Giá Khởi Điểm:</label>
+                <input type="number" id="start_price" name="start_price" class="form-control" placeholder="Giá khởi điểm" required>.000vnđ<br>
 
-        <label for="product_bid_image">Hình Ảnh Sản Phẩm Đấu Giá:</label>
-        <input type="file" id="product_bid_image" name="product_bid_image" accept="image/*" required><br><br>
+                <label for="end_time">Thời Gian Kết Thúc:</label>
+                <input type="datetime-local" id="end_time" name="end_time" class="form-control" required><br>
 
-        <button type="submit">Thêm Phiên Đấu Giá</button>
-    </form>
+                <label for="supplier_id">Nhà Cung Cấp:</label>
+                <select name="supplier_id" id="supplier_id" class="form-control" required>
+                    <?php foreach ($suppliers as $row) : ?>
+                        <option value="<?php echo $row['supplier_id'] ?>"><?php echo $row['supplier_name'] ?></option>
+                    <?php endforeach ?>
+                </select><br><br>
 
-    <p><a href="../../public/bid/bid.php">Quay lại danh sách sản phẩm</a></p>
+                <label for="product_bid_image">Hình Ảnh Sản Phẩm Đấu Giá:</label>
+                <input type="file" id="product_bid_image" name="product_bid_image" class="form-control" accept="image/*" required><br>
+
+                <button type="submit" class="btn btn-primary">Thêm Phiên Đấu Giá</button>
+                <p><a href="../../public/bid/bid.php">Quay lại danh sách sản phẩm</a></p>
+            </form>
+        </div>
+
+        <!-- Success Modal -->
+        <?php if (isset($successMessage)) : ?>
+            <div class="modal fade show" tabindex="-1" role="dialog" style="display: block;">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Thành công</h5>
+                            <a href="../../public/bid/add_bid.php" class=" ">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button></a>
+                        </div>
+                        <div class="modal-body">
+                            <p><?php echo $successMessage; ?></p>
+                            <a href="../../public/bid/bid.php" class="btn btn-primary btn-block">Đi Đến Trang Đấu Giá</a>
+                            <a href="../../public/bid/bid_all.php" class="btn btn-secondary btn-block">Xem Các Phiên Đấu Giá Của Tôi</a>
+                        </div>
+                        <div class="modal-footer">
+                            <a href="../../public/bid/add_bid.php" class=" ">Tiếp Tục Thêm Phiên Đấu Giá</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <?php endif; ?>
+        <!-- Error Modal -->
+        <?php if (isset($errorMessage)) : ?>
+            <div class="modal fade show" tabindex="-1" role="dialog" style="display: block;">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Lỗi</h5>
+                            <a href="../../public/bid/add_bid.php" class=" ">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button></a>
+                        </div>
+                        <div class="modal-body">
+                            <p><?php echo $errorMessage; ?></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <?php endif; ?>
+
+    </div>
 </body>
+
+<script>
+    <?php if (isset($successMessage)) : ?>
+        document.getElementById("successMessage").textContent = "<?php echo $successMessage; ?>";
+        $("#successModal").modal("show");
+    <?php endif; ?>
+
+    <?php if (isset($errorMessage)) : ?>
+        document.getElementById("errorMessage").textContent = "<?php echo $errorMessage; ?>";
+        $("#errorModal").modal("show");
+    <?php endif; ?>
+</script>
 
 </html>
