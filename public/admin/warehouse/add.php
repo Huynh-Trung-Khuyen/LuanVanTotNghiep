@@ -92,11 +92,13 @@ include("../include/head.php");
                             <?php endforeach ?>
                         </select>
                     </div>
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-primary">Thêm Sản Phẩm Vào Kho</button>
-                    </div>
-                    <div class="form-group">
-                        <a href="./process_import.php" class="btn btn-primary"></a>
+                    <div class="row">
+                        <div class="col-6">
+                            <button type="submit" class="btn btn-primary">Thêm Sản Phẩm Vào Kho</button>
+                        </div>
+                        <div class="col-6 text-right">
+                            <a href="./excel.php" class="btn btn-primary">Thêm Sản Phẩm Bằng File Excel</a>
+                        </div>
                     </div>
                 </div>
             </form>
@@ -107,4 +109,5 @@ include("../include/head.php");
 <?php
 include("../include/footer.php");
 ?>
+
 </html>
