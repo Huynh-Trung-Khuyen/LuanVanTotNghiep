@@ -19,16 +19,14 @@ if (isset($_POST["import"])) {
     require 'excelReader/SpreadsheetReader.php';
 
     $reader = new SpreadsheetReader($targetDirectory);
-
-
-    $reader->next(); 
+    $reader->next();
     foreach ($reader as $key => $row) {
-        $imported_product_name = $row[0];
-        $quantity = $row[1];
-        $input_day = $row[2];
-        $expired_date = $row[3];
-        $supplier_id = $row[4];
-        $seri_number = $row[5];
+        $imported_product_name = $row[1]; // Sử dụng chỉ mục cột 1 (cột "Tên SP") để lấy tên sản phẩm
+        $quantity = $row[2];
+        $input_day = $row[3];
+        $expired_date = $row[4];
+        $supplier_id = $row[5];
+        $seri_number = $row[6];
 
         if (
             !empty($imported_product_name) &&
@@ -60,7 +58,7 @@ if (isset($_POST["import"])) {
     </script>
     ";
 }
-?>
+?> 
 
 
 <!DOCTYPE html>
