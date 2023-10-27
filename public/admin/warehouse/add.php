@@ -95,14 +95,14 @@ include("../include/head.php");
                     <div class="form-group">
                         <button type="submit" class="btn btn-primary">Thêm Sản Phẩm Vào Kho</button>
                     </div>
+                    <div class="form-group">
+                        <a href="./process_import.php" class="btn btn-primary"></a>
+                    </div>
                 </div>
             </form>
         </div>
     </div>
     <!-- ./wrapper -->
-    <?php
-    include("../include/footer.php");
-    ?>
 </body>
 <?php
 include("../include/footer.php");
