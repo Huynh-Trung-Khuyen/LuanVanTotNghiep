@@ -20,6 +20,8 @@ if (isset($_POST["import"])) {
 
     $reader = new SpreadsheetReader($targetDirectory);
 
+
+    $reader->next(); 
     foreach ($reader as $key => $row) {
         $imported_product_name = $row[0];
         $quantity = $row[1];
@@ -59,6 +61,7 @@ if (isset($_POST["import"])) {
     ";
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
