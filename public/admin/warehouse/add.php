@@ -3,11 +3,9 @@ session_start();
 
 require_once '../../../config.php';
 
-
 $query = $conn->prepare('SELECT * FROM supplier');
 $query->execute();
 $suppliers = $query->fetchAll(PDO::FETCH_ASSOC);
-
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $imported_product_name = $_POST['imported_product_name'];
@@ -16,15 +14,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $expired_date = $_POST['expired_date'];
     $supplier_id = $_POST['supplier_id'];
     $seri_number = $_POST['seri_number'];
+    $purchase_price = $_POST['purchase_price']; 
 
     if (empty($imported_product_name) || empty($quantity) || empty($input_day) || empty($expired_date) || empty($supplier_id) || empty($seri_number)) {
         $error = 'Không được để trống!';
     } else {
         $query = $conn->prepare('
             INSERT INTO warehouse
-            (imported_product_name, quantity, input_day, expired_date, supplier_id, seri_number)
+            (imported_product_name, quantity, input_day, expired_date, supplier_id, seri_number, purchase_price)  
             VALUES
-            (:imported_product_name, :quantity, :input_day, :expired_date, :supplier_id, :seri_number)
+            (:imported_product_name, :quantity, :input_day, :expired_date, :supplier_id, :seri_number, :purchase_price)  
         ');
         $query->bindParam(':imported_product_name', $imported_product_name);
         $query->bindParam(':quantity', $quantity);
@@ -32,12 +31,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $query->bindParam(':expired_date', $expired_date);
         $query->bindParam(':supplier_id', $supplier_id);
         $query->bindParam(':seri_number', $seri_number);
+        $query->bindParam(':purchase_price', $purchase_price); 
         $query->execute();
         $success = 'Thêm sản phẩm vào kho thành công!';
     }
 }
-
-
 ?>
 
 <!DOCTYPE html>
@@ -71,6 +69,10 @@ include("../include/head.php");
                     <div class="form-group">
                         <label for="quantity">Số Lượng</label>
                         <input type="text" name="quantity" class="form-control" placeholder="Số lượng sản phẩm">
+                    </div>
+                    <div class="form-group">
+                        <label for="purchase_price">Giá Nhập Hàng</label>
+                        <input type="text" name="purchase_price" class="form-control" placeholder=".000vnđ/kg">
                     </div>
                     <div class="form-group">
                         <label for="seri_number"> Số Seri Xe Hàng</label>

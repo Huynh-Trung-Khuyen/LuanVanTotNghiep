@@ -3,9 +3,25 @@ session_start();
 
 require_once '../../../config.php';
 
-$query = $conn->prepare('SELECT * FROM supplier');
+$items_per_page = 10;
+
+$current_page = isset($_GET['page']) ? $_GET['page'] : 1;
+
+$start_index = ($current_page - 1) * $items_per_page;
+
+$query = $conn->prepare('
+    SELECT * FROM supplier LIMIT :start, :items_per_page
+');
+$query->bindParam(':start', $start_index, PDO::PARAM_INT);
+$query->bindParam(':items_per_page', $items_per_page, PDO::PARAM_INT);
 $query->execute();
 $suppliers = $query->fetchAll(PDO::FETCH_ASSOC);
+
+$count_query = $conn->query('SELECT COUNT(*) FROM supplier');
+$total_items = $count_query->fetchColumn();
+
+$total_pages = ceil($total_items / $items_per_page);
+
 ?>
 
 <!DOCTYPE html>
@@ -62,6 +78,16 @@ include("../include/head.php");
                                             <?php endforeach; ?>
                                         </tbody>
                                     </table>
+                                    <nav aria-label="Page navigation">
+                                        <ul class="pagination">
+                                            <?php for ($page = 1; $page <= $total_pages; $page++) : ?>
+                                                <li class="page-item <?php echo ($page == $current_page) ? 'active' : ''; ?>">
+                                                    <a class="page-link" href="?page=<?php echo $page; ?>"><?php echo $page; ?></a>
+                                                </li>
+                                            <?php endfor; ?>
+                                        </ul>
+                                    </nav>
+
                                 </div>
                             </div>
                         </div>
@@ -74,4 +100,5 @@ include("../include/head.php");
 <?php
 include("../include/footer.php");
 ?>
+
 </html>

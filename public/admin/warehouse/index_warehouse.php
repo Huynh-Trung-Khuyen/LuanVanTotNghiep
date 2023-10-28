@@ -3,17 +3,30 @@ session_start();
 
 require_once '../../../config.php';
 
+$current_page = isset($_GET['page']) ? $_GET['page'] : 1;
+
+$items_per_page = 10;
+
+$start_index = ($current_page - 1) * $items_per_page;
+
 $query = $conn->prepare('
-    SELECT w.warehouse_id, w.imported_product_name, w.quantity, w.input_day, w.expired_date, w.seri_number, w.supplier_id, s.supplier_name
+    SELECT w.warehouse_id, w.imported_product_name, w.quantity, w.purchase_price, w.input_day, w.expired_date, w.seri_number, w.supplier_id, s.supplier_name
     FROM warehouse w
     LEFT JOIN supplier s ON w.supplier_id = s.supplier_id
     WHERE w.expired_date >= CURDATE()
     ORDER BY w.seri_number
+    LIMIT :start, :items_per_page
 ');
+$query->bindParam(':start', $start_index, PDO::PARAM_INT);
+$query->bindParam(':items_per_page', $items_per_page, PDO::PARAM_INT);
 $query->execute();
 $warehouses = $query->fetchAll(PDO::FETCH_ASSOC);
 
 
+$count_query = $conn->query('SELECT COUNT(*) FROM warehouse WHERE expired_date >= CURDATE()');
+$total_items = $count_query->fetchColumn();
+
+$total_pages = ceil($total_items / $items_per_page);
 ?>
 
 <!DOCTYPE html>
@@ -30,7 +43,6 @@ include("../include/head.php");
         ?>
         </aside>
         <div class="content-wrapper">
-            <!-- Content Header (Page header) -->
             <div class="content-header">
                 <div class="container-fluid">
                     <div class="row mb-2">
@@ -53,8 +65,10 @@ include("../include/head.php");
                                                 <th>ID Kho</th>
                                                 <th>Tên Sản Phẩm Nhập Kho</th>
                                                 <th>Số Lượng</th>
-                                                <th>Ngày Nhập Kho</th>
-                                                <th>Hạn Sử Dụng</th>
+                                                <th>Giá/Mỗi Kg</th>
+                                                <th>Tổng Giá Trị</th>
+                                                <th>Ngày Nhập</th>
+                                                <th>HSD</th>
                                                 <th>Nhà Cung Cấp</th>
                                                 <th>Thao Tác</th>
                                             </tr>
@@ -65,7 +79,10 @@ include("../include/head.php");
                                                     <td><?php echo $warehouse['seri_number']; ?></td>
                                                     <td><?php echo $warehouse['warehouse_id']; ?></td>
                                                     <td><?php echo $warehouse['imported_product_name']; ?></td>
-                                                    <td><?php echo $warehouse['quantity']; ?></td>
+                                                    <td><?php echo $warehouse['quantity']; ?>Kg</td>
+                                                    <td><?php echo $warehouse['purchase_price']; ?>.000vnđ/Kg</td>
+                                                    <td><?php echo number_format($warehouse['quantity'] * $warehouse['purchase_price'], 0, '.', '.'); ?>.000vnđ</td>
+
                                                     <td><?php echo $warehouse['input_day']; ?></td>
                                                     <td><?php echo $warehouse['expired_date']; ?></td>
                                                     <td><?php echo $warehouse['supplier_name']; ?></td>
@@ -77,6 +94,16 @@ include("../include/head.php");
                                             <?php endforeach; ?>
                                         </tbody>
                                     </table>
+
+                                    <nav aria-label="Page navigation">
+                                        <ul class="pagination">
+                                            <?php for ($i = 1; $i <= $total_pages; $i++) : ?>
+                                                <li class="page-item <?php echo ($i == $current_page) ? 'active' : ''; ?>">
+                                                    <a class="page-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
+                                                </li>
+                                            <?php endfor; ?>
+                                        </ul>
+                                    </nav>
                                 </div>
                             </div>
                         </div>
@@ -85,20 +112,6 @@ include("../include/head.php");
             </div>
         </div>
     </div>
-
-    <?php if (isset($error)) : ?>
-        <div style="width: 300px;" class="alert alert-danger alert-dismissible">
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            <strong>Lỗi!</strong> <?php echo $error ?>
-        </div>
-    <?php endif ?>
-
-    <?php if (isset($success)) : ?>
-        <div style="width: 300px;" class="alert alert-success alert-dismissible">
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            <strong>Thành Công!</strong> <?php echo $success ?>
-        </div>
-    <?php endif ?>
 </body>
 <?php
 include("../include/footer.php");

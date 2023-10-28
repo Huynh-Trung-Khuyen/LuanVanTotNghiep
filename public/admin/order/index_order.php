@@ -3,10 +3,25 @@ session_start();
 
 require_once '../../../config.php';
 
-// Truy vấn để lấy thông tin từ bảng order với điều kiện role là 1
-$query = $conn->prepare('SELECT * FROM `order` WHERE role = 1');
+$items_per_page = 10;
+
+$current_page = isset($_GET['page']) ? $_GET['page'] : 1;
+
+$start_index = ($current_page - 1) * $items_per_page;
+
+$query = $conn->prepare('
+    SELECT * FROM `order` WHERE role = 1 LIMIT :start, :items_per_page
+');
+$query->bindParam(':start', $start_index, PDO::PARAM_INT);
+$query->bindParam(':items_per_page', $items_per_page, PDO::PARAM_INT);
 $query->execute();
 $orders = $query->fetchAll(PDO::FETCH_ASSOC);
+
+$count_query = $conn->prepare('SELECT COUNT(*) FROM `order` WHERE role = 1');
+$count_query->execute();
+$total_items = $count_query->fetchColumn();
+
+$total_pages = ceil($total_items / $items_per_page);
 ?>
 
 <!DOCTYPE html>
@@ -96,7 +111,7 @@ $orders = $query->fetchAll(PDO::FETCH_ASSOC);
                                                                 <button type="submit" class="btn btn-warning" onclick="return confirm('Xác nhận hủy đơn hàng?')">Hủy</button>
                                                             </form>
                                                         </td>
-                                                        
+
                                                         <td>
                                                             <form action="delete.php" method="POST">
                                                                 <input type="hidden" name="order_id" value="<?php echo $order['order_id']; ?>">
@@ -108,6 +123,16 @@ $orders = $query->fetchAll(PDO::FETCH_ASSOC);
                                                 <?php endforeach; ?>
                                             </tbody>
                                         </table>
+                                        <nav aria-label="Page navigation">
+                                            <ul class="pagination">
+                                                <?php for ($page = 1; $page <= $total_pages; $page++) : ?>
+                                                    <li class="page-item <?php echo ($page == $current_page) ? 'active' : ''; ?>">
+                                                        <a class="page-link" href="?page=<?php echo $page; ?>"><?php echo $page; ?></a>
+                                                    </li>
+                                                <?php endfor; ?>
+                                            </ul>
+                                        </nav>
+
                                     </div>
                                 </div>
                             </div>

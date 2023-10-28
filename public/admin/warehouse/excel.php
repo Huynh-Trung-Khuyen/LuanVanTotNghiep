@@ -19,14 +19,16 @@ if (isset($_POST["import"])) {
     require 'excelReader/SpreadsheetReader.php';
 
     $reader = new SpreadsheetReader($targetDirectory);
-    $reader->next();
+    $reader->next(); //Code này bỏ qua dòng tiêu đề
+
     foreach ($reader as $key => $row) {
         $imported_product_name = $row[1]; // Sử dụng chỉ mục cột 1 (cột "Tên SP") để lấy tên sản phẩm
         $quantity = $row[2];
-        $input_day = $row[3];
-        $expired_date = $row[4];
-        $supplier_id = $row[5];
-        $seri_number = $row[6];
+        $purchase_price = $row[3];
+        $input_day = $row[4];
+        $expired_date = $row[5];
+        $supplier_id = $row[6];
+        $seri_number = $row[7];
 
         if (
             !empty($imported_product_name) &&
@@ -37,8 +39,8 @@ if (isset($_POST["import"])) {
         ) {
             $stmt = $conn->prepare("
                 INSERT INTO warehouse 
-                (imported_product_name, quantity, input_day, expired_date, supplier_id, seri_number)
-                VALUES (:imported_product_name, :quantity, :input_day, :expired_date, :supplier_id, :seri_number)
+                (imported_product_name, quantity, input_day, expired_date, supplier_id, seri_number, purchase_price)
+                VALUES (:imported_product_name, :quantity, :input_day, :expired_date, :supplier_id, :seri_number, :purchase_price)
             ");
 
             $stmt->bindParam(':imported_product_name', $imported_product_name);
@@ -47,19 +49,19 @@ if (isset($_POST["import"])) {
             $stmt->bindParam(':expired_date', $expired_date);
             $stmt->bindParam(':supplier_id', $supplier_id);
             $stmt->bindParam(':seri_number', $seri_number);
+            $stmt->bindParam(':purchase_price', $purchase_price);
             $stmt->execute();
         }
     }
 
     echo "
     <script>
-    alert('Succesfully Imported');
-    document.location.href = '';
+    alert('Successfully Imported');
+    document.location.href = 'excel.php';
     </script>
     ";
 }
 ?> 
-
 
 <!DOCTYPE html>
 <html lang="en">
