@@ -158,6 +158,36 @@
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-gavel"></i>
                         <p>
+                            Nhập Kho SP Đấu Giá
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="../warehouse_bid/add.php" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Thêm Kho Đấu Giá</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="../warehouse_bid/index_warehouse_bid.php" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Danh Sách Kho</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="../warehouse_bid/expired_date.php" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Danh Sách Kho Hết Hạn</p>
+                            </a>
+                        </li>
+
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-gavel"></i>
+                        <p>
                             Đấu Giá
                             <i class="right fas fa-angle-left"></i>
                         </p>
