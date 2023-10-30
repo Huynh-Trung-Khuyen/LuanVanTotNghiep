@@ -54,8 +54,10 @@ LEFT JOIN (
     )
 ) b1 ON pb.product_bid_id = b1.product_bid_id
 LEFT JOIN user u2 ON b1.user_id = u2.user_id
-LEFT JOIN supplier s ON pb.supplier_id = s.supplier_id 
+LEFT JOIN warehouse_bid wb ON pb.warehouse_bid_id = wb.warehouse_bid_id
+LEFT JOIN supplier s ON wb.supplier_id = s.supplier_id
 WHERE pb.real_end_time > NOW() AND pb.is_active = 1";
+
 $stmt = $conn->prepare($sql);
 $stmt->execute();
 $productList = $stmt->fetchAll(PDO::FETCH_ASSOC);

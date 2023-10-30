@@ -1,9 +1,8 @@
 <?php
 
-
-$query = $conn->prepare('SELECT * FROM supplier');
+$query = $conn->prepare('SELECT * FROM warehouse_bid');
 $query->execute();
-$suppliers = $query->fetchAll(PDO::FETCH_ASSOC);
+$warehouse_bids = $query->fetchAll(PDO::FETCH_ASSOC);
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $user_id = $_SESSION['user_id'];
@@ -11,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $product_bid_description = $_POST['product_bid_description'];
     $start_price = $_POST['start_price'];
     $end_time = $_POST['end_time'];
-    $supplier_id = $_POST['supplier_id'];
+    $warehouse_bid_id = $_POST['warehouse_bid_id'];
 
     $image_name = '';
 
@@ -24,45 +23,30 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $conn->beginTransaction();
 
             try {
-                $check_money_query = $conn->prepare('SELECT money FROM business WHERE user_id = :user_id');
-                $check_money_query->bindParam(':user_id', $user_id);
-                $check_money_query->execute();
-                $money = $check_money_query->fetch(PDO::FETCH_COLUMN);
+                $end_time = date('Y-m-d H:i:s', strtotime($end_time));
 
-                if ($money < 200) {
-                    $error = 'Số tiền không đủ, vui lòng nạp thêm tiền.';
+                $query = $conn->prepare('
+                    INSERT INTO product_bid
+                    (user_id, product_bid_name, product_bid_description, start_price, current_price, end_time, real_end_time, product_bid_image, warehouse_bid_id)
+                    VALUES
+                    (:user_id, :product_bid_name, :product_bid_description, :start_price, :start_price, :end_time, :real_end_time, :product_bid_image, :warehouse_bid_id)
+                ');
+
+                $query->bindParam(':user_id', $user_id);
+                $query->bindParam(':product_bid_name', $product_bid_name);
+                $query->bindParam(':product_bid_description', $product_bid_description);
+                $query->bindParam(':start_price', $start_price);
+                $query->bindParam(':end_time', $end_time);
+                $query->bindParam(':real_end_time', $end_time);
+                $query->bindParam(':product_bid_image', $image_name);
+                $query->bindParam(':warehouse_bid_id', $warehouse_bid_id);
+
+                if ($query->execute()) {
+                    $conn->commit();
+                    $successMessage = 'Thêm phiên đấu giá thành công!';
                 } else {
-                    $new_money = $money - 200;
-                    $update_money_query = $conn->prepare('UPDATE business SET money = :money WHERE user_id = :user_id');
-                    $update_money_query->bindParam(':money', $new_money);
-                    $update_money_query->bindParam(':user_id', $user_id);
-                    $update_money_query->execute();
-
-                    $end_time = date('Y-m-d H:i:s', strtotime($end_time));
-
-                    $query = $conn->prepare('
-                        INSERT INTO product_bid
-                        (user_id, product_bid_name, product_bid_description, start_price, current_price, end_time, real_end_time, product_bid_image, supplier_id)
-                        VALUES
-                        (:user_id, :product_bid_name, :product_bid_description, :start_price, :start_price, :end_time, :real_end_time, :product_bid_image, :supplier_id)
-                    ');
-
-                    $query->bindParam(':user_id', $user_id);
-                    $query->bindParam(':product_bid_name', $product_bid_name);
-                    $query->bindParam(':product_bid_description', $product_bid_description);
-                    $query->bindParam(':start_price', $start_price);
-                    $query->bindParam(':end_time', $end_time);
-                    $query->bindParam(':real_end_time', $end_time);
-                    $query->bindParam(':product_bid_image', $image_name);
-                    $query->bindParam(':supplier_id', $supplier_id);
-
-                    if ($query->execute()) {
-                        $conn->commit();
-                        $successMessage = 'Thêm phiên đấu giá thành công!';
-                    } else {
-                        $conn->rollBack();
-                        $errorMessage = 'Thêm phiên đấu giá thất bại!';
-                    }
+                    $conn->rollBack();
+                    $errorMessage = 'Thêm phiên đấu giá thất bại!';
                 }
             } catch (PDOException $e) {
                 $conn->rollBack();
@@ -105,15 +89,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <textarea id="product_bid_description" name="product_bid_description" class="form-control" placeholder="Nhập mô tả sản phẩm đấu giá" required></textarea><br>
 
                 <label for="start_price">Giá Khởi Điểm:</label>
-                <input type="number" id="start_price" name="start_price" class="form-control" placeholder="Giá khởi điểm" required>.000vnđ<br>
+                <input type="number" id="start_price" name="start_price" class="form-control" placeholder="Giá khởi điểm" required>
 
                 <label for="end_time">Thời Gian Kết Thúc:</label>
                 <input type="datetime-local" id="end_time" name="end_time" class="form-control" required><br>
 
-                <label for="supplier_id">Nhà Cung Cấp:</label>
-                <select name="supplier_id" id="supplier_id" class="form-control" required>
-                    <?php foreach ($suppliers as $row) : ?>
-                        <option value="<?php echo $row['supplier_id'] ?>"><?php echo $row['supplier_name'] ?></option>
+                <label for="warehouse_bid_id">Sản Phẩm Nhập Kho:</label>
+                <select name="warehouse_bid_id" id="warehouse_bid_id" class="form-control" required>
+                    <?php foreach ($warehouse_bids as $row) : ?>
+                        <option value="<?php echo $row['warehouse_bid_id'] ?>"><?php echo $row['imported_bid_name'] ?></option>
                     <?php endforeach ?>
                 </select><br><br>
 
@@ -168,6 +152,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 </div>
             </div>
         <?php endif; ?>
+
 
     </div>
 </body>

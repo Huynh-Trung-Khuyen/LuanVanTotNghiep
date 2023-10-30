@@ -10,7 +10,8 @@ function getProductBid($product_bid_id, $conn)
            b.user_id AS recent_bidder_id,
            u2.fullname AS recent_bidder_fullname
     FROM product_bid pb
-    LEFT JOIN supplier s ON pb.supplier_id = s.supplier_id 
+    LEFT JOIN warehouse_bid wb ON pb.warehouse_bid_id = wb.warehouse_bid_id
+    LEFT JOIN supplier s ON wb.supplier_id = s.supplier_id
     LEFT JOIN bid b ON pb.product_bid_id = b.product_bid_id
     LEFT JOIN user u2 ON b.user_id = u2.user_id
     WHERE pb.product_bid_id = :product_bid_id
@@ -21,7 +22,6 @@ function getProductBid($product_bid_id, $conn)
     $stmt->execute();
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
-
 
 
 
