@@ -83,11 +83,11 @@ $productList = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <?php foreach ($productList as $product) : ?>
             <div class="col-md-6 col-lg-3 ftco-animate">
                 <div class="product">
-                    <a href="../../public/bid/bid_detail.php?product_bid_id=<?php echo $product['product_bid_id']; ?>" class="img-prod">
+                    <a href="../../public/bid/bid_deposit.php?product_bid_id=<?php echo $product['product_bid_id']; ?>" class="img-prod">
                         <img src="../../public/uploads/<?php echo $product['product_bid_image'] ?>" class="img-fluid" alt="Ảnh">
                     </a>
                     <div class="text py-3 pb-4 px-3 text-center">
-                        <h3><a href="../../public/bid/bid_detail.php?product_bid_id=<?php echo $product['product_bid_id']; ?>"><?php echo $product['product_bid_name']; ?></a></h3>
+                        <h3><a href="../../public/bid/bid_deposit.php?product_bid_id=<?php echo $product['product_bid_id']; ?>"><?php echo $product['product_bid_name']; ?></a></h3>
                         <h7>Nhà Cung Cấp:<br> <?php echo $product['supplier_name']; ?></h7>
                         <div class="d-flex justify-content-center align-items-center">
                             <p class="price"><span>
