@@ -132,7 +132,7 @@ if (isset($_GET['product_bid_id'])) {
                         </button>
                     </div>
                     <div class="modal-body">
-                        <p>Bạn có muốn trả 200.000vnđ để tham gia phiên đấu giá không?</p>
+                        <p>Bạn có muốn trả 200.000vnđ để tham gia phiên đấu giá không?(Nếu Đã Trả Phí Thì Sẽ Vào Không Cần Trả Nửa)</p>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy bỏ</button>
