@@ -22,5 +22,22 @@
                 </div>
             </div>
         </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Nạp Tiền</h4>
+                </div>
+                <div class="card-body">
+                <form action="add_money_b.php" method="post">
+                        <div class="form-group">
+                            <label for="amount">Số Tiền Cần Nạp (vnđ):</label>
+                            <input type="text" class="form-control" id="amount" name="amount" placeholder="Nhập số tiền">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Nạp Tiền</button>
+                    </form>
+                </div>
+               
+            </div>
+        </div>
     </div>
 </div>
