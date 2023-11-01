@@ -14,7 +14,8 @@
                         <li class="list-group-item"><strong>Số Điện Thoại:</strong> <?php echo $row['phone']; ?></li>
                         <li class="list-group-item"><strong>Địa Chỉ Email:</strong> <?php echo $row['email_address']; ?></li>
                         <li class="list-group-item"><strong>Mã Số Thuế:</strong> <?php echo $row['tax_code']; ?></li>
-                        <li class="list-group-item"><strong>Tính Dụng:</strong> <?php echo $row['money']; ?>.000vnđ</li>
+                        <li class="list-group-item"><strong>Tính Dụng:</strong> <?php echo number_format($row['money'], 0, ',', '.'); ?>.000vnđ</li>
+
                     </ul>
                 </div>
                 <div class="card-footer">
