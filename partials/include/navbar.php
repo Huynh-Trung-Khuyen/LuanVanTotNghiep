@@ -6,7 +6,7 @@
         </button>
         <form method="GET" action="../../public/shop/search.php">
             <div class="searchbar">
-                <input class="search_input" type="text" name="product_name" placeholder="Tìm Kiếm" style="width: 400px;">
+                <input class="search_input" type="text" name="product_name" placeholder="Tìm Kiếm" style="width: 300px;">
             </div>
         </form>
 
@@ -68,8 +68,18 @@
                     <?php if ($_SESSION['user']['role'] == 1 || $_SESSION['user']['role'] == 0) : ?>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <?php echo $_SESSION['user']['name']; ?>
+                                <?php
+                                $username = $_SESSION['user']['name'];
+                                $maxUsernameLength = 10;
+                                if (strlen($username) > $maxUsernameLength) {
+                                    $truncatedUsername = substr($username, 0, $maxUsernameLength) . '...';
+                                    echo $truncatedUsername;
+                                } else {
+                                    echo $username;
+                                }
+                                ?>
                             </a>
+
                             <div class="dropdown-menu" style="margin-top: 0px;" aria-labelledby="dropdown04">
                                 <a class="dropdown-item" href="../../public/cart/checkout.php">Đơn Mua</a>
                                 <a class="dropdown-item" href="../../public/bid/bid_totals.php">Đơn Mua Đấu Giá</a>
@@ -77,6 +87,45 @@
                                 <a class="dropdown-item" href="../../public/business/business_info.php">Thông Tin Doanh Nghiệp</a>
                                 <a class="dropdown-item" href="../../public/account/logout.php">Đăng Xuất</a>
                             </div>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <?php
+                            if (!isset($_SESSION['user_id']) || empty($_SESSION['user_id'])) {
+                            }
+
+                            $user_id = $_SESSION['user_id'];
+
+                            $sql = "SELECT 
+    b.business_id,
+    b.user_id,
+    u.fullname AS user_fullname,
+    b.city_address,
+    b.district_address,
+    b.address,
+    b.phone,
+    b.email_address,
+    b.money,
+    b.tax_code  
+FROM
+    business AS b
+JOIN
+    user AS u
+ON
+    b.user_id = u.user_id
+WHERE
+    u.user_id = :user_id";
+
+                            $stmt = $conn->prepare($sql);
+                            $stmt->bindParam(':user_id', $user_id);
+                            $stmt->execute();
+
+                            if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                include('../../partials/include/money.php');
+                            } else {
+
+                                echo "Không tìm thấy dữ liệu.";
+                            }
+                            ?>
                         </li>
 
                     <?php else : ?>
@@ -91,6 +140,12 @@
                         </li>
                     <?php endif; ?>
                 <?php endif; ?>
+
+                <!-- Hiển Thị Tiền -->
+
+
+
+
 
                 <?php
                 include("../../partials/include/cart_cout.php"); ?>

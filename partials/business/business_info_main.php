@@ -14,7 +14,7 @@
                         <li class="list-group-item"><strong>Số Điện Thoại:</strong> <?php echo $row['phone']; ?></li>
                         <li class="list-group-item"><strong>Địa Chỉ Email:</strong> <?php echo $row['email_address']; ?></li>
                         <li class="list-group-item"><strong>Mã Số Thuế:</strong> <?php echo $row['tax_code']; ?></li>
-                        <li class="list-group-item"><strong>Tính Dụng:</strong> <?php echo number_format($row['money'], 0, ',', '.'); ?>.000vnđ</li>
+                        <li class="list-group-item"><strong>Tính Dụng:</strong> <?php echo number_format($row['money'], 0, ',', '.'); ?> Coin</li>
 
                     </ul>
                 </div>
@@ -31,7 +31,7 @@
                 <div class="card-body">
                 <form action="add_money_b.php" method="post">
                         <div class="form-group">
-                            <label for="amount">Số Tiền Cần Nạp (vnđ):</label>
+                            <label for="amount">Số Tiền Cần Nạp (vnđ):(Mỗi 1.000vnđ = 1 Coin, Chỉ Được Nạp Từ 1.000.000nvđ Trở lên)</label>
                             <input type="text" class="form-control" id="amount" name="amount" placeholder="Nhập số tiền">
                         </div>
                         <button type="submit" class="btn btn-primary">Nạp Tiền</button>
