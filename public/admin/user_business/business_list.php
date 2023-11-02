@@ -11,10 +11,9 @@
                                         <th>Id</th>
                                         <th>Tên Đăng Nhập</th>
                                         <th>Tên Người Dùng</th>
-                                        <th>Xóa Người Dùng</th>
-                                        <th>Nhập thông tin</th>
-                                        <th>Nạp Tiền</th>
                                         <th>Thông tin</th>
+                                        <th>Nhập thông tin</th>
+                                        <th>Xóa Người Dùng</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -29,31 +28,8 @@
                                         <tr>
                                             <td><?php echo $user['user_id']; ?></td>
                                             <td><?php echo $user['username']; ?></td>
-                                            <td><?php echo $user['fullname']; ?></td>
+                                            <td><?php echo $user['fullname']; ?></td>  
                                             <td>
-                                                <form method="post" action="business_delete.php">
-                                                    <input type="hidden" name="user_id" value="<?php echo $user['user_id']; ?>">
-                                                    <button type="submit" class="btn btn-danger" name="delete_user">Xóa Người Dùng</button>
-                                                </form>
-                                            </td>
-
-                                            <td>
-                                                <?php if ($businessInfo) : ?>
-                                                   
-                                                    <a href="./edit_business.php?user_id=<?php echo $user['user_id']; ?>" class="btn btn-primary">Sửa Thông Tin Doanh Nghiệp</a>
-                                                <?php else : ?>
-                                                    <a href="./add_business.php?user_id=<?php echo $user['user_id']; ?>" class="btn btn-success">Thêm thông tin</a>
-                                                <?php endif; ?>
-                                            </td>
-
-                                            <td>
-                                                <?php if ($businessInfo) : ?>
-                                                    <a href="./business_money.php?user_id=<?php echo $user['user_id']; ?>" class="btn btn-primary">Nạp Tiền</a>
-                                                <?php else : ?>
-                                                    <p>Doanh Nghiệp chưa <br> cập nhật thông tin</p>
-                                                <?php endif; ?>
-                                            </td>
-                                            <td colspan="4">
                                                 <?php if ($businessInfo) : ?>
                                                     <?php if ($user['role'] == 1 && $businessInfo) : ?>
                                                         <strong>Thông tin doanh nghiệp:</strong><br>
@@ -68,6 +44,20 @@
                                                 <?php else : ?>
                                                     <p>Doanh Nghiệp chưa cập nhật thông tin</p>
                                                 <?php endif; ?>
+                                            </td>
+                                            <td>
+                                                <?php if ($businessInfo) : ?>
+                                                   
+                                                    <a href="./edit_business.php?user_id=<?php echo $user['user_id']; ?>" class="btn btn-primary">Sửa Thông Tin Doanh Nghiệp</a>
+                                                <?php else : ?>
+                                                    <a href="./add_business.php?user_id=<?php echo $user['user_id']; ?>" class="btn btn-success">Thêm thông tin</a>
+                                                <?php endif; ?>
+                                            </td>
+                                            <td>
+                                                <form method="post" action="business_delete.php">
+                                                    <input type="hidden" name="user_id" value="<?php echo $user['user_id']; ?>">
+                                                    <button type="submit" class="btn btn-danger" name="delete_user">Xóa Người Dùng</button>
+                                                </form>
                                             </td>
 
                                         </tr>
