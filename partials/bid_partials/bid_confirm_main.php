@@ -17,7 +17,7 @@ $sql = "SELECT pb.*, u.fullname AS winner_fullname, u.user_id AS winner_user_id,
         LEFT JOIN business b ON u.user_id = b.user_id
         WHERE pb.user_id = :user_id
         AND pb.real_end_time < NOW()
-        AND pb.is_active = 1";
+        AND pb.is_active = 0";
 $stmt = $conn->prepare($sql);
 $stmt->bindParam(':user_id', $user_id);
 $stmt->execute();

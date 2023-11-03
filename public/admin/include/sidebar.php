@@ -150,6 +150,14 @@
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Danh Sách Đơn Hàng</p>
                             </a>
+                            <a href="../order/success_order.php" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Đơn Thành Công</p>
+                            </a>
+                            <a href="../order/fail_order.php" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Đơn Đã Hủy</p>
+                            </a>
                         </li>
 
                     </ul>
@@ -197,6 +205,12 @@
                             <a href="../bid/index_bid.php" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Danh Sách Đấu Giá</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="../bid/success_bid.php" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Đơn Đấu Giá Thành Công</p>
                             </a>
                         </li>
 
