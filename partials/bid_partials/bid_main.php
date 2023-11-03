@@ -23,10 +23,7 @@ foreach ($expired_bids as $expired_bid) {
     }
 }
 
-$sql = "UPDATE product_bid SET is_active = 0 WHERE real_end_time <= :current_time";
-$stmt = $conn->prepare($sql);
-$stmt->bindParam(':current_time', $current_time);
-$stmt->execute();
+
 
 $sql = "SELECT 
     pb.product_bid_id, 

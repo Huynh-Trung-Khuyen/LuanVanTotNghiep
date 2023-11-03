@@ -33,7 +33,7 @@
                                 <a class="dropdown-item" href="../../public/bid/bid.php">Phiên Đấu Giá</a>
                                 <a class="dropdown-item" href="../../public/bid/add_bid.php">Thêm Đấu Giá</a>
                                 <a class="dropdown-item" href="../../public/bid/bid_manage.php">Quản Lý Giao Hàng</a>
-                                <a class="dropdown-item" href="../../public/bid/bid_confirm.php">Xác Nhận Giao Hàng</a>
+                                <a class="dropdown-item" href="../../public/bid/bid_confirm.php">Phiên Đấu Giá Kết Thúc</a>
                                 <a class="dropdown-item" href="../../public/bid/bid_all.php">Danh Sách Phiên Đấu Giá</a>
                             </div>
                         </li>
