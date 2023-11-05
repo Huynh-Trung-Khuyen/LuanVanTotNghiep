@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $conn->beginTransaction();
 
-        $cart_total = 0; 
+        $cart_total = 0;
         $query = "INSERT INTO `order` (order_name, address, city_address, district_address, phone, email_address, cart_total, user_id) 
                   VALUES (:order_name, :address, :city_address, :district_address, :phone, :email_address, 0, :user_id)";
         $stmt = $conn->prepare($query);
@@ -53,9 +53,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
                     $item_total = $product_price * $quantity_of_products;
-                    $cart_total += $item_total; 
+                    $cart_total += $item_total;
 
-    
+
                     $insertOrderedProductsQuery = "INSERT INTO ordered_products (order_id, product_id, quantity_of_products) VALUES (:order_id, :product_id, :quantity_of_products)";
                     $insertOrderedProductsStmt = $conn->prepare($insertOrderedProductsQuery);
                     $insertOrderedProductsStmt->bindParam(':order_id', $order_id);
@@ -69,7 +69,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $updateWarehouseStmt->bindParam(':warehouse_id', $warehouse_id);
                     $updateWarehouseStmt->execute();
                 } else {
-       
                 }
             }
 
@@ -88,7 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $conn->commit();
 
-            echo "Đặt Hàng thành công!";
+            $successMessage = 'Đặt hàng thành công!';
         } else {
 
             $conn->rollback();
@@ -122,6 +121,29 @@ if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])) {
 ?>
 
 <section class="ftco-section">
+    <?php if (isset($successMessage)) : ?>
+        <div class="modal fade show" tabindex="-1" role="dialog" style="display: block;">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Thành công</h5>
+                        <a href="../../public/bid/add_bid.php" class=" ">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button></a>
+                    </div>
+                    <div class="modal-body">
+                        <p><?php echo $successMessage; ?></p>
+                        <a href="../../public/cart/checkout.php" class="btn btn-primary btn-block">Xem Thông Tin Giao Hàng</a>
+                       
+                    </div>
+                    <div class="modal-footer">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    <?php endif; ?>
     <div class="container">
         <form action="#" method="POST" class="billing-form">
             <div class="row justify-content-center">
@@ -178,12 +200,12 @@ if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])) {
                             <hr>
                             <p class="d-flex total-price">
                                 <span>Tổng Số Tiền</span>
-                                <p class="total">
-                                    <?php echo number_format($cart_total, 0, ',', '.'); ?>.000 vnđ
-                                </p>
-                                <div class="cart-detail p-3 p-md-4">
-                                    <p><button type="submit" class="btn btn-primary py-3 px-4">Đặt Hàng</button></p>
-                                </div>
+                            <p class="total">
+                                <?php echo number_format($cart_total, 0, ',', '.'); ?>.000 vnđ
+                            </p>
+                            <div class="cart-detail p-3 p-md-4">
+                                <p><button type="submit" class="btn btn-primary py-3 px-4">Đặt Hàng</button></p>
+                            </div>
                             </p>
                         </div>
                         <div class="col-md-12">
@@ -194,3 +216,15 @@ if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])) {
         </form>
     </div>
 </section>
+
+<script>
+    <?php if (isset($successMessage)) : ?>
+        document.getElementById("successMessage").textContent = "<?php echo $successMessage; ?>";
+        $("#successModal").modal("show");
+    <?php endif; ?>
+
+    <?php if (isset($errorMessage)) : ?>
+        document.getElementById("errorMessage").textContent = "<?php echo $errorMessage; ?>";
+        $("#errorModal").modal("show");
+    <?php endif; ?>
+</script>

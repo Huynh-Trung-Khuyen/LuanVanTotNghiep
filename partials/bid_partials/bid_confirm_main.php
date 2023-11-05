@@ -71,19 +71,22 @@ $productList = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                         </td>
                                         <td class="cart_total">
                                             <?php if ($product['winner_user_id'] == 0) : ?>
-                                                <form action="delete_bid2.php" method="POST" >
+                                                <form action="delete_bid2.php" method="POST">
                                                     <input type="hidden" name="product_bid_id" value="<?php echo $product['product_bid_id']; ?>">
-                                                    <button type="submit" class="delete-button px-3"  onclick="return confirm('Bạn Muốn Xóa Phiên Đấu Giá Này?')" style="cursor: pointer;">
+                                                    <button type="submit" class="action-button px-3" onclick="return confirm('Bạn Muốn Xóa Phiên Đấu Giá Này?')" style="cursor: pointer;">
                                                         <i class="fas fa-trash-alt" style="color: red;"></i> Xóa Phiên
                                                     </button>
                                                 </form>
                                             <?php else : ?>
                                                 <form method="post">
                                                     <input type="hidden" name="product_bid_id" value="<?php echo $product['product_bid_id']; ?>">
-                                                    <input type="submit" name="update_is_active" value="Xác Nhận Thông Tin Giao Hàng">
+                                                    <button type="submit" class="action-button px-3" name="update_is_active" style="cursor: pointer;">
+                                                    <i class="fas fa-check" style="color: green;"></i> Xác Nhận
+                                                    </button>
                                                 </form>
                                             <?php endif; ?>
                                         </td>
+
 
                                     </tr>
                                 <?php endforeach; ?>
