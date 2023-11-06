@@ -153,27 +153,27 @@ if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])) {
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for="order_name">Họ Và Tên Người Nhận</label>
-                                <input type="text" class="form-control" name="order_name" placeholder="Nhập Tên Người Nhận">
+                                <input type="text" class="form-control" name="order_name" placeholder="Nhập Tên Người Nhận" required>
                             </div>
                         </div>
                         <div class="w-100"></div>
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for="address">Địa Chỉ</label>
-                                <input type="text" class="form-control" name="address" placeholder="Nhập Địa Chỉ Nhận Hàng">
+                                <input type="text" class="form-control" name="address" placeholder="Nhập Địa Chỉ Nhận Hàng" required>
                             </div>
                         </div>
                         <div class="w-100"></div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="city_address">Thành Phố</label>
-                                <input type="text" class="form-control" name="city_address" placeholder="Nhập Thành Phố">
+                                <input type="text" class="form-control" name="city_address" placeholder="Nhập Thành Phố" required>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="district_address">Huyện</label>
-                                <input type="text" class="form-control" name="district_address" placeholder="Nhập Huyện">
+                                <input type="text" class="form-control" name="district_address" placeholder="Nhập Huyện" required>
                             </div>
                         </div>
 
@@ -181,13 +181,13 @@ if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])) {
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="phone">Số Điện Thoại</label>
-                                <input type="text" class="form-control" name="phone" placeholder="Nhập Số Điện Thoại">
+                                <input type="text" class="form-control" name="phone" placeholder="Nhập Số Điện Thoại" required>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="email_address">Email</label>
-                                <input type="text" class="form-control" name="email_address" placeholder="Nhập Email">
+                                <input type="text" class="form-control" name="email_address" placeholder="Nhập Email" required>
                             </div>
                         </div>
                         <div class="w-100"></div>

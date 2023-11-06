@@ -13,9 +13,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($product_quantity) {
             if ($quantity_of_products < 1) {
-                echo "Vui lòng chọn số lượng hợp lệ.";
+                $error = "Vui lòng chọn số lượng hợp lệ.";
             } elseif ($quantity_of_products > $product_quantity['quantity']) {
-                echo "Số lượng sản phẩm vượt quá số lượng hiện có.";
+                $error = "Số lượng sản phẩm vượt quá số lượng hiện có.";
             } else {
                 $query = "SELECT * FROM cart WHERE product_id = :product_id AND user_id = :user_id";
                 $stmt = $conn->prepare($query);
@@ -39,13 +39,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $insertStmt->bindParam(':quantity', $quantity_of_products);
                     $insertStmt->execute();
                 }
-                echo "Sản phẩm đã được thêm vào giỏ hàng.";
+                $success = "Sản phẩm đã được thêm vào giỏ hàng.";
             }
         } else {
-            echo "Không có sản phẩm hoặc đã hết hàng.";
+            $error = "Không có sản phẩm hoặc đã hết hàng.";
         }
     } else {
-        echo "Vui lòng đăng nhập trước khi thêm sản phẩm vào giỏ hàng.";
+        $error = "Vui lòng đăng nhập trước khi thêm sản phẩm vào giỏ hàng.";
     }
 }
 
@@ -64,42 +64,82 @@ if (isset($_GET['id'])) {
     $product = $query->fetch(PDO::FETCH_ASSOC);
 }
 ?>
-
 <?php if (!empty($product)) : ?>
     <form method="POST">
-    <section class="ftco-section">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6 mb-5">
-                    <img src="../../public/uploads/<?php echo $product['image'] ?>" class="img-fluid" alt="Colorlib Template">
-                </div>
-                <div class="col-lg-6 product-details pl-md-5">
-                    <h3><?php echo $product['product_name'] ?></h3>
-                    <p class="price"><span><?php echo $product['price'] ?>.000 vnđ/Kg</span></p>
-                    <p><?php echo $product['content'] ?></p>
-                    <p>Số lượng hiện có: <?php echo $product['quantity'] ?>Kg</p>
-                    <p>Nhà cung cấp: <?php echo $product['supplier_name'] ?></p>
-                    <div class="row mt-4">
-                        <div class="w-100"></div>
-                        <div class="input-group col-md-6 d-flex mb-3">
-                            <span class="input-group-btn mr-2">
-                                <button type="button" class="quantity-left-minus btn" data-type="minus" data-field="">
-                                    <i class="ion-ios-remove"></i>
-                                </button>
-                            </span>
-                            <input type="text" id="quantity" name="quantity" class="form-control input-number" value="1" min="1" max="<?php echo $product['quantity']; ?>">
-                            <span class="input-group-btn ml-2">
-                                <button type="button" class="quantity-right-plus btn" data-type="plus" data-field="">
-                                    <i class="ion-ios-add"></i>
-                                </button>
-                            </span>
-                        </div>
-                        <div class="w-100"></div>
+        <section class="ftco-section">
+            <div class="container">
+                <?php if (isset($error)) : ?>
+                    <div style="width: auto;" class="alert alert-danger alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <strong>
+                            <i class="fa-regular fa-face-sad-cry"></i>
+                            Xin Lỗi!
+                        </strong> <?php echo $error ?>
                     </div>
-                    <button type="submit" class="btn" name="add_to_cart">Thêm Vào Giỏ Hàng</button>
+                <?php endif ?>
+                <?php if (isset($success)) : ?>
+                    <div style="width: auto;" class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <strong><i class="fa-solid fa-face-smile-wink"></i>
+                            Tuyệt Vời!
+                        </strong> <?php echo $success ?>
+                    </div>
+                <?php endif ?>
+                <div class="row">
+                    <div class="col-lg-6 mb-5">
+                        <img src="../../public/uploads/<?php echo $product['image'] ?>" class="img-fluid" alt="Colorlib Template">
+                    </div>
+                    <div class="col-lg-6 product-details pl-md-5">
+                        <h3><?php echo $product['product_name'] ?></h3>
+                        <p class="price"><span><?php echo $product['price'] ?>.000 vnđ/Kg</span></p>
+                        <p><?php echo $product['content'] ?></p>
+                        <p>Số lượng hiện có: <?php echo $product['quantity'] ?>Kg</p>
+                        <p>Nhà cung cấp: <?php echo $product['supplier_name'] ?></p>
+                        <div class="row mt-4">
+                            <div class="w-100"></div>
+                            <div class="input-group col-md-6 d-flex mb-3">
+                                <span class="input-group-btn mr-2">
+                                    <button type="button" class="quantity-left-minus btn" data-type="minus" data-field="">
+                                        <i class="ion-ios-remove"></i>
+                                    </button>
+                                </span>
+                                <input type="text" id="quantity" name="quantity" class="form-control input-number" value="1" min="1" max="<?php echo $product['quantity']; ?>">
+                                <span class="input-group-btn ml-2">
+                                    <button type="button" class="quantity-right-plus btn" data-type="plus" data-field="">
+                                        <i class="ion-ios-add"></i>
+                                    </button>
+                                </span>
+                            </div>
+                            <div class="w-100"></div>
+                        </div>
+                        <button type="submit" class="btn" name="add_to_cart">Thêm Vào Giỏ Hàng</button>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
     </form>
 <?php endif ?>
+<script>
+    $(document).ready(function() {
+        $(".quantity-left-minus").click(function() {
+            var quantityInput = $(this).parent().siblings("input");
+            var quantity = parseInt(quantityInput.val());
+            if (quantity > 1) {
+                quantityInput.val(quantity - 1);
+            }
+        });
+
+        $(".quantity-right-plus").click(function() {
+            var quantityInput = $(this).parent().siblings("input");
+            var quantity = parseInt(quantityInput.val());
+            var maxQuantity = parseInt(quantityInput.attr("max"));
+            if (quantity < maxQuantity) {
+                quantityInput.val(quantity + 1);
+            }
+        });
+    });
+</script>
