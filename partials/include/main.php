@@ -23,7 +23,7 @@ $end = $start + $itemsPerPage;
 <div class="row justify-content-center">
     <div class="col-md-10 mb-5 text-center">
         <ul class="product-category">
-            <li><a href="../../public/shop/category_menu.php">All</a></li>
+            <li><a href="../../public/shop/category_menu.php">Tất Cả</a></li>
             <?php foreach ($categories as $row) : ?>
                 <li><a href="../../public/shop/category_menu.php?category_id=<?php echo $row['category_id']; ?>"><?php echo $row['category_name']; ?></a></li>
             <?php endforeach; ?>
