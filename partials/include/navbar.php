@@ -57,7 +57,7 @@
                 if (!isset($_SESSION['user'])) : ?>
 
                     <li class="nav-item"><a href="../../public/account/login.php" class="nav-link">Đăng Nhập</a></li>
-                    <li class="nav-item"><a href="#" data-toggle="modal" data-target="#registerModalLabel" class="nav-link">
+                    <li class="nav-item"><a href="#" data-toggle="modal" data-target="#registerModal" class="nav-link">
                             Đăng Ký
                         </a>
                     </li>
