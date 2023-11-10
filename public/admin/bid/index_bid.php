@@ -59,6 +59,7 @@ $total_pages = ceil($total_items / $items_per_page);
                                                     <th>Mô Tả</th>
                                                     <th>Giá Khởi Điểm</th>
                                                     <th>Giá Hiện Tại</th>
+                                                    <th>Tiền Lời</th>
                                                     <th>Thời Gian Kết Thúc</th>
                                                     <th>Trạng Thái</th>
                                                     <th>Xóa</th>
@@ -71,6 +72,21 @@ $total_pages = ceil($total_items / $items_per_page);
                                                         <td><?php echo $product['product_bid_description']; ?></td>
                                                         <td><?php echo $product['start_price']; ?></td>
                                                         <td><?php echo $product['current_price']; ?></td>
+                                                        <td>
+                                                            <?php
+                                                            $warehouse_bid_id = $product['warehouse_bid_id'];
+                                                            $sql = "SELECT purchase_price FROM warehouse_bid WHERE warehouse_bid_id = :warehouse_bid_id";
+                                                            $stmt = $conn->prepare($sql);
+                                                            $stmt->bindParam(':warehouse_bid_id', $warehouse_bid_id, PDO::PARAM_INT);
+                                                            $stmt->execute();
+                                                            $warehouse_bid = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                                                            $purchase_price = $warehouse_bid['purchase_price'];
+                                                            $current_price = $product['current_price'];
+                                                            $profit = $current_price - $purchase_price;
+                                                            ?>
+                                                            <?= $profit; ?>
+                                                        </td>
                                                         <td><?php echo $product['end_time']; ?></td>
                                                         <td>
                                                             <?php
@@ -87,6 +103,7 @@ $total_pages = ceil($total_items / $items_per_page);
                                                                 <button type="submit" class="btn btn-danger" onclick="return confirm('Bạn Muốn Xóa Phiên Đấu Giá Này?')">Xóa</button>
                                                             </form>
                                                         </td>
+                                                        
                                                     </tr>
                                                 <?php endforeach; ?>
                                             </tbody>

@@ -55,33 +55,38 @@ $total_pages = ceil($total_items / $items_per_page);
                                         <table id="orderTable" class="table table-bordered table-hover">
                                             <thead>
                                                 <tr>
-                                                    <th>Tên Sản Phẩm</th>
-                                                    <th>Mô Tả</th>
+                                                    <th>Tên Sản Phẩm</th>                                                  
                                                     <th>Giá Khởi Điểm</th>
-                                                    <th>Giá Hiện Tại</th>
+                                                    <th>Giá Cuối Cùng</th>
+                                                    <th>Tiền Lời</th>
                                                     <th>Thời Gian Kết Thúc</th>
-                                                    <th>Trạng Thái</th>
-                                                    <th>Người Thắng Cược</th>
+                                                    
+                                                    <th>Người Thắng Cuộc</th>
                                                     <th>Xóa</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <?php foreach ($product_bids as $product) : ?>
                                                     <tr>
-                                                        <td><?php echo $product['product_bid_name']; ?></td>
-                                                        <td><?php echo $product['product_bid_description']; ?></td>
+                                                        <td><?php echo $product['product_bid_name']; ?></td>                                                     
                                                         <td><?php echo $product['start_price']; ?></td>
                                                         <td><?php echo $product['current_price']; ?></td>
-                                                        <td><?php echo $product['end_time']; ?></td>
                                                         <td>
                                                             <?php
-                                                            if ($product['is_active'] == 1) {
-                                                                echo 'Đang hoạt động';
-                                                            } else {
-                                                                echo 'Đã kết thúc';
-                                                            }
+                                                            $warehouse_bid_id = $product['warehouse_bid_id'];
+                                                            $sql = "SELECT purchase_price FROM warehouse_bid WHERE warehouse_bid_id = :warehouse_bid_id";
+                                                            $stmt = $conn->prepare($sql);
+                                                            $stmt->bindParam(':warehouse_bid_id', $warehouse_bid_id, PDO::PARAM_INT);
+                                                            $stmt->execute();
+                                                            $warehouse_bid = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                                                            $purchase_price = $warehouse_bid['purchase_price'];
+                                                            $current_price = $product['current_price'];
+                                                            $profit = $current_price - $purchase_price;
                                                             ?>
+                                                            <?= $profit; ?>
                                                         </td>
+                                                        <td><?php echo $product['end_time']; ?></td>
                                                         <td><?php echo $product['winner_name']; ?></td>
                                                         <td>
                                                             <form action="delete.php" method="POST">
