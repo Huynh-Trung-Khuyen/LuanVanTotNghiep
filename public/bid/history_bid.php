@@ -54,7 +54,7 @@ if ($user && $user['role'] == 1) {
 
 <!DOCTYPE html>
 <html lang="en">
-
+<head><meta charset="UTF-8"></head>
 <?php
   include("../../partials/include/head.php");
   ?>
