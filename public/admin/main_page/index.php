@@ -47,6 +47,70 @@ $stmt->execute();
 $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 
+$sqlCountUsers = "SELECT COUNT(*) AS total_users FROM user WHERE role = 1";
+$stmtCountUsers = $conn->prepare($sqlCountUsers);
+$stmtCountUsers->execute();
+$resultCountUsers = $stmtCountUsers->fetch(PDO::FETCH_ASSOC);
+$totalUsers = $resultCountUsers['total_users'];
+
+$sqlCountUsers2 = "SELECT COUNT(*) AS total_users2 FROM user WHERE role = 2";
+$stmtCountUsers2 = $conn->prepare($sqlCountUsers2);
+$stmtCountUsers2->execute();
+$resultCountUsers2 = $stmtCountUsers2->fetch(PDO::FETCH_ASSOC);
+$totalUsers2 = $resultCountUsers2['total_users2'];
+
+$sqlCountOrders = "SELECT COUNT(*) AS total_orders FROM `order`";
+$stmtCountOrders = $conn->prepare($sqlCountOrders);
+$stmtCountOrders->execute();
+$resultCountOrders = $stmtCountOrders->fetch(PDO::FETCH_ASSOC);
+$totalOrders = $resultCountOrders['total_orders'];
+
+$sqlCountBids = "SELECT COUNT(*) AS total_bids FROM product_bid";
+$stmtCountBids = $conn->prepare($sqlCountBids);
+$stmtCountBids->execute();
+$resultCountBids = $stmtCountBids->fetch(PDO::FETCH_ASSOC);
+$totalBids = $resultCountBids['total_bids'];
+
+$sqlTotalRevenue = "SELECT SUM(purchase_price * quantity) AS total_revenue FROM warehouse";
+$stmtTotalRevenue = $conn->prepare($sqlTotalRevenue);
+$stmtTotalRevenue->execute();
+$resultTotalRevenue = $stmtTotalRevenue->fetch(PDO::FETCH_ASSOC);
+$totalRevenue = $resultTotalRevenue['total_revenue'];
+
+$sqlTotalProfit = "SELECT SUM(cart_total) AS total_profit FROM `order`";
+$stmtTotalProfit = $conn->prepare($sqlTotalProfit);
+$stmtTotalProfit->execute();
+$resultTotalProfit = $stmtTotalProfit->fetch(PDO::FETCH_ASSOC);
+$totalProfit = $resultTotalProfit['total_profit'];
+
+$sqlMonthlyData = "
+    (
+        SELECT 
+            MONTH(w.input_day) AS month, 
+            YEAR(w.input_day) AS year, 
+            SUM(w.quantity * w.purchase_price) AS total_value,
+            0 AS total_profit
+        FROM warehouse w
+        WHERE w.expired_date >= CURDATE()
+        GROUP BY month, year
+    )
+    UNION
+    (
+        SELECT 
+            MONTH(o.date_ordered) AS month, 
+            YEAR(o.date_ordered) AS year, 
+            0 AS total_value,
+            SUM(o.cart_total) AS total_profit
+        FROM `order` o
+        GROUP BY month, year
+    )
+    ORDER BY year DESC, month DESC
+";
+$stmtMonthlyData = $conn->prepare($sqlMonthlyData);
+$stmtMonthlyData->execute();
+$monthlyData = $stmtMonthlyData->fetchAll(PDO::FETCH_ASSOC);
+
+
 ?>
 
 

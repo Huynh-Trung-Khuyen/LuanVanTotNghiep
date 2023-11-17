@@ -55,6 +55,7 @@ $total_pages = ceil($total_items / $items_per_page);
                                                 <tr>
                                                     <th>Mã Đơn Hàng</th>
                                                     <th>Tên Người Nhận</th>
+                                                    <th>Ngày Đặt</th>
                                                     <th>Sản Phẩm và Số Lượng</th>
                                                     <th>Địa Chỉ</th>
                                                     <th>Thành Phố</th>
@@ -62,7 +63,6 @@ $total_pages = ceil($total_items / $items_per_page);
                                                     <th>Số Điện Thoại</th>
                                                     <th>Email</th>
                                                     <th>Tiền</th>
-                                                   
                                                     <th>Xóa Đơn</th>
                                                 </tr>
                                             </thead>
@@ -71,6 +71,7 @@ $total_pages = ceil($total_items / $items_per_page);
                                                     <tr>
                                                         <td><?php echo $order['order_id']; ?></td>
                                                         <td><?php echo $order['order_name']; ?></td>
+                                                        <td><?php echo $order['date_ordered']; ?></td>
                                                         <td>
                                                             <?php
                                                             $query = "SELECT p.product_name, op.quantity_of_products

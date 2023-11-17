@@ -55,6 +55,7 @@ $total_pages = ceil($total_items / $items_per_page);
                                                 <tr>
                                                     <th>Mã Đơn Hàng</th>
                                                     <th>Tên Người Nhận</th>
+                                                    <th>Ngày Đặt</th>
                                                     <th>Sản Phẩm và Số Lượng</th>
                                                     <th>Địa Chỉ</th>
                                                     <th>Thành Phố</th>
@@ -72,6 +73,7 @@ $total_pages = ceil($total_items / $items_per_page);
                                                     <tr>
                                                         <td><?php echo $order['order_id']; ?></td>
                                                         <td><?php echo $order['order_name']; ?></td>
+                                                        <td><?php echo $order['date_ordered']; ?></td>
                                                         <td>
                                                             <?php
                                                             $query = "SELECT p.product_name, op.quantity_of_products
@@ -96,7 +98,18 @@ $total_pages = ceil($total_items / $items_per_page);
                                                         <td><?php echo $order['city_address']; ?></td>
                                                         <td><?php echo $order['district_address']; ?></td>
                                                         <td><?php echo $order['phone']; ?></td>
-                                                        <td><?php echo $order['email_address']; ?></td>
+                                                        <td>
+                                                            <?php
+                                                            $email = $order['email_address'];
+                                                            if (strlen($email) > 8) {
+                                                                $shortened_email = substr($email, 0, 8) . '...';
+                                                                echo "<span class='shortened-email' data-full-email='$email'>$shortened_email</span>";
+                                                            } else {
+                                                                echo $email;
+                                                            }
+                                                            ?>
+                                                        </td>
+
                                                         <td><?php echo $order['cart_total']; ?>.000 vnđ</td>
 
                                                         <td>
@@ -148,3 +161,18 @@ $total_pages = ceil($total_items / $items_per_page);
 </body>
 
 </html>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var shortenedEmails = document.querySelectorAll('.shortened-email');
+        shortenedEmails.forEach(function(element) {
+            element.addEventListener('click', function() {
+                var fullEmail = element.getAttribute('data-full-email');
+                if (element.textContent.endsWith('...')) {
+                    element.textContent = fullEmail;
+                } else {
+                    element.textContent = fullEmail.substring(0, 8) + '...';
+                }
+            });
+        });
+    });
+</script>

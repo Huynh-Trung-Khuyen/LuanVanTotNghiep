@@ -1,66 +1,115 @@
 <section class="content">
     <div class="container-fluid">
-        <?php if (isset($users) && !empty($users)) : ?>
-            <div class="row">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-body">
-                            <table id="orderTable" class="table table-bordered table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>Tên Người Dùng</th>
-                                        <th>Thông tin</th>
-                                        <th>Tính Dụng Thu Được</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php foreach ($users as $user) : ?>
-                                        <?php
-                                        $businessQuery = $conn->prepare('SELECT * FROM business WHERE user_id = :user_id');
-                                        $businessQuery->bindParam(':user_id', $user['user_id']);
-                                        $businessQuery->execute();
-                                        $businessInfo = $businessQuery->fetch(PDO::FETCH_ASSOC);
-                                        ?>
-                                        <tr>
-                                            <td><?php echo $user['fullname']; ?></td>
-                                            <td>
-                                                <?php if ($businessInfo) : ?>
-                                                    <?php if ($user['role'] == 0 && $businessInfo) : ?>
-                                                        <strong>Thông tin doanh nghiệp:</strong><br>
-                                                        Thành phố: <?php echo $businessInfo['city_address']; ?><br>
-                                                        Quận/Huyện: <?php echo $businessInfo['district_address']; ?><br>
-                                                        Địa chỉ: <?php echo $businessInfo['address']; ?><br>
-                                                        Số điện thoại: <?php echo $businessInfo['phone']; ?><br>
-                                                        Email: <?php echo $businessInfo['email_address']; ?><br>
-                                                        Mã Số Thuế: <?php echo $businessInfo['tax_code']; ?><br>
-                                                    <?php endif; ?>
-                                                <?php else : ?>
-                                                    <p>Doanh Nghiệp chưa cập nhật thông tin</p>
-                                                <?php endif; ?>
-                                            </td>
-                                            <td>
-                                                <?php if ($businessInfo) : ?>
-                                                    <?php if ($user['role'] == 0 && $businessInfo) : ?>
-                                                        <strong>Tổng Tín Dụng Thu Được:</strong><br>
-                                                        Tính Dụng: <?php echo number_format(floatval(str_replace(',', '', $businessInfo['money']))) . '.000vnđ'; ?><br>
-                                                    <?php endif; ?>
-                                                <?php else : ?>
-                                                    <p>Doanh Nghiệp chưa cập nhật thông tin</p>
-                                                <?php endif; ?>
-                                            </td>
+        <div class="row">
+            <div class="col-lg-3 col-6">
+
+                <div class="small-box bg-info">
+                    <div class="inner">
+                        <h3><?php echo $totalOrders; ?></h3>
+                        <p>Đơn Mua Mới</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-bag"></i>
+                    </div>
+                    <a href="../order/index_order.php" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-6">
+
+                <div class="small-box bg-success">
+                    <div class="inner">
+                        <h3><?php echo $totalBids; ?></h3>
+                        <p>Những Phiên Đấu Giá</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fa-solid fa-gavel"></i>
+                    </div>
+                    <a href="../bid/index_bid.php" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-6">
+
+                <div class="small-box bg-warning">
+                    <div class="inner">
+                        <h3><?php echo $totalUsers2; ?></h3>
+                        <p>Tài Khoản Khách Hàng</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-person-add"></i>
+                    </div>
+                    <a href="../user_business/index_user.php" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-6">
+
+                <div class="small-box bg-danger">
+                    <div class="inner">
+                        <h3><?php echo $totalUsers; ?></h3>
+                        <p>Tài Khoản Doanh Nghiệp</p>
+                    </div>
+                    <div class="icon">
+                        <i class="nav-icon fas fa-building"></i>
+                    </div>
+                    <a href="../user_business/index_business.php" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
 
 
-                                        </tr>
-                                    <?php endforeach; ?>
-
-                                </tbody>
-                            </table>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="alert alert-info">
+                            <p>Tổng Kho: <?php echo number_format($totalRevenue, 0, ',', '.'); ?>.000VNĐ</p>
+                            <p>Tổng Lợi Nhuận từ Đơn Hàng: <?php echo number_format($totalProfit, 0, ',', '.'); ?>.000VNĐ</p>
                         </div>
+                        <canvas id="myChart" width="400" height="200"></canvas>
                     </div>
                 </div>
             </div>
-        <?php else : ?>
-            <p>Không có người dùng nào.</p>
-        <?php endif; ?>
+        </div>
+
+
+
     </div>
+
 </section>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+
+    var monthlyData = <?php echo json_encode($monthlyData); ?>;
+
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: monthlyData.map(item => `${item.month}/${item.year}`),
+            datasets: [
+                {
+                    label: 'Tổng Giá Trị',
+                    data: monthlyData.map(item => item.total_value),
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                },
+                {
+                    label: 'Tổng Lợi Nhuận',
+                    data: monthlyData.map(item => item.total_profit),
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1
+                }
+            ]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>

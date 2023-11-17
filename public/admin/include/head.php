@@ -23,6 +23,8 @@
     <link rel="stylesheet" href="../../template/admin/plugins/daterangepicker/daterangepicker.css">
     <!-- summernote -->
     <link rel="stylesheet" href="../../template/admin/plugins/summernote/summernote-bs4.min.css">
+
+    <script src="https://kit.fontawesome.com/52841b83f9.js" crossorigin="anonymous"></script>
 </head>
 <?php
 

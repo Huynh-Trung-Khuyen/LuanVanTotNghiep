@@ -39,7 +39,7 @@
                with font-awesome or any other icon font library -->
                 <li class="nav-item "><!-- menu-open -->
                     <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-building"></i>
+                        <i class="fa-solid fa-building"></i>
                         <p>
                             Nhà Cung Cấp
                             <i class="right fas fa-angle-left"></i>
@@ -62,7 +62,7 @@
                 </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-truck"></i>
+                        <i class="fa-solid fa-warehouse"></i>
                         <p>
                             Nhập Kho
                             <i class="right fas fa-angle-left"></i>
@@ -91,7 +91,7 @@
                 </li>
                 <li class="nav-item "><!-- menu-open -->
                     <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-list-ul"></i>
+                        <i class="fa-solid fa-list"></i>
                         <p>
                             Danh Mục
                             <i class="right fas fa-angle-left"></i>
@@ -114,7 +114,7 @@
                 </li>
                 <li class="nav-item ">
                     <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-carrot"></i>
+                        <i class="fa-solid fa-carrot"></i>
                         <p>
                             Sản Phẩm
                             <i class="right fas fa-angle-left"></i>
@@ -135,10 +135,10 @@
                         </li>
                     </ul>
                 </li>
- 
+
                 <li class="nav-item">
                     <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-truck"></i>
+                        <i class="fa-solid fa-truck"></i>
                         <p>
                             Đơn Hàng
                             <i class="right fas fa-angle-left"></i>
@@ -164,7 +164,7 @@
                 </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-gavel"></i>
+                        <i class="fa-solid fa-boxes-stacked"></i>
                         <p>
                             Nhập Kho SP Đấu Giá
                             <i class="right fas fa-angle-left"></i>
@@ -194,7 +194,7 @@
                 </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-gavel"></i>
+                        <i class="fa-solid fa-gavel"></i>
                         <p>
                             Đấu Giá
                             <i class="right fas fa-angle-left"></i>
@@ -218,7 +218,7 @@
                 </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-user"></i>
+                        <i class="fa-solid fa-user"></i>
                         <p>
                             Quản Lý Người Dùng
                             <i class="right fas fa-angle-left"></i>

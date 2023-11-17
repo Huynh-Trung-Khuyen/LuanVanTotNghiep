@@ -22,8 +22,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $conn->beginTransaction();
 
         $cart_total = 0;
-        $query = "INSERT INTO `order` (order_name, address, city_address, district_address, phone, email_address, cart_total, user_id) 
-                  VALUES (:order_name, :address, :city_address, :district_address, :phone, :email_address, 0, :user_id)";
+        $query = "
+        INSERT INTO `order` (order_name, address, city_address, district_address, phone, email_address, cart_total, user_id, date_ordered) 
+        VALUES (:order_name, :address, :city_address, :district_address, :phone, :email_address, 0, :user_id, NOW())";
         $stmt = $conn->prepare($query);
         $stmt->bindParam(':order_name', $order_name);
         $stmt->bindParam(':address', $address);
@@ -84,7 +85,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $deleteStmt->bindParam(':user_id', $user_id);
             $deleteStmt->execute();
 
-
+            $updateOrderDateQuery = "UPDATE `order` SET date_ordered = NOW() WHERE order_id = :order_id";
+            $updateOrderDateStmt = $conn->prepare($updateOrderDateQuery);
+            $updateOrderDateStmt->bindParam(':order_id', $order_id);
+            $updateOrderDateStmt->execute();
+            
             $conn->commit();
 
             $successMessage = 'Đặt hàng thành công!';
@@ -135,10 +140,10 @@ if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])) {
                     <div class="modal-body">
                         <p><?php echo $successMessage; ?></p>
                         <a href="../../public/cart/checkout.php" class="btn btn-primary btn-block">Xem Thông Tin Giao Hàng</a>
-                       
+
                     </div>
                     <div class="modal-footer">
-                        
+
                     </div>
                 </div>
             </div>

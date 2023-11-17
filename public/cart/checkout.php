@@ -65,6 +65,7 @@ include("../../partials/include/head.php");
                                     <th>Số Điện Thoại</th>
                                     <th>Tổng Số Tiền</th>
                                     <th>Sản Phẩm</th>
+                                    <th>Ngày Đặt</th>
                                     <th>Trạng Thái</th>
                                 </tr>
                             </thead>
