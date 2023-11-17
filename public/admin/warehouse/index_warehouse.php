@@ -14,14 +14,13 @@ $query = $conn->prepare('
     FROM warehouse w
     LEFT JOIN supplier s ON w.supplier_id = s.supplier_id
     WHERE w.expired_date >= CURDATE()
-    ORDER BY w.seri_number
+    ORDER BY w.input_day DESC, w.seri_number
     LIMIT :start, :items_per_page
 ');
 $query->bindParam(':start', $start_index, PDO::PARAM_INT);
 $query->bindParam(':items_per_page', $items_per_page, PDO::PARAM_INT);
 $query->execute();
 $warehouses = $query->fetchAll(PDO::FETCH_ASSOC);
-
 
 $count_query = $conn->query('SELECT COUNT(*) FROM warehouse WHERE expired_date >= CURDATE()');
 $total_items = $count_query->fetchColumn();
