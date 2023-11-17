@@ -179,7 +179,7 @@ include("../include/head.php");
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1 class="m-0">Trang Chủ</h1>
+                            <h1 class="m-0">Thông Tin Trang Web</h1>
                         </div>
                     </div>
                 </div>
