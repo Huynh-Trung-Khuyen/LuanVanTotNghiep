@@ -19,7 +19,7 @@
 
                 <div class="small-box bg-success">
                     <div class="inner">
-                        <h3><?php echo $totalBids; ?></h3>
+                        <h3><?php echo $totalBid; ?></h3>
                         <p>Những Phiên Đấu Giá</p>
                     </div>
                     <div class="icon">
@@ -71,7 +71,20 @@
             </div>
         </div>
 
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="alert alert-info">
+                        <p>Tổng Giá Trị Kho và Đơn Hàng Bid: <?php echo number_format($totalPurchasePrice, 0, ',', '.'); ?>.000VNĐ</p>
+                        <p>Tổng Lợi Nhuận từ Đơn Hàng Bid: <?php echo number_format($totalCurrentPrice, 0, ',', '.'); ?>.000VNĐ</p>
+                        
+                    </div>
+                    <canvas id="myChart2"></canvas>
+                </div>
+            </div>
+        </div>
 
+        
 
     </div>
 
@@ -79,7 +92,6 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-
     var monthlyData = <?php echo json_encode($monthlyData); ?>;
 
     var ctx = document.getElementById('myChart').getContext('2d');
@@ -87,8 +99,7 @@
         type: 'bar',
         data: {
             labels: monthlyData.map(item => `${item.month}/${item.year}`),
-            datasets: [
-                {
+            datasets: [{
                     label: 'Tổng Giá Trị',
                     data: monthlyData.map(item => item.total_value),
                     backgroundColor: 'rgba(75, 192, 192, 0.2)',
@@ -113,3 +124,40 @@
         }
     });
 </script>
+
+<script>
+        // Lấy dữ liệu từ PHP và chuyển đổi sang JavaScript
+        var monthlyData2 = <?php echo json_encode($monthlyData2); ?>;
+
+        // Tạo biểu đồ cột
+        var ctx2 = document.getElementById('myChart2').getContext('2d');
+        var myChart2 = new Chart(ctx2, {
+            type: 'bar',
+            data: {
+                labels: monthlyData2.map(item => `${item.month}/${item.year}`),
+                datasets: [
+                    {
+                        label: 'Tổng Giá Trị',
+                        data: monthlyData2.map(item => item.total_value),
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Tổng Lợi Nhuận',
+                        data: monthlyData2.map(item => item.total_profit),
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>

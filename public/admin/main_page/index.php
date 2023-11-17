@@ -65,11 +65,14 @@ $stmtCountOrders->execute();
 $resultCountOrders = $stmtCountOrders->fetch(PDO::FETCH_ASSOC);
 $totalOrders = $resultCountOrders['total_orders'];
 
-$sqlCountBids = "SELECT COUNT(*) AS total_bids FROM product_bid";
-$stmtCountBids = $conn->prepare($sqlCountBids);
-$stmtCountBids->execute();
-$resultCountBids = $stmtCountBids->fetch(PDO::FETCH_ASSOC);
-$totalBids = $resultCountBids['total_bids'];
+$sqlCountBid = "SELECT COUNT(*) AS total_bid FROM product_bid";
+$stmtCountBid = $conn->prepare($sqlCountBid);
+$stmtCountBid->execute();
+$resultCountBid = $stmtCountBid->fetch(PDO::FETCH_ASSOC);
+$totalBid = $resultCountBid['total_bid'];
+
+
+// Thống kê bán hàng
 
 $sqlTotalRevenue = "SELECT SUM(purchase_price * quantity) AS total_revenue FROM warehouse";
 $stmtTotalRevenue = $conn->prepare($sqlTotalRevenue);
@@ -110,8 +113,51 @@ $stmtMonthlyData = $conn->prepare($sqlMonthlyData);
 $stmtMonthlyData->execute();
 $monthlyData = $stmtMonthlyData->fetchAll(PDO::FETCH_ASSOC);
 
+// Thống kê đấu giá
 
+$sqlTotalPurchasePrice = "SELECT SUM(purchase_price) AS total_purchase_price FROM warehouse_bid";
+$stmtTotalPurchasePrice = $conn->prepare($sqlTotalPurchasePrice);
+$stmtTotalPurchasePrice->execute();
+$resultTotalPurchasePrice = $stmtTotalPurchasePrice->fetch(PDO::FETCH_ASSOC);
+$totalPurchasePrice = $resultTotalPurchasePrice['total_purchase_price'];
+
+
+$sqlTotalCurrentPrice = "SELECT SUM(current_price) AS total_current_price FROM product_bid WHERE is_active = 3";
+$stmtTotalCurrentPrice = $conn->prepare($sqlTotalCurrentPrice);
+$stmtTotalCurrentPrice->execute();
+$resultTotalCurrentPrice = $stmtTotalCurrentPrice->fetch(PDO::FETCH_ASSOC);
+$totalCurrentPrice = $resultTotalCurrentPrice['total_current_price'];
+
+
+$sqlMonthlyData2 = "
+    (
+        SELECT 
+            MONTH(wb.input_day) AS month, 
+            YEAR(wb.input_day) AS year, 
+            SUM(wb.purchase_price) AS total_value,
+            0 AS total_profit
+        FROM warehouse_bid wb
+        WHERE wb.expired_date >= CURDATE()
+        GROUP BY month, year
+    )
+    UNION
+    (
+        SELECT 
+            MONTH(pb.real_end_time) AS month, 
+            YEAR(pb.real_end_time) AS year, 
+            0 AS total_value,
+            SUM(pb.current_price) AS total_profit
+        FROM product_bid pb
+        WHERE pb.is_active = 3
+        GROUP BY month, year
+    )
+    ORDER BY year DESC, month DESC
+";
+$stmtMonthlyData2 = $conn->prepare($sqlMonthlyData2);
+$stmtMonthlyData2->execute();
+$monthlyData2 = $stmtMonthlyData2->fetchAll(PDO::FETCH_ASSOC);
 ?>
+
 
 
 
