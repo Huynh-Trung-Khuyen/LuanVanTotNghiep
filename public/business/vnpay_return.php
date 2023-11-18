@@ -26,7 +26,7 @@ if (isset($_GET['vnp_Amount'])) {
     $vnp_Amount = $_GET['vnp_Amount'];
 
     // Loại bỏ 3 số 0 cuối cùng
-    $vnp_Amount = substr($vnp_Amount, 0, -3);
+    $vnp_Amount = substr($vnp_Amount, 0, -5);
 
     // Kiểm tra xác thực secure hash
     $vnp_SecureHash = $_GET['vnp_SecureHash'];
@@ -67,7 +67,7 @@ if (isset($_GET['vnp_Amount'])) {
                 $query->bindParam(':vnp_Amount', $vnp_Amount);
                 $query->bindParam(':business_id', $business_id);
                 $query->execute();
-                echo "<span style='color:blue'>GD Thành công</span>";
+                header("Location: ../../public/index/index.php");
             } else {
                 echo "Không tìm thấy doanh nghiệp cho người dùng này";
             }

@@ -26,19 +26,36 @@
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header">
-                    <h4>Nạp Tiền</h4>
+                    <h4>Nạp Tiền <i class="fa-solid fa-coins"></i></h4>
                 </div>
                 <div class="card-body">
-                <form action="add_money_b.php" method="post">
+                    <form action="add_money_b.php" method="post" onsubmit="addZeros()">
                         <div class="form-group">
-                            <label for="amount">Số Tiền Cần Nạp (vnđ):(Mỗi 1.000vnđ = 1 Coin, Chỉ Được Nạp Từ 1.000.000nvđ Trở lên)</label>
-                            <input type="text" class="form-control" id="amount" name="amount" placeholder="Nhập số tiền">
+                            <label for="amount">Số Coin<i class="fa-solid fa-coins"></i> Bạn Muốn Nạp: (Mỗi 1.000vnđ = 1 Coin, Chỉ Được Nạp Từ 1.000.000vnđ Trở lên)</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="amount" name="amount" placeholder="Nhập số tiền">
+                                <div class="input-group-append">
+                                    <button type="submit" class="btn btn-primary">Nạp Coin</button>
+                                </div>
+                            </div>
                         </div>
-                        <button type="submit" class="btn btn-primary">Nạp Tiền</button>
                     </form>
                 </div>
-               
+
             </div>
         </div>
     </div>
 </div>
+<script>
+    function addZeros() {
+        var amountInput = document.getElementById('amount');
+        var currentAmount = amountInput.value;
+
+        // Kiểm tra xem giá trị hiện tại có phải là số không
+        if (!isNaN(currentAmount)) {
+            // Thêm 5 số 0 vào giá trị
+            var newAmount = parseFloat(currentAmount) * 100000;
+            amountInput.value = newAmount;
+        }
+    }
+</script>
