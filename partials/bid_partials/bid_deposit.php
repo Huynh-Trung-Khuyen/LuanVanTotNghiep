@@ -78,6 +78,46 @@ if (isset($_GET['product_bid_id'])) {
     echo "Không có phiên đấu giá.";
     exit;
 }
+
+
+// Hiển thị các doanh nghiệp tham gia
+$productBidId = isset($_GET['product_bid_id']) ? $_GET['product_bid_id'] : null;
+
+if ($productBidId !== null) {
+    $sqlCountPaidUsers = "
+        SELECT COUNT(DISTINCT user_id) AS total_paid_users
+        FROM deposit
+        WHERE product_bid_id = :productBidId
+    ";
+
+    $stmtCountPaidUsers = $conn->prepare($sqlCountPaidUsers);
+    $stmtCountPaidUsers->bindParam(':productBidId', $productBidId, PDO::PARAM_INT);
+    $stmtCountPaidUsers->execute();
+
+    $resultCountPaidUsers = $stmtCountPaidUsers->fetch(PDO::FETCH_ASSOC);
+
+    $totalPaidUsers = $resultCountPaidUsers['total_paid_users'];
+    if ($totalPaidUsers > 0) {
+        $sqlGetUserFullName = "
+            SELECT DISTINCT u.fullname
+            FROM deposit d
+            INNER JOIN user u ON d.user_id = u.user_id
+            WHERE d.product_bid_id = :productBidId
+        ";
+
+        $stmtGetUserFullName = $conn->prepare($sqlGetUserFullName);
+        $stmtGetUserFullName->bindParam(':productBidId', $productBidId, PDO::PARAM_INT);
+        $stmtGetUserFullName->execute();
+        $userFullNames = $stmtGetUserFullName->fetchAll(PDO::FETCH_COLUMN);
+
+    } else {
+
+    }
+
+} else {
+ 
+}
+
 ?>
 
 
@@ -262,9 +302,20 @@ if (isset($_GET['product_bid_id'])) {
                     </div>
                     <div class="col-md-3 d-flex">
                         <div class="info bg-white p-4">
-                            <h5><span style="font-weight: bold;">Thời Gian Đặt Giá Gần Đây Nhất:</span><br> <?php echo $product_bid['end_time'] ?></h5>
+                            <h5><span style="font-weight: bold;">Đã Có <?php echo "$totalPaidUsers"; ?> Doanh Nghiệp Tham Gia:</span><br></h5>
+
+                            <?php if ($totalPaidUsers > 0) : ?>
+                                <ul>
+                                    <?php foreach ($userFullNames as $fullName) : ?>
+                                        <li><h5><?php echo $fullName; ?></h5></li>
+                                    <?php endforeach; ?>
+                                </ul>
+                            <?php else : ?>
+                                <p>Chưa Có Doanh Nghiệp Nào Tham Gia</p>
+                            <?php endif; ?>
                         </div>
                     </div>
+
                     <div class="col-md-3 d-flex">
                         <div class="info bg-white p-4">
                             <h5><span style="font-weight: bold;">Thông Tin Phiên Đấu Giá:</span><br> <?php echo $product_bid['product_bid_description'] ?></h5>
