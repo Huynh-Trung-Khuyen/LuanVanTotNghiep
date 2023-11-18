@@ -67,7 +67,7 @@ if (isset($_GET['vnp_Amount'])) {
                 $query->bindParam(':vnp_Amount', $vnp_Amount);
                 $query->bindParam(':business_id', $business_id);
                 $query->execute();
-                header("Location: ../../public/index/index.php");
+                header("Location: ../../public/business/business_info.php");
             } else {
                 echo "Không tìm thấy doanh nghiệp cho người dùng này";
             }
