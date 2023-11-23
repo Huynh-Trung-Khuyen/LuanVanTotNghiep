@@ -94,7 +94,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <label for="end_time">Thời Gian Kết Thúc:</label>
                 <input type="datetime-local" id="end_time" name="end_time" class="form-control" required><br>
 
-                <label for="warehouse_bid_id">Sản Phẩm Nhập Kho:</label>
+                <label for="warehouse_bid_id">Chọn Kho Hàng:</label>
                 <select name="warehouse_bid_id" id="warehouse_bid_id" class="form-control" required>
                     <?php foreach ($warehouse_bids as $row) : ?>
                         <option value="<?php echo $row['warehouse_bid_id'] ?>"><?php echo $row['imported_bid_name'] ?></option>
@@ -156,6 +156,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     </div>
 </body>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 <script>
     <?php if (isset($successMessage)) : ?>
@@ -168,5 +171,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $("#errorModal").modal("show");
     <?php endif; ?>
 </script>
+<script>
+    $.noConflict();
+    jQuery(document).ready(function($) {
+        $('#warehouse_bid_id').select2({
+            placeholder: "Chọn warehouse bid",
+            allowClear: true,
+            minimumInputLength: 0
+        });
+    });
+</script>
+<style>
+    .select2-selection__clear {
+        display: none !important;
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+        line-height: 48px;
+        font-size: 20px;
+    }
+    .select2-container--default .select2-selection--single {
+        width: 100%;
+        height: 50px;
+    }
+
+    
+</style>
 
 </html>

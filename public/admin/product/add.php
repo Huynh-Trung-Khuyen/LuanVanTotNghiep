@@ -153,3 +153,35 @@ include("../include/head.php");
 </body>
 
 </html>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        $('#category_id').select2({
+            placeholder: "Chọn danh mục",
+            allowClear: true,
+            minimumInputLength: 0
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function() {
+        $('#warehouse_id').select2({
+            placeholder: "Chọn nhà kho",
+            allowClear: true,
+            minimumInputLength: 0
+        });
+    });
+</script>
+<style>
+    .select2-selection__clear {
+        display: none !important;
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+        line-height: 17px;
+    }
+</style>
