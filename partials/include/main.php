@@ -9,8 +9,12 @@ $currentpage = isset($_GET['page']) ? $_GET['page'] : 1;
 $start = ($currentpage - 1) * $itemsPerPage;
 $end = $start + $itemsPerPage;
 
-?>
+// Sắp xếp mảng $products theo product_id từ lớn đến bé
+usort($products, function ($a, $b) {
+    return $b['product_id'] - $a['product_id'];
+});
 
+?>
 
 <div class="container">
     <div class="row justify-content-center mb-3 pb-3">
@@ -23,7 +27,7 @@ $end = $start + $itemsPerPage;
 <div class="row justify-content-center">
     <div class="col-md-10 mb-5 text-center">
         <ul class="product-category">
-            <li><a href="../../public/shop/category_menu.php">Tất Cả</a></li>
+            <li><a href="">Tất Cả</a></li>
             <?php foreach ($categories as $row) : ?>
                 <li><a href="../../public/shop/category_menu.php?category_id=<?php echo $row['category_id']; ?>"><?php echo $row['category_name']; ?></a></li>
             <?php endforeach; ?>

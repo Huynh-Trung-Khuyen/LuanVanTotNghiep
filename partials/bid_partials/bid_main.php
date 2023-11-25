@@ -58,6 +58,11 @@ WHERE pb.real_end_time > NOW() AND pb.is_active = 1";
 $stmt = $conn->prepare($sql);
 $stmt->execute();
 $productList = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+
+usort($productList, function ($a, $b) {
+    return $b['product_bid_id'] - $a['product_bid_id'];
+});
 ?>
 
 
@@ -81,7 +86,7 @@ $productList = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <div class="col-md-6 col-lg-3 ftco-animate">
                 <div class="product">
                     <a href="../../public/bid/bid_deposit.php?product_bid_id=<?php echo $product['product_bid_id']; ?>" class="img-prod">
-                        <img src="../../public/uploads/<?php echo $product['product_bid_image'] ?>" class="img-fluid" alt="Ảnh">
+                        <img src="../../public/uploads/<?php echo $product['product_bid_image'] ?>" class="img-fluid" alt="Ảnh" style="width: 100%; height: 240px;">
                     </a>
                     <div class="text py-3 pb-4 px-3 text-center">
                         <h3><a href="../../public/bid/bid_deposit.php?product_bid_id=<?php echo $product['product_bid_id']; ?>"><?php echo $product['product_bid_name']; ?></a></h3>
@@ -92,7 +97,7 @@ $productList = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     <?php if ($product['last_bid_price'] > 0) : ?>
                                         Giá hiện tại: <?php echo number_format($product['last_bid_price'], 0, ',', '.') ?>.000vnđ
                                     <?php else : ?>
-                                        Chưa có người tham gia
+                                        Chưa có người đặt giá
                                     <?php endif; ?>
                                 </span></p>
                         </div>

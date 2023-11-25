@@ -22,6 +22,9 @@ $stmt->bindParam(':user_id', $user_id);
 $stmt->execute();
 $productList = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+usort($productList, function ($a, $b) {
+    return $b['product_bid_id'] - $a['product_bid_id'];
+});
 ?>
 
 <section class="ftco-section ftco-cart">
