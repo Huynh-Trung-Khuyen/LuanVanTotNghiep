@@ -13,7 +13,7 @@ $query = $conn->prepare('
     SELECT w.warehouse_bid_id, w.imported_bid_name, w.quantity, w.purchase_price, w.input_day, w.expired_date, w.seri_number, w.supplier_id, s.supplier_name
     FROM warehouse_bid w
     LEFT JOIN supplier s ON w.supplier_id = s.supplier_id
-    WHERE w.expired_date >= CURDATE()
+    WHERE w.expired_date <= CURDATE()
     ORDER BY w.seri_number
     LIMIT :start, :items_per_page
 ');
