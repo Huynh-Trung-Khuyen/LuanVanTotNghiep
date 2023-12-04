@@ -14,7 +14,7 @@ $query = $conn->prepare('
     FROM warehouse_bid w
     LEFT JOIN supplier s ON w.supplier_id = s.supplier_id
     WHERE w.expired_date >= CURDATE()
-    ORDER BY w.input_day DESC, w.seri_number
+    ORDER BY w.warehouse_bid_id DESC
     LIMIT :start, :items_per_page
 ');
 $query->bindParam(':start', $start_index, PDO::PARAM_INT);
@@ -53,7 +53,7 @@ include("../include/head.php");
             </div>
             <div class="content">
                 <div class="container-fluid">
-                    <div class "row">
+                    <div class="row">
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-body">
@@ -112,4 +112,3 @@ include("../include/head.php");
 <?php
 include("../include/footer.php");
 ?>
-
