@@ -46,7 +46,7 @@ if (!empty($wonProducts)) {
     $row = 2;
     foreach ($wonProducts as $product) {
         $sheet->setCellValue('A' . $row, $product['product_bid_name']);
-        $sheet->setCellValue('B' . $row, number_format($product['current_price'], 0, ',', '.') . ' vnđ');
+        $sheet->setCellValue('B' . $row, number_format($product['current_price'], 0, ',', '.') . '.000vnđ');
         $sheet->setCellValue('C' . $row, 'Đã Giao Hàng');
         $sheet->setCellValue('D' . $row, $product['winner_fullname']);
         $sheet->setCellValue('E' . $row, $product['city_address']);
