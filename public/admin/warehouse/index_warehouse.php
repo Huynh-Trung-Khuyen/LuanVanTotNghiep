@@ -14,7 +14,7 @@ $query = $conn->prepare('
     FROM warehouse w
     LEFT JOIN supplier s ON w.supplier_id = s.supplier_id
     WHERE w.expired_date >= CURDATE()
-    ORDER BY w.input_day DESC, w.seri_number
+    ORDER BY w.warehouse_id DESC
     LIMIT :start, :items_per_page
 ');
 $query->bindParam(':start', $start_index, PDO::PARAM_INT);

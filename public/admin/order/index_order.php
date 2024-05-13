@@ -10,7 +10,7 @@ $current_page = isset($_GET['page']) ? $_GET['page'] : 1;
 $start_index = ($current_page - 1) * $items_per_page;
 
 $query = $conn->prepare('
-    SELECT * FROM `order` WHERE role = 1 LIMIT :start, :items_per_page
+    SELECT * FROM `order` WHERE role = 1 ORDER BY order_id DESC LIMIT :start, :items_per_page
 ');
 $query->bindParam(':start', $start_index, PDO::PARAM_INT);
 $query->bindParam(':items_per_page', $items_per_page, PDO::PARAM_INT);

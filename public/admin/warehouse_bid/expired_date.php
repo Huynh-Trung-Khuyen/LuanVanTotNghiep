@@ -13,7 +13,7 @@ $query = $conn->prepare('
     SELECT w.warehouse_bid_id, w.imported_bid_name, w.quantity, w.purchase_price, w.input_day, w.expired_date, w.seri_number, w.supplier_id, s.supplier_name
     FROM warehouse_bid w
     LEFT JOIN supplier s ON w.supplier_id = s.supplier_id
-    WHERE w.expired_date >= CURDATE()
+    WHERE w.expired_date <= CURDATE()
     ORDER BY w.seri_number
     LIMIT :start, :items_per_page
 ');
@@ -77,7 +77,7 @@ include("../include/head.php");
                                                     <td><?php echo $warehouse['seri_number']; ?></td>
                                                     <td><?php echo $warehouse['warehouse_bid_id']; ?></td>
                                                     <td><?php echo $warehouse['imported_bid_name']; ?></td>
-                                                    <td><?php echo $warehouse['quantity']; ?>Kg</td>
+                                                    <td><?php echo $warehouse['quantity']; ?> Tấn</td>
                                                     <td><?php echo number_format($warehouse['purchase_price'], 0, '.', '.'); ?>.000vnđ</td>
                                                     <td><?php echo $warehouse['input_day']; ?></td>
                                                     <td><?php echo $warehouse['expired_date']; ?></td>

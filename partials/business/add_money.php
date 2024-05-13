@@ -8,7 +8,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <body>
     <div class="container">
-        <h3>Tạo mới đơn hàng</h3>
+        <h3>Xác Nhận Thanh Toán</h3>
         <div class="table-responsive">
             <form action="../../partials/business/vnpay_create_payment.php" id="frmCreateOrder" method="post">
                 <div class="form-group">
